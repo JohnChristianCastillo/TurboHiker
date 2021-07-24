@@ -33,7 +33,8 @@ public:
         drawMainCharacter(window);
     }
     void drawMainCharacter(sf::RenderWindow& window) const{
-        std::shared_ptr<Coordinates> viewCoords = singleton::Transformation::getInstance()->modelToView(controller->getMainCharacter()->getCoordinates());
+        auto pp = controller->getMainCharacter()->getCoordinates();
+        std::shared_ptr<Coordinates> viewCoords = singleton::Transformation::getInstance()->modelToView(pp);
         float width = viewCoords->upRight.first - viewCoords->lowLeft.first;
         float height = std::abs(viewCoords->upRight.second - viewCoords->lowLeft.second);
 

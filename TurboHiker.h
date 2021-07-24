@@ -17,11 +17,12 @@ class TurboHiker {
     float framerate;
 
 public:
-    explicit TurboHiker(float framerate):model{std::make_shared<Model>(Model{})},
-                                           controller{std::make_shared<Controller>(framerate, model)},
-                                         interface{std::make_shared<UserInterface>(UserInterface{controller})},
-                          framerate(framerate)
+    explicit TurboHiker(float fps):model{std::make_shared<Model>(Model{})},
+                                           controller{std::make_shared<Controller>(fps, model)}
+
     {
+        interface = {std::make_shared<UserInterface>(UserInterface{controller})};
+        framerate = fps;
         float screenHeight = float(sf::VideoMode::getDesktopMode().height) * 0.75f;
         float screenWidth = screenHeight/8*6;
         std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::init(Dimentions{screenWidth, screenHeight});
