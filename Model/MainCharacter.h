@@ -8,16 +8,17 @@
 #include "Entity.h"
 
 class MainCharacter: public Entity {
+
     /**
      * in a (-4,4) (-3,3) coordinate system. Our character needs to be placed at the lowest-middle
      * part of the screen
      * screen:
-     *              3
+     *              6
      *       _______________
      *      |              |
      *      |              |
      *      |              |
-     *    4 |              |
+     *    8 |              |
      *      |              |
      *      |              |
      *      |_____char_____|
@@ -30,6 +31,11 @@ public:
      float getMovementSpeed() const override{
          return movementSpeed;
      }
+
+     void move(Move move){
+
+     }
+
 
 };
 

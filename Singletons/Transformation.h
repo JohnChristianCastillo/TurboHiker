@@ -11,47 +11,46 @@
 namespace singleton{
 class Transformation
 {
-        static std::shared_ptr<Transformation> transformation;
+    static std::shared_ptr<Transformation> transformation;
 
-        Dimentions screenDimentions{};
+    Dimentions screenDimentions;
 
-        Transformation(Dimentions dimentions):screenDimentions(dimentions){};
+    explicit Transformation(Dimentions dimentions);
+    Transformation() = default;
 public:
-        static std::shared_ptr<Transformation> getInstance()
-        {
-                return transformation;
+    static std::shared_ptr<Transformation> getInstance()
+    {
+        return transformation;
+    }
+
+    static std::shared_ptr<Transformation> init(Dimentions dimentions){
+        if(!transformation){
+            transformation = std::make_shared<Transformation>(Transformation{dimentions});
         }
+        return transformation;
+    }
 
+    const Dimentions& getScreenDimentions(){
+        return screenDimentions;
+    }
+    /**
+        * converts the model's (0,6) (0,8) coordinate system into the
+        * View's (0, screenWidth) (0, screenHeight) coordinate system
+        * @param coords
+        * @param screenWidth
+        * @param screenHeight
+        * @return
+        */
+    std::tuple<float, float> modelToView(const std::shared_ptr<Coordinates>& coords) const
+    {
+        float ratioX = screenDimentions.width/6;
+        float ratioY = screenDimentions.height/8;
+        std::shared_ptr<Coordinates> retVal{std::make_shared<Coordinates>(std::make_pair(coords->lowLeft.first * ratioX, coords->lowLeft.second * ratioY),
+                                                                          std::make_pair(coords->upRight.first * ratioX, coords->upRight.second * ratioY))};
+        return std::make_tuple(ratioX, ratioY);
+    }
 
-        static std::shared_ptr<Transformation> init(Dimentions dimentions){
-                if(!transformation){
-                        transformation = std::make_shared<Transformation>(Transformation{dimentions});
-                }
-                return transformation;
-        }
-
-        const Dimentions& getScreenDimentions(){
-                return screenDimentions;
-        }
-        /**
-         * converts the model's (0,6) (0,8) coordinate system into the
-         * View's (0, screenWidth) (0, screenHeight) coordinate system
-         * @param coords
-         * @param screenWidth
-         * @param screenHeight
-         * @return
-         */
-        std::shared_ptr<Coordinates> modelToView(const std::shared_ptr<Coordinates>& coords)
-        {
-                float ratioX = screenDimentions.width/6;
-                float ratioY = screenDimentions.height/8;
-                std::shared_ptr<Coordinates> retVal{std::make_shared<Coordinates>(std::make_pair(coords->lowLeft.first * ratioX, coords->lowLeft.second * ratioY),
-                                                                                  std::make_pair(coords->upRight.first * ratioX, coords->upRight.second * ratioY))};
-
-                return retVal;
-        }
-
-        /*std::shared_ptr<Coordinates> viewToModel(const std::shared_ptr<Coordinates>& coords, const float& screenWidth,
+    /*std::shared_ptr<Coordinates> viewToModel(const std::shared_ptr<Coordinates>& coords, const float& screenWidth,
                                                  const float& screenHeight)
         {
                 float ratioX = screenWidth / 6;

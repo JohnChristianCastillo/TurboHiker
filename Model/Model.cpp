@@ -3,3 +3,22 @@
 //
 
 #include "Model.h"
+
+float Model::getFps() const {
+    return fps;
+}
+const Move &Model::getPlayerMove() const {
+    return playerMove;
+}
+void Model::setPlayerMoveX(const float &moveX) {
+    Model::playerMove.x = moveX;
+}
+void Model::setPlayerMoveY(const float &moveY) {
+    Model::playerMove.y = moveY;
+}
+const Move &Model::getBackgroundMove() const {
+    return backgroundMove;
+}
+void Model::setBackgroundMoveY(const float &moveY) {
+    Model::backgroundMove.y = moveY;
+}

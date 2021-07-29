@@ -18,13 +18,31 @@ public:
     std::shared_ptr<Coordinates> getCoordinates() const{
         return coordinates;
     }
+    std::shared_ptr<GlobalBounds> getGlobalBounds() const{
+        float width = coordinates->upRight.first - coordinates->lowLeft.first;
+        float height = coordinates->upRight.second - coordinates->lowLeft.second;
 
+        return std::make_shared<GlobalBounds>(coordinates->lowLeft.first, coordinates->upRight.second, Dimentions(width, height));
+    }
+    void setPosition(float x, float y){
+        float width = coordinates->upRight.first - coordinates->lowLeft.first;
+        float height = coordinates->upRight.second - coordinates->lowLeft.second;
+        std::pair<float, float> lowLeft = std::make_pair(x, y-height);
+        std::pair<float, float> upRight = std::make_pair(x+width, y);
+
+        coordinates = std::make_shared<Coordinates>(lowLeft, upRight);
+    }
+    void move(float offsetX, float offsetY){
+        this->setPosition(this->coordinates->lowLeft.first + offsetX,
+                          this->coordinates->lowLeft.second + offsetY);
+    }
+    /*
     void move(float x, float y){
         coordinates->lowLeft.first += x;
         coordinates->lowLeft.second += y;
         coordinates->upRight.first += x;
         coordinates->upRight.second += y;
-    };
+    };*/
 };
 
 

@@ -11,6 +11,7 @@ class Enemy: public Entity{
     /**
      * This is a pure virtual class
      */
+
 };
 
 

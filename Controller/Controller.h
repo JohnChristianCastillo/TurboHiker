@@ -5,16 +5,25 @@
 #ifndef TURBOHIKER_CONTROLLER_H
 #define TURBOHIKER_CONTROLLER_H
 
+#include "../Model/Model.h"
+#include "../Singletons/Transformation.h"
+#include "../View/View.h"
 #include <iostream>
 #include <utility>
 #include <vector>
-#include "../Model/Model.h"
+
 
 class Controller {
     std::shared_ptr<Model> model;
-    int frameRate;
+    std::shared_ptr<View> view;
+
 public:
-    Controller(int frameRate, std::shared_ptr<Model> model):frameRate(frameRate), model(std::move(model)){};
+    Controller(std::shared_ptr<Model> model, std::shared_ptr<View> view):
+        model(std::move(model)), view(std::move(view)){};
+
+    //////////////////////////////////////////////////////
+    /// This section contains MODEL REQUEST FUNCTIONS ///
+    ////////////////////////////////////////////////////
     /**
      * @return a const copy of the main character
      */
@@ -22,41 +31,84 @@ public:
         return model->getMainCharacter();
     }
 
-
-
     std::vector<std::shared_ptr<Enemy>> getEnemies(){
         return model->getEnemies();
     }
 
-    void moveRight(){
-        float move = model->getMainCharacter()->getMovementSpeed()/float(frameRate);
-        // check if it can move right
-        if (model->getMainCharacter()->getCoordinates()->upRight.first + move <= 6) {
-            model->getMainCharacter()->move(move, 0);
-        }
-        std::cout << "Right" << std::endl;
+    void moveRight(const float elapsedTime){
+        //playerMove.x += model->getMainCharacter()->getMovementSpeed()*elapsedTime;
+        //std::shared_ptr<Coordinates> newCoords = model->getMainCharacter()->moveRight(elapsedTime*10.f);
+        //std::shared_ptr<singleton::Transformation> trans = singleton::Transformation::getInstance();
+        //std::tuple<float,float> x = trans->modelToView(newCoords);
+
     }
-    void moveLeft(){
-        float move = model->getMainCharacter()->getMovementSpeed()/float(frameRate);
-        if(model->getMainCharacter()->getCoordinates()->lowLeft.first + move >= 0){
-            model->getMainCharacter()->move(-move, 0);
-        }
-        std::cout << "Left" << std::endl;
+    void moveLeft(const float elapsedTime){
+        //playerMove.x -= model->getMainCharacter()->getMovementSpeed()*elapsedTime;
+
+        //float move = model->getMainCharacter()->getMovementSpeed()/model->getFps();
+        //if(model->getMainCharacter()->getCoordinates()->lowLeft.first + move >= 0){
+        //    model->getMainCharacter()->move(-move, 0);
+        //}
+        //std::cout << "Left" << std::endl;
     }
 
     /**
      * loop over all the enemy entities and move them
      * at the same time, clear undisplayed enemies from the vector
      */
-    void moveEnemies(){
-        for(int i = model->getEnemies().size()-1; i >= 0; --i){
-            model->getEnemies().at(i)->move(0, model->getMainCharacter()->getMovementSpeed()/float(frameRate));
-            if(model->getEnemies().at(i)->getCoordinates()->lowLeft.second > 8.f){
+    void moveEnemies(const float elapsedTime){
+        //for(int i = model->getEnemies().size()-1; i >= 0; --i){
+        //    model->getEnemies().at(i)->move(0, model->getMainCharacter()->getMovementSpeed()/model->getFps());
+        //    if(model->getEnemies().at(i)->getCoordinates()->lowLeft.second > 8.f){
+//
+        //        model->getEnemies().erase(model->getEnemies().begin()+i);
+        //    }
+        //}
+        //backgroundMove.y += 10*elapsedTime;
+    }
 
-                model->getEnemies().erase(model->getEnemies().begin()+i);
+    void run(){
+        Input input = view->run();
+        //std::tuple<Input, float> input = view->run();
+        //while(std::get<0>(input) != Input::ZERO){
+        while(input != Input::ZERO){
+            bool moved = false;
+            input = view->mainloop();
+            //std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
+
+            /*
+            float elapsedTime = std::get<1>(input);
+
+            Input movement = std::get<0>(input);
+
+            if(movement == Input::UP){
+                model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime);
+                moved = true;
+
             }
+            else if(movement == Input::LEFT){
+                model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed()*elapsedTime);
+                moved = true;
+            }
+            else if(movement == Input::RIGHT){
+                model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime);
+                moved = true;
+            }
+
+            // if the player is moved then we want to first check for collisions
+            if(moved){
+                model->checkMoveValidity();
+                model->moveMC();
+
+            }
+            */
         }
     }
+
+    //////////////////////////////////////////////////////
+    /// This section contains VIEW REQUEST FUNCTIONS ////
+    ////////////////////////////////////////////////////
+
 };
 
 

@@ -4,3 +4,5 @@
 
 #include "Transformation.h"
 std::shared_ptr<singleton::Transformation> singleton::Transformation::transformation = nullptr;
+singleton::Transformation::Transformation(Dimentions dimentions):screenDimentions(dimentions) {
+}
