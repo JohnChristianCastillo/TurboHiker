@@ -5,11 +5,12 @@
 #ifndef TURBOHIKER_VIEW_H
 #define TURBOHIKER_VIEW_H
 
+#include "../Model/MainCharacter.h"
+#include "../Singletons/Transformation.h"
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
-#include "../Singletons/Transformation.h"
 #include <chrono>
 #include <iostream>
 #include <utility>
@@ -18,8 +19,10 @@
 class View {
 
 
+    /// this can be deleted since it's in the singleton class but it's easier to call it this way
     float screenHeight = float(sf::VideoMode::getDesktopMode().height) * 0.75f;
     float screenWidth = screenHeight/8*6;
+
     sf::RenderWindow window{sf::VideoMode(static_cast<unsigned int>(screenWidth),
                                                 static_cast<unsigned int>(screenHeight)),
                                                      "TurboHiker!!!"};
@@ -150,6 +153,18 @@ public:
         carSprite.setPosition(backgroundImage1.getGlobalBounds().width / 2,
                               backgroundImage1.getGlobalBounds().height - carSprite.getSize().y);
 
+        std::shared_ptr<singleton::Transformation> trans = singleton::Transformation::getInstance();
+
+        std::tuple<float,float> modelPosition = trans->viewToModel(backgroundImage1.getGlobalBounds().width / 2, backgroundImage1.getGlobalBounds().height - carSprite.getSize().y );
+        std::tuple<float,float> modelWidthHeight = trans->viewToModel(carSprite.getGlobalBounds().width, carSprite.getGlobalBounds().height );
+
+        std::cout << "Carsprite position is in Model:\n(" << std::get<0>(modelPosition) << ", " << std::get<1>(modelPosition) << std::endl;
+        std::cout << "Carsprite width and height in model:" << std::get<0>(modelWidthHeight) << ", " << std::get<1>(modelWidthHeight) << std::endl;
+
+        std::cout << "Carsprite width and height in veiw:" << carSprite.getGlobalBounds().height << " " <<  carSprite.getGlobalBounds().width << std::endl;
+
+        std::cout << "Carsprite position is:\n(" << backgroundImage1.getGlobalBounds().width / 2 << ", " << backgroundImage1.getGlobalBounds().height - carSprite.getSize().y << std::endl;
+        std::cout << "ScreenDimentions: (" << screenWidth << ", " << screenHeight << std::endl;
         /// todo:  WALL
         //std::vector<sf::RectangleShape> walls;
 
@@ -205,6 +220,12 @@ public:
         //sf::Vector2f backgroundMove{0.f, 0.f};
         playerMove = {0.f, 0.f};
         backgroundMove = {0.f, 0.f};
+
+
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+            sf::Vector2i p = sf::Mouse::getPosition();
+            std:: cout << p.x << ", " << p.y << std::endl;
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             std::cout << "Going Right" << std::endl;
             playerMove.x += speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
@@ -233,6 +254,24 @@ public:
         }
     }
 
+    void draw2(const std::shared_ptr<MainCharacter>& mc){
+
+        std::tuple<float, float> viewCoords = singleton::Transformation::getInstance()->modelToView(mc->getCoordinates());
+        view.setCenter(position); // center camera on position
+        carSprite.setPosition(std::get<0>(viewCoords), std::get<1>(viewCoords));
+        window.setView(view);
+        window.draw(carSprite);
+
+        /*
+                for (auto& wall : walls) {
+                    wall.move(backgroundMove);
+                    window.draw(wall);
+                }
+        */
+
+        window.display();
+        window.clear();
+    }
     void draw(){
         /// Box collisions
 /*

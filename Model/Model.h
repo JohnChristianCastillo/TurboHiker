@@ -20,6 +20,9 @@ private:
     std::shared_ptr<MainCharacter> mainCharacter;
     std::vector<std::shared_ptr<Enemy>> enemies;
 
+    Move playerMove{};
+    Move backgroundMove{};
+    std::shared_ptr<GlobalBounds> nextPosition;
 public:
     const Move &getPlayerMove() const;
     void setPlayerMoveX(const float &moveX);
@@ -27,10 +30,6 @@ public:
     const Move &getBackgroundMove() const;
     void setBackgroundMoveY(const float &moveY);
 
-private:
-    Move playerMove{};
-    Move backgroundMove{};
-    std::shared_ptr<GlobalBounds> nextPosition;
 public:
     explicit Model(float frameLimit):fps(frameLimit){
         entityFactory = std::make_shared<EntityMaker>();
@@ -103,9 +102,11 @@ public:
     }
 
     void moveMC(){
-        mainCharacter->move(playerMove);
+        mainCharacter->move(playerMove.x, playerMove.y);
     }
-    void checkMoveValidity(){
+
+    void collisionControl(){
+
         for(const std::shared_ptr<Enemy>& wall: enemies){
             std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
             std::shared_ptr<GlobalBounds> wallBounds = wall->getGlobalBounds();
@@ -128,42 +129,43 @@ public:
 
                 // Player Bottom collision
                 if (playerBounds->top < wallBounds->top &&
-                    playerBounds->top + playerBounds->dimentions.height < wallBounds->top + wallBounds->dimentions.height &&
-                    playerBounds->left < wallBounds->left + wallBounds->dimentions.width &&
-                    playerBounds->left + playerBounds->dimentions.width > wallBounds->left) {
+                playerBounds->top + playerBounds->dimentions.height < wallBounds->top + wallBounds->dimentions.height &&
+                playerBounds->left < wallBounds->left + wallBounds->dimentions.width &&
+                playerBounds->left + playerBounds->dimentions.width > wallBounds->left) {
                     playerMove.y = 0.f;
                     // bottom of player set to top of wall
                     mainCharacter->setPosition(playerBounds->left, wallBounds->top - playerBounds->dimentions.height);
                 }
-                    // Player Top collision
+                // Player Top collision
                 else if (playerBounds->top > wallBounds->top &&
-                         playerBounds->top + playerBounds->dimentions.height > wallBounds->top + wallBounds->dimentions.height &&
-                         playerBounds->left < wallBounds->left + wallBounds->dimentions.width &&
-                         playerBounds->left + playerBounds->dimentions.width > wallBounds->left) {
+                playerBounds->top + playerBounds->dimentions.height > wallBounds->top + wallBounds->dimentions.height &&
+                playerBounds->left < wallBounds->left + wallBounds->dimentions.width &&
+                playerBounds->left + playerBounds->dimentions.width > wallBounds->left) {
                     playerMove.y = 0.f;
                     // top of player set to bottom of wall                 plus cause y goes down
                     mainCharacter->setPosition(playerBounds->left, wallBounds->top + wallBounds->dimentions.height);
                 }
 
-                    // Player right collision
+                // Player right collision
                 else if (playerBounds->left < wallBounds->left &&
-                         playerBounds->left + playerBounds->dimentions.width < wallBounds->left + wallBounds->dimentions.width &&
-                         playerBounds->top < wallBounds->top + wallBounds->dimentions.height &&
-                         playerBounds->top + playerBounds->dimentions.height > wallBounds->top) {
+                playerBounds->left + playerBounds->dimentions.width < wallBounds->left + wallBounds->dimentions.width &&
+                playerBounds->top < wallBounds->top + wallBounds->dimentions.height &&
+                playerBounds->top + playerBounds->dimentions.height > wallBounds->top) {
                     playerMove.x = 0.f;
                     mainCharacter->setPosition(wallBounds->left - playerBounds->dimentions.width, playerBounds->top);
                 }
-                    // Player Left collision
+                // Player Left collision
                 else if (playerBounds->left > wallBounds->left &&
-                         playerBounds->left + playerBounds->dimentions.width > wallBounds->left + wallBounds->dimentions.width &&
-                         playerBounds->top < wallBounds->top + wallBounds->dimentions.height &&
-                         playerBounds->top + playerBounds->dimentions.height > wallBounds->top) {
+                playerBounds->left + playerBounds->dimentions.width > wallBounds->left + wallBounds->dimentions.width &&
+                playerBounds->top < wallBounds->top + wallBounds->dimentions.height &&
+                playerBounds->top + playerBounds->dimentions.height > wallBounds->top) {
                     playerMove.x = 0.f;
                     mainCharacter->setPosition(wallBounds->left + wallBounds->dimentions.width, playerBounds->top);
                 }
             }
         }
     }
+
 
 };
 

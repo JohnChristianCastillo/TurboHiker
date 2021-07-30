@@ -17,6 +17,7 @@ class Controller {
     std::shared_ptr<Model> model;
     std::shared_ptr<View> view;
 
+
 public:
     Controller(std::shared_ptr<Model> model, std::shared_ptr<View> view):
         model(std::move(model)), view(std::move(view)){};
@@ -75,33 +76,10 @@ public:
     do{
         //while(std::get<0>(input) != Input::ZERO){
         //while(input != Input::ZERO){
-        bool moved = false;
         view->draw();
         input = view->mainloop();
         /*
-        std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
-        float elapsedTime = std::get<1>(input);
-        Input movement = std::get<0>(input);
-        if(movement == Input::UP){
-            model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime);
-            moved = true;
 
-        }
-        else if(movement == Input::LEFT){
-            model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed()*elapsedTime);
-            moved = true;
-        }
-        else if(movement == Input::RIGHT){
-            model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime);
-            moved = true;
-        }
-
-        // if the player is moved then we want to first check for collisions
-        if(moved){
-            //model->checkMoveValidity();
-            //model->moveMC();
-            view->draw();
-        }
     while(std::get<0>(input) != Input::ZERO);
      */
 
@@ -111,6 +89,8 @@ public:
                 std::chrono::high_resolution_clock::now();
         view->init();
         view->draw();
+        std::tuple<float, float> viewCoords = singleton::Transformation::getInstance()->modelToView(model->getMainCharacter()->getCoordinates());
+        std::cout << "MC position:" << std::get<0>(viewCoords) << ", " << std::get<1>(viewCoords) << std::endl;
         while (view->getWindow().isOpen()) {
             std::chrono::time_point<std::chrono::high_resolution_clock> finalTime =
                     std::chrono::high_resolution_clock::now();
@@ -122,12 +102,45 @@ public:
             if(view->pollEvent() == Input::ZERO) return;
             /// get keyboard input
             Input in = view->getKeyboardInput(elapsedTime);
+            bool moved = false;
+            std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
 
-            view->draw();
+            switch(in){
+                case Input::UP:
+                    model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime.count());
+                    moved = true;
+
+
+                case Input::LEFT:
+                    model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed()*elapsedTime.count());
+                    moved = true;
+
+                case Input::RIGHT:
+                    model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime.count());
+                    moved = true;
+
+                case DOWN:
+                    break;
+                case ZERO:
+                    break;
+                case ONE:
+                    break;
+            }
+                // if the player is moved then we want to first check for collisions
+            if(moved){
+
+                model->collisionControl();
+                model->moveMC();
+                view->draw2(mc);
+                //view->draw();
+
+            }
+
 
         }
 
     }
+
 
     //////////////////////////////////////////////////////
     /// This section contains VIEW REQUEST FUNCTIONS ////

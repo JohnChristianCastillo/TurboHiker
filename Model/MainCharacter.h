@@ -32,10 +32,6 @@ public:
          return movementSpeed;
      }
 
-     void move(Move move){
-
-     }
-
 
 };
 

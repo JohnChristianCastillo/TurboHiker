@@ -4,6 +4,6 @@
 
 #include "MainCharacter.h"
 MainCharacter::MainCharacter() {
-    coordinates = std::make_shared<Coordinates>(std::make_pair(2.f, 4.f), std::make_pair(3.f, 3.f));
+    coordinates = std::make_shared<Coordinates>(std::make_pair(3.11f, 4.f), std::make_pair(3.f, 3.f));
     movementSpeed = 10;
 }

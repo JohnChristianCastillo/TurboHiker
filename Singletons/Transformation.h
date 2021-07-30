@@ -41,13 +41,25 @@ public:
         * @param screenHeight
         * @return
         */
+
     std::tuple<float, float> modelToView(const std::shared_ptr<Coordinates>& coords) const
     {
-        float ratioX = screenDimentions.width/6;
-        float ratioY = screenDimentions.height/8;
-        std::shared_ptr<Coordinates> retVal{std::make_shared<Coordinates>(std::make_pair(coords->lowLeft.first * ratioX, coords->lowLeft.second * ratioY),
-                                                                          std::make_pair(coords->upRight.first * ratioX, coords->upRight.second * ratioY))};
-        return std::make_tuple(ratioX, ratioY);
+        //formula: newCoord = (x-csOrigMin)/(csOrigMax-csOrigMin) * (csDestMax-csDestMin) + csDestMin
+        // calculating translated X
+        //
+        float newX = (coords->lowLeft.first/6)*screenDimentions.width;
+        float newY = (coords->upRight.second/8)*screenDimentions.height;
+        return std::make_tuple(newX, newY);
+    }
+
+    std::tuple<float, float> viewToModel(float x, float y) const
+    {
+        //formula: newCoord = (x-csOrigMin)/(csOrigMax-csOrigMin) * (csDestMax-csDestMin) + csDestMin
+        // calculating translated X
+        //
+        float newX = (x/screenDimentions.width)*6;
+        float newY = (y/screenDimentions.height)*8;
+        return std::make_tuple(newX, newY);
     }
 
     /*std::shared_ptr<Coordinates> viewToModel(const std::shared_ptr<Coordinates>& coords, const float& screenWidth,
@@ -61,6 +73,7 @@ public:
 
                 return retVal;
         }*/
+
 };
 }//singleton
 #endif // TURBOHIKER_TRANSFORMATION_H
