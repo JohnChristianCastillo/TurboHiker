@@ -3,3 +3,6 @@
 //
 
 #include "View.h"
+const sf::RenderWindow &View::getWindow() const {
+    return window;
+}

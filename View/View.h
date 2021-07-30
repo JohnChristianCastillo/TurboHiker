@@ -27,6 +27,10 @@ class View {
     sf::Texture mainCharTexture{};
     std::array<sf::Texture, 12> enemyTextures{};
 
+public:
+    const sf::RenderWindow &getWindow() const;
+
+private:
     // Main Character entity:
     sf::Texture car;
 
@@ -55,6 +59,10 @@ class View {
                           singleton::Transformation::getInstance()->getScreenDimentions().height/ 2.3f};
 
 
+    /// TODO: DELETE THESE AFTERWARDS
+    /// Player and background movement
+    sf::Vector2f playerMove{0.f, 0.f};
+    sf::Vector2f backgroundMove{0.f, 0.f};
 public:
     /*
     void display(sf::RenderWindow& window) const{
@@ -110,7 +118,7 @@ public:
         // how much of the view we want to see
         view.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
     }
-    Input run(){
+    void init(){
         /// NOTICE: Loading textures has to happen within this function and cannot be delegated due to SFML limitations
         /// SEE: https://www.sfml-dev.org/tutorials/2.1/graphics-sprite.php#the-white-square-problem
         /// TODO: Make assets more pliable
@@ -168,215 +176,195 @@ public:
          * screen scrolling
          */
 
-        unsigned int screenDimx{static_cast<unsigned int>(singleton::Transformation::getInstance()->getScreenDimentions().width)};
-        unsigned int screenDimy{static_cast<unsigned int>(singleton::Transformation::getInstance()->getScreenDimentions().height)};
+        float screenDimx{singleton::Transformation::getInstance()->getScreenDimentions().width};
+        float screenDimy{singleton::Transformation::getInstance()->getScreenDimentions().height};
 
         // initialize to cover the whole screen
         view.reset(sf::FloatRect(0, 0, screenDimx, screenDimy));
         // how much of the view we want to see
         view.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
-        return mainloop();
     }
-    Input mainloop(){
-        /// CLOCK
-        sf::Clock clock; // todo: make sure even with diff cpu's, time passes by at the same rate
-        std::chrono::time_point<std::chrono::high_resolution_clock> initialTime =
-                std::chrono::high_resolution_clock::now();
-
-        while (window.isOpen()) {
-            std::chrono::time_point<std::chrono::high_resolution_clock> finalTime =
-                    std::chrono::high_resolution_clock::now();
-            std::chrono::duration<float> elapsedTime = finalTime - initialTime;
-            elapsedTime.count();
-            initialTime = finalTime;
-
-            sf::Event event{};
-            while (window.pollEvent(event)) {
-                switch (event.type) {
-                    case sf::Event::Closed:
+    Input pollEvent() {
+        sf::Event event{};
+        while (window.pollEvent(event)) {
+            switch (event.type) {
+                case sf::Event::Closed:
+                    window.close();
+                    return Input::ZERO;
+                case sf::Event::KeyPressed:
+                    if (event.key.code == sf::Keyboard::Escape) {
                         window.close();
-                        //return std::make_tuple(Input::ZERO, elapsedTime.count());
                         return Input::ZERO;
-                        break;
-                    case sf::Event::KeyPressed:
-                        if (event.key.code == sf::Keyboard::Escape) {
-                            window.close();
-                            //return std::make_tuple(Input::ZERO, elapsedTime.count());
-                            return Input::ZERO;
-
-                        }
-                        break;
-                }
+                    }
             }
+        }
+    }
+    Input getKeyboardInput(std::chrono::duration<float> elapsedTime) {
+        /// Player and background movement
+        //sf::Vector2f playerMove{0.f, 0.f};
+        //sf::Vector2f backgroundMove{0.f, 0.f};
+        playerMove = {0.f, 0.f};
+        backgroundMove = {0.f, 0.f};
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            std::cout << "Going Right" << std::endl;
+            playerMove.x += speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
+            //controller->moveRight(elapsedTime.count());
+            return Input::RIGHT;
 
-            /// Player and background movement
-            sf::Vector2f playerMove{0.f, 0.f};
-            sf::Vector2f backgroundMove{0.f, 0.f};
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-                std::cout << "Going Right" << std::endl;
-                playerMove.x += speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
-                //controller->moveRight(elapsedTime.count());
-                //return std::make_tuple(Input::RIGHT, elapsedTime.count());
-                return Input::RIGHT;
-
-            } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-                std::cout << "Going Left" << std::endl;
-                playerMove.x += -speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
-                //controller->moveLeft(elapsedTime.count());
-                //return std::make_tuple(Input::LEFT, elapsedTime.count());
-                return Input::LEFT;
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            std::cout << "Going Left" << std::endl;
+            playerMove.x += -speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
+            //controller->moveLeft(elapsedTime.count());
+            return Input::LEFT;
 
 
-            } /*else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        } /*else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
                         backgroundMove.y += -speed * elapsedTime.count(); //clock.getElapsedTime().asSeconds();
                 }*/
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-                backgroundMove.y += speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
-                //return std::make_tuple(Input::UP, elapsedTime.count());
-                return Input::UP;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            backgroundMove.y += speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
+            return Input::UP;
 
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            backgroundMove.y -= speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
+            return Input::DOWN;
 
-            }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                backgroundMove.y -= speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
-                //return std::make_tuple(Input::DOWN, elapsedTime.count());
-                return Input::DOWN;
+        }
+    }
 
+    void draw(){
+        /// Box collisions
+/*
+        for (auto& wall : walls) {
+            sf::FloatRect playerBounds = carSprite.getGlobalBounds();
+            sf::FloatRect wallBounds = wall.getGlobalBounds();
 
-            }
+            // gives us an outline with as offset our next move
+            nextPosition = playerBounds;
+            nextPosition.left += (playerMove.x - backgroundMove.x) ;
+            nextPosition.top += (playerMove.y - backgroundMove.y) ;
 
-            /// Box collisions
+            // todo: remove this for final
+            nextBox.setPosition(nextPosition.left, nextPosition.top);
 
-            for (auto& wall : walls) {
-                sf::FloatRect playerBounds = carSprite.getGlobalBounds();
-                sf::FloatRect wallBounds = wall.getGlobalBounds();
+            if (wallBounds.intersects(nextPosition)) {
+                std::cout << "Collision" << std::endl;
+                /// possible solution1: set playerMove x and y to 0
+                /// possible solution2:  first construct left and right collision,
+                ///                     bottom-top is simillar but inverted
+                //   player            wall
+                //  ________          ________
+                // |        |        |        |
+                // |        |        |        |
+                // |        |        |        |
+                // |________|        |________|
 
-                // gives us an outline with as offset our next move
-                nextPosition = playerBounds;
-                nextPosition.left += (playerMove.x - backgroundMove.x) ;
-                nextPosition.top += (playerMove.y - backgroundMove.y) ;
+                // Player Bottom collision
+                if (playerBounds.top < wallBounds.top &&
+                playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height &&
+                playerBounds.left < wallBounds.left + wallBounds.width &&
+                playerBounds.left + playerBounds.width > wallBounds.left) {
+                    playerMove.y = 0.f;
+                    // bottom of player set to top of wall
+                    carSprite.setPosition(playerBounds.left, wallBounds.top - playerBounds.height);
+                }
+                // Player Top collision
+                else if (playerBounds.top > wallBounds.top &&
+                playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height &&
+                playerBounds.left < wallBounds.left + wallBounds.width &&
+                playerBounds.left + playerBounds.width > wallBounds.left) {
+                    playerMove.y = 0.f;
+                    // top of player set to bottom of wall                 plus cause y goes down
+                    carSprite.setPosition(playerBounds.left, wallBounds.top + wallBounds.height);
+                }
 
-                // todo: remove this for final
-                nextBox.setPosition(nextPosition.left, nextPosition.top);
-
-                if (wallBounds.intersects(nextPosition)) {
-                    std::cout << "Collision" << std::endl;
-                    /// possible solution1: set playerMove x and y to 0
-                    /// possible solution2:  first construct left and right collision,
-                    ///                     bottom-top is simillar but inverted
-                    //   player            wall
-                    //  ________          ________
-                    // |        |        |        |
-                    // |        |        |        |
-                    // |        |        |        |
-                    // |________|        |________|
-
-                    // Player Bottom collision
-                    if (playerBounds.top < wallBounds.top &&
-                    playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height &&
-                    playerBounds.left < wallBounds.left + wallBounds.width &&
-                    playerBounds.left + playerBounds.width > wallBounds.left) {
-                        playerMove.y = 0.f;
-                        // bottom of player set to top of wall
-                        carSprite.setPosition(playerBounds.left, wallBounds.top - playerBounds.height);
-                    }
-                    // Player Top collision
-                    else if (playerBounds.top > wallBounds.top &&
-                    playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height &&
-                    playerBounds.left < wallBounds.left + wallBounds.width &&
-                    playerBounds.left + playerBounds.width > wallBounds.left) {
-                        playerMove.y = 0.f;
-                        // top of player set to bottom of wall                 plus cause y goes down
-                        carSprite.setPosition(playerBounds.left, wallBounds.top + wallBounds.height);
-                    }
-
-                    // Player right collision
-                    else if (playerBounds.left < wallBounds.left &&
-                    playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width &&
-                    playerBounds.top < wallBounds.top + wallBounds.height &&
-                    playerBounds.top + playerBounds.height > wallBounds.top) {
-                        playerMove.x = 0.f;
-                        carSprite.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);
-                    }
-                    // Player Left collision
-                    else if (playerBounds.left > wallBounds.left &&
-                    playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width &&
-                    playerBounds.top < wallBounds.top + wallBounds.height &&
-                    playerBounds.top + playerBounds.height > wallBounds.top) {
-                        playerMove.x = 0.f;
-                        carSprite.setPosition(wallBounds.left + wallBounds.width, playerBounds.top);
-                    }
+                // Player right collision
+                else if (playerBounds.left < wallBounds.left &&
+                playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width &&
+                playerBounds.top < wallBounds.top + wallBounds.height &&
+                playerBounds.top + playerBounds.height > wallBounds.top) {
+                    playerMove.x = 0.f;
+                    carSprite.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);
+                }
+                // Player Left collision
+                else if (playerBounds.left > wallBounds.left &&
+                playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width &&
+                playerBounds.top < wallBounds.top + wallBounds.height &&
+                playerBounds.top + playerBounds.height > wallBounds.top) {
+                    playerMove.x = 0.f;
+                    carSprite.setPosition(wallBounds.left + wallBounds.width, playerBounds.top);
                 }
             }
-
-
-            if (backgroundImage1.getPosition().y > carSprite.getPosition().y) {
-                backgroundImage3.setPosition(backgroundImage1.getPosition().x,
-                                             backgroundImage1.getPosition().y);
-                backgroundImage1.setPosition(backgroundImage1.getPosition().x,
-                                             backgroundImage1.getPosition().y -
-                                             backgroundImage1.getGlobalBounds().height * 2);
-            } else if (backgroundImage2.getPosition().y > carSprite.getPosition().y) {
-                backgroundImage3.setPosition(backgroundImage2.getPosition().x,
-                                             backgroundImage2.getPosition().y);
-                backgroundImage2.setPosition(backgroundImage2.getPosition().x,
-                                             backgroundImage2.getPosition().y -
-                                             backgroundImage2.getGlobalBounds().height * 2);
-            }
-
-            backgroundImage1.move(backgroundMove);
-            backgroundImage2.move(backgroundMove);
-            backgroundImage3.move(backgroundMove);
-            carSprite.move(playerMove);
-            window.draw(backgroundImage3);
-            window.draw(backgroundImage1);
-            window.draw(backgroundImage2);
-
-            /// Window collision control
-            /// left collision
-
-            if (carSprite.getPosition().x - carSprite.getGlobalBounds().width / 2 < 0) {
-                carSprite.setPosition(carSprite.getGlobalBounds().width / 2, carSprite.getPosition().y);
-            }
-            /// right collision
-
-            float fDimx{singleton::Transformation::getInstance()->getScreenDimentions().width};
-            if (carSprite.getPosition().x + carSprite.getGlobalBounds().width > fDimx) {
-                carSprite.setPosition(fDimx - carSprite.getGlobalBounds().width,
-                                      carSprite.getPosition().y);
-            }
-
-            /**
-             * scroll when player hits center of screen
-             */
-/*
-            if(carSprite.getPosition().y + carSprite.getGlobalBounds().height/2 > screenHeight/2){
-                    std::cout <<carSprite.getPosition().y + carSprite.getGlobalBounds().height/2 << std::endl;
-                    std::cout <<screenHeight/2 << std::endl;
-                    position.y = carSprite.getPosition().y + carSprite.getGlobalBounds().height/4;
-            }
-
-            else{
-                    position.y = screenHeight/2;
-            }*/
-
-            view.setCenter(position); // center camera on position
-            window.setView(view);
-            window.draw(carSprite);
-
-
-            for (auto& wall : walls) {
-                wall.move(backgroundMove);
-                window.draw(wall);
-            }
-
-
-            window.display();
-            window.clear();
         }
-        //return std::make_tuple(Input::ONE, 0.f);
-        return Input::ONE;
+*/
 
+        if (backgroundImage1.getPosition().y > carSprite.getPosition().y) {
+            backgroundImage3.setPosition(backgroundImage1.getPosition().x,
+                                         backgroundImage1.getPosition().y);
+            backgroundImage1.setPosition(backgroundImage1.getPosition().x,
+                                         backgroundImage1.getPosition().y -
+                                         backgroundImage1.getGlobalBounds().height * 2);
+        } else if (backgroundImage2.getPosition().y > carSprite.getPosition().y) {
+            backgroundImage3.setPosition(backgroundImage2.getPosition().x,
+                                         backgroundImage2.getPosition().y);
+            backgroundImage2.setPosition(backgroundImage2.getPosition().x,
+                                         backgroundImage2.getPosition().y -
+                                         backgroundImage2.getGlobalBounds().height * 2);
+        }
+
+
+        backgroundImage1.move(backgroundMove);
+        backgroundImage2.move(backgroundMove);
+        backgroundImage3.move(backgroundMove);
+        carSprite.move(playerMove);
+        window.draw(backgroundImage3);
+        window.draw(backgroundImage1);
+        window.draw(backgroundImage2);
+
+        /// Window collision control
+        /// left collision
+/*
+        if (carSprite.getPosition().x - carSprite.getGlobalBounds().width / 2 < 0) {
+            carSprite.setPosition(carSprite.getGlobalBounds().width / 2, carSprite.getPosition().y);
+        }
+        /// right collision
+
+        float fDimx{singleton::Transformation::getInstance()->getScreenDimentions().width};
+        if (carSprite.getPosition().x + carSprite.getGlobalBounds().width > fDimx) {
+            carSprite.setPosition(fDimx - carSprite.getGlobalBounds().width,
+                                  carSprite.getPosition().y);
+        }
+*/
+        /**
+         * scroll when player hits center of screen
+         */
+        /*
+                    if(carSprite.getPosition().y + carSprite.getGlobalBounds().height/2 > screenHeight/2){
+                            std::cout <<carSprite.getPosition().y + carSprite.getGlobalBounds().height/2 << std::endl;
+                            std::cout <<screenHeight/2 << std::endl;
+                            position.y = carSprite.getPosition().y + carSprite.getGlobalBounds().height/4;
+                    }
+
+                    else{
+                            position.y = screenHeight/2;
+                    }*/
+
+        view.setCenter(position); // center camera on position
+        window.setView(view);
+        window.draw(carSprite);
+
+/*
+        for (auto& wall : walls) {
+            wall.move(backgroundMove);
+            window.draw(wall);
+        }
+*/
+
+        window.display();
+        window.clear();
+        //playerMove = {0.f, 0.f};
+        //backgroundMove = {0.f, 0.f};
     }
     /*
     void drawMainCharacter(sf::RenderWindow& window) const{

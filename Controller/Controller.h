@@ -67,42 +67,66 @@ public:
         //backgroundMove.y += 10*elapsedTime;
     }
 
-    void run(){
-        Input input = view->run();
-        //std::tuple<Input, float> input = view->run();
+    /*
+    //Input input = view->run();
+    //std::tuple<Input, float> input = view->run();
+    view->init();
+    std::tuple<Input,float> input;
+    do{
         //while(std::get<0>(input) != Input::ZERO){
-        while(input != Input::ZERO){
-            bool moved = false;
-            input = view->mainloop();
-            //std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
+        //while(input != Input::ZERO){
+        bool moved = false;
+        view->draw();
+        input = view->mainloop();
+        /*
+        std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
+        float elapsedTime = std::get<1>(input);
+        Input movement = std::get<0>(input);
+        if(movement == Input::UP){
+            model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime);
+            moved = true;
 
-            /*
-            float elapsedTime = std::get<1>(input);
-
-            Input movement = std::get<0>(input);
-
-            if(movement == Input::UP){
-                model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime);
-                moved = true;
-
-            }
-            else if(movement == Input::LEFT){
-                model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed()*elapsedTime);
-                moved = true;
-            }
-            else if(movement == Input::RIGHT){
-                model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime);
-                moved = true;
-            }
-
-            // if the player is moved then we want to first check for collisions
-            if(moved){
-                model->checkMoveValidity();
-                model->moveMC();
-
-            }
-            */
         }
+        else if(movement == Input::LEFT){
+            model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed()*elapsedTime);
+            moved = true;
+        }
+        else if(movement == Input::RIGHT){
+            model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime);
+            moved = true;
+        }
+
+        // if the player is moved then we want to first check for collisions
+        if(moved){
+            //model->checkMoveValidity();
+            //model->moveMC();
+            view->draw();
+        }
+    while(std::get<0>(input) != Input::ZERO);
+     */
+
+    void run(){
+        /// CLOCK
+        std::chrono::time_point<std::chrono::high_resolution_clock> initialTime =
+                std::chrono::high_resolution_clock::now();
+        view->init();
+        view->draw();
+        while (view->getWindow().isOpen()) {
+            std::chrono::time_point<std::chrono::high_resolution_clock> finalTime =
+                    std::chrono::high_resolution_clock::now();
+            std::chrono::duration<float> elapsedTime = finalTime - initialTime;
+            elapsedTime.count();
+            initialTime = finalTime;
+
+            /// poll event
+            if(view->pollEvent() == Input::ZERO) return;
+            /// get keyboard input
+            Input in = view->getKeyboardInput(elapsedTime);
+
+            view->draw();
+
+        }
+
     }
 
     //////////////////////////////////////////////////////
