@@ -5,6 +5,7 @@
 #ifndef TURBOHIKER_VIEW_H
 #define TURBOHIKER_VIEW_H
 
+#include "../Model/Background.h"
 #include "../Model/MainCharacter.h"
 #include "../Singletons/Transformation.h"
 #include "SFML/Graphics.hpp"
@@ -126,20 +127,25 @@ public:
         /// SEE: https://www.sfml-dev.org/tutorials/2.1/graphics-sprite.php#the-white-square-problem
         /// TODO: Make assets more pliable
         // assign a background texture
+        backgroundTexture.setRepeated(true);
+
         if (!backgroundTexture.loadFromFile("../assets/highway.png")) {
             std::cout << "bg img not found" << std::endl;
         }
 
         // repeat background image until window is filled
-        //backgroundTexture.setRepeated(true);
 
+        backgroundImage1.setScale(1.0f, static_cast<float>(screenHeight)/static_cast<float>(backgroundTexture.getSize().y));
+        backgroundImage2.setScale(1.0f, static_cast<float>(screenHeight)/static_cast<float>(backgroundTexture.getSize().y));
+        backgroundImage3.setScale(1.0f, static_cast<float>(screenHeight)/static_cast<float>(backgroundTexture.getSize().y));
         backgroundImage1.setTexture(backgroundTexture);
         backgroundImage2.setTexture(backgroundTexture);
         backgroundImage3.setTexture(backgroundTexture);
 
-        backgroundImage1.setPosition(0, 2.f * backgroundTexture.getSize().y);
-        backgroundImage2.setPosition(0, backgroundTexture.getSize().y);
-        sf::Texture::bind(&backgroundTexture);
+        //std::cout << "bg1 pos: " << 2.f * backgroundTexture.getSize().y << "\n";
+        //std::cout << "bg2 pos: " << backgroundTexture.getSize().y << "\n";
+        //backgroundImage1.setPosition(0, 2.f * backgroundTexture.getSize().y);
+        //backgroundImage2.setPosition(0, backgroundTexture.getSize().y);
 
         // place main character at the beginning
         /// TODO: Make assets more pliable
@@ -158,12 +164,12 @@ public:
         std::tuple<float,float> modelPosition = trans->viewToModel(backgroundImage1.getGlobalBounds().width / 2, backgroundImage1.getGlobalBounds().height - carSprite.getSize().y );
         std::tuple<float,float> modelWidthHeight = trans->viewToModel(carSprite.getGlobalBounds().width, carSprite.getGlobalBounds().height );
 
-        std::cout << "Carsprite position is in Model:\n(" << std::get<0>(modelPosition) << ", " << std::get<1>(modelPosition) << std::endl;
-        std::cout << "Carsprite width and height in model:" << std::get<0>(modelWidthHeight) << ", " << std::get<1>(modelWidthHeight) << std::endl;
+        //std::cout << "Carsprite position is in Model:\n(" << std::get<0>(modelPosition) << ", " << std::get<1>(modelPosition) << std::endl;
+        //std::cout << "Carsprite width and height in model:" << std::get<0>(modelWidthHeight) << ", " << std::get<1>(modelWidthHeight) << std::endl;
+//
+        //std::cout << "Carsprite width and height in veiw:" << carSprite.getGlobalBounds().height << " " <<  carSprite.getGlobalBounds().width << std::endl;
 
-        std::cout << "Carsprite width and height in veiw:" << carSprite.getGlobalBounds().height << " " <<  carSprite.getGlobalBounds().width << std::endl;
-
-        std::cout << "Carsprite position is:\n(" << backgroundImage1.getGlobalBounds().width / 2 << ", " << backgroundImage1.getGlobalBounds().height - carSprite.getSize().y << std::endl;
+        //std::cout << "Carsprite position is:\n(" << backgroundImage1.getGlobalBounds().width / 2 << ", " << backgroundImage1.getGlobalBounds().height - carSprite.getSize().y << std::endl;
         std::cout << "ScreenDimentions: (" << screenWidth << ", " << screenHeight << std::endl;
         /// todo:  WALL
         //std::vector<sf::RectangleShape> walls;
@@ -221,19 +227,18 @@ public:
         playerMove = {0.f, 0.f};
         backgroundMove = {0.f, 0.f};
 
-
+/*
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             sf::Vector2i p = sf::Mouse::getPosition();
             std:: cout << p.x << ", " << p.y << std::endl;
         }
+        */
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            std::cout << "Going Right" << std::endl;
             playerMove.x += speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
             //controller->moveRight(elapsedTime.count());
             return Input::RIGHT;
 
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            std::cout << "Going Left" << std::endl;
             playerMove.x += -speed * elapsedTime.count(); // clock.getElapsedTime().asSeconds();
             //controller->moveLeft(elapsedTime.count());
             return Input::LEFT;
@@ -252,14 +257,32 @@ public:
             return Input::DOWN;
 
         }
+        return Input::ONE;
     }
 
-    void draw2(const std::shared_ptr<MainCharacter>& mc){
+    void draw2(const std::shared_ptr<MainCharacter>& mc, const std::vector<std::shared_ptr<Background>>& backgrounds){
 
-        std::tuple<float, float> viewCoords = singleton::Transformation::getInstance()->modelToView(mc->getCoordinates());
+        std::tuple<float, float> carCoords = singleton::Transformation::getInstance()->modelToView(mc->getGlobalBounds());
         view.setCenter(position); // center camera on position
-        carSprite.setPosition(std::get<0>(viewCoords), std::get<1>(viewCoords));
-        window.setView(view);
+        carSprite.setPosition(std::get<0>(carCoords), std::get<1>(carCoords));
+
+        std::tuple<float, float> bg1 = singleton::Transformation::getInstance()->modelToView(backgrounds[0]->getGlobalBounds());
+        std::tuple<float, float> bg2 = singleton::Transformation::getInstance()->modelToView(backgrounds[1]->getGlobalBounds());
+        std::tuple<float, float> bg3 = singleton::Transformation::getInstance()->modelToView(backgrounds[2]->getGlobalBounds());
+        backgroundImage1.setPosition(std::get<0>(bg1), std::get<1>(bg1));
+        backgroundImage2.setPosition(std::get<0>(bg2), std::get<1>(bg2));
+        backgroundImage3.setPosition(std::get<0>(bg3), std::get<1>(bg3));
+
+        std::cout << "Car" << std::get<0>(carCoords) << " " << std::get<1>(carCoords) << std::endl;
+        std::cout << "BG 1: "<< std::get<1>(bg1) << std::endl;
+        std::cout << "BG 2: "<< std::get<1>(bg2) << std::endl;
+        std::cout << "BG 3: "<< std::get<1>(bg3) << "\n\n\n"<<  std::endl;
+
+        //window.setView(view);
+
+        window.draw(backgroundImage1);
+        window.draw(backgroundImage2);
+        window.draw(backgroundImage3);
         window.draw(carSprite);
 
         /*
@@ -357,9 +380,10 @@ public:
         backgroundImage2.move(backgroundMove);
         backgroundImage3.move(backgroundMove);
         carSprite.move(playerMove);
-        window.draw(backgroundImage3);
+        //window.draw(backgroundImage3);
+        std::cout << "bgpos: " << backgroundImage1.getPosition().y << std::endl; ;
         window.draw(backgroundImage1);
-        window.draw(backgroundImage2);
+        //window.draw(backgroundImage2);
 
         /// Window collision control
         /// left collision

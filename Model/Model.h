@@ -14,11 +14,11 @@
 class Model {
     int lanes{4};
     float fps;
-
 private:
     std::shared_ptr<EntityMaker> entityFactory;
     std::shared_ptr<MainCharacter> mainCharacter;
     std::vector<std::shared_ptr<Enemy>> enemies;
+    std::vector<std::shared_ptr<Background>> backgrounds;
 
     Move playerMove{};
     Move backgroundMove{};
@@ -31,18 +31,23 @@ public:
     void setBackgroundMoveY(const float &moveY);
 
 public:
-    explicit Model(float frameLimit):fps(frameLimit){
+    Model(float frameLimit):fps(frameLimit)
+    {
         entityFactory = std::make_shared<EntityMaker>();
 
         enemies = std::move(generateEnemies());
         mainCharacter = generateMC();
+        backgrounds = generateBackground();
     }
 
     float getFps() const;
 
 
-    std::shared_ptr<MainCharacter> getMainCharacter(){
+    std::shared_ptr<MainCharacter> getMainCharacter() const{
         return mainCharacter;
+    }
+    std::vector<std::shared_ptr<Background>> getBackgrounds() const{
+        return backgrounds;
     }
     std::vector<std::shared_ptr<Enemy>> getEnemies(){
         if(enemies.empty()){
@@ -52,9 +57,12 @@ public:
     }
 
     std::shared_ptr<MainCharacter> generateMC(){
-            return entityFactory->generateMainCharacter();
+        return entityFactory->generateMainCharacter(lanes);
     };
 
+    std::vector<std::shared_ptr<Background>> generateBackground(){
+        return entityFactory->generateBackground();
+    }
     /**
      * Generates enemies of random types spawning them at the top part of the screen
      * @return A vector of generated enemies
@@ -69,21 +77,9 @@ public:
         return enemies;
     }
 
-    void moveRight(const float elapsedTime){
-        playerMove.x += mainCharacter->getMovementSpeed()*elapsedTime;
-        //std::shared_ptr<Coordinates> newCoords = model->getMainCharacter()->moveRight(elapsedTime*10.f);
-        //std::shared_ptr<singleton::Transformation> trans = singleton::Transformation::getInstance();
-        //std::tuple<float,float> x = trans->modelToView(newCoords);
-
-    }
-    void moveLeft(const float elapsedTime){
-        playerMove.x -= mainCharacter->getMovementSpeed()*elapsedTime;
-
-        //float move = model->getMainCharacter()->getMovementSpeed()/model->getFps();
-        //if(model->getMainCharacter()->getCoordinates()->lowLeft.first + move >= 0){
-        //    model->getMainCharacter()->move(-move, 0);
-        //}
-        //std::cout << "Left" << std::endl;
+    void resetMoves(){
+        playerMove = {};
+        backgroundMove = {};
     }
 
     /**
@@ -105,6 +101,12 @@ public:
         mainCharacter->move(playerMove.x, playerMove.y);
     }
 
+    void moveBackground(){
+        for(const auto& bg: backgrounds){
+            bg->move(backgroundMove.x, backgroundMove.y);
+        }
+    }
+
     void collisionControl(){
 
         for(const std::shared_ptr<Enemy>& wall: enemies){
@@ -112,10 +114,10 @@ public:
             std::shared_ptr<GlobalBounds> wallBounds = wall->getGlobalBounds();
 
             nextPosition = playerBounds;
-            nextPosition->left += (playerMove.x - backgroundMove.x) * 10;
-            nextPosition->top += (playerMove.y - backgroundMove.y) * 10;
+            nextPosition->position.x += (playerMove.x - backgroundMove.x) * 10;
+            nextPosition->position.y += (playerMove.y - backgroundMove.y) * 10;
 
-            if(wallBounds->intersects<float>(nextPosition)){
+            if(wall->intersects<float>(nextPosition)){
                 std::cout << "Collision" << std::endl;
                 /// possible solution1: set playerMove x and y to 0
                 /// possible solution2:  first construct left and right collision,
@@ -128,39 +130,44 @@ public:
                 // |________|        |________|
 
                 // Player Bottom collision
-                if (playerBounds->top < wallBounds->top &&
-                playerBounds->top + playerBounds->dimentions.height < wallBounds->top + wallBounds->dimentions.height &&
-                playerBounds->left < wallBounds->left + wallBounds->dimentions.width &&
-                playerBounds->left + playerBounds->dimentions.width > wallBounds->left) {
+                float playerTop = playerBounds->position.y + playerBounds->dimentions.height/2;
+                float wallTop = wallBounds->position.y + wallBounds->dimentions.height/2;
+                float playerLeft = playerBounds->position.x - playerBounds->dimentions.width/2;
+                float wallLeft = wallBounds->position.x - wallBounds->dimentions.width/2;
+
+                if (playerTop < wallTop &&
+                playerTop + playerBounds->dimentions.height < wallTop + wallBounds->dimentions.height &&
+                playerLeft < wallLeft + wallBounds->dimentions.width &&
+                playerLeft + playerBounds->dimentions.width > wallLeft) {
                     playerMove.y = 0.f;
                     // bottom of player set to top of wall
-                    mainCharacter->setPosition(playerBounds->left, wallBounds->top - playerBounds->dimentions.height);
+                    mainCharacter->setPosition(playerLeft, wallTop - playerBounds->dimentions.height);
                 }
                 // Player Top collision
-                else if (playerBounds->top > wallBounds->top &&
-                playerBounds->top + playerBounds->dimentions.height > wallBounds->top + wallBounds->dimentions.height &&
-                playerBounds->left < wallBounds->left + wallBounds->dimentions.width &&
-                playerBounds->left + playerBounds->dimentions.width > wallBounds->left) {
+                else if (playerTop > wallTop &&
+                playerTop + playerBounds->dimentions.height > wallTop + wallBounds->dimentions.height &&
+                playerLeft < wallLeft + wallBounds->dimentions.width &&
+                playerLeft + playerBounds->dimentions.width > wallLeft) {
                     playerMove.y = 0.f;
                     // top of player set to bottom of wall                 plus cause y goes down
-                    mainCharacter->setPosition(playerBounds->left, wallBounds->top + wallBounds->dimentions.height);
+                    mainCharacter->setPosition(playerLeft, wallTop + wallBounds->dimentions.height);
                 }
 
                 // Player right collision
-                else if (playerBounds->left < wallBounds->left &&
-                playerBounds->left + playerBounds->dimentions.width < wallBounds->left + wallBounds->dimentions.width &&
-                playerBounds->top < wallBounds->top + wallBounds->dimentions.height &&
-                playerBounds->top + playerBounds->dimentions.height > wallBounds->top) {
+                else if (playerLeft < wallLeft &&
+                playerLeft + playerBounds->dimentions.width < wallLeft + wallBounds->dimentions.width &&
+                playerTop < wallTop + wallBounds->dimentions.height &&
+                playerTop + playerBounds->dimentions.height > wallTop) {
                     playerMove.x = 0.f;
-                    mainCharacter->setPosition(wallBounds->left - playerBounds->dimentions.width, playerBounds->top);
+                    mainCharacter->setPosition(wallLeft - playerBounds->dimentions.width, playerTop);
                 }
                 // Player Left collision
-                else if (playerBounds->left > wallBounds->left &&
-                playerBounds->left + playerBounds->dimentions.width > wallBounds->left + wallBounds->dimentions.width &&
-                playerBounds->top < wallBounds->top + wallBounds->dimentions.height &&
-                playerBounds->top + playerBounds->dimentions.height > wallBounds->top) {
+                else if (playerLeft > wallLeft &&
+                playerLeft + playerBounds->dimentions.width > wallLeft + wallBounds->dimentions.width &&
+                playerTop < wallTop + wallBounds->dimentions.height &&
+                playerTop + playerBounds->dimentions.height > wallTop) {
                     playerMove.x = 0.f;
-                    mainCharacter->setPosition(wallBounds->left + wallBounds->dimentions.width, playerBounds->top);
+                    mainCharacter->setPosition(wallLeft + wallBounds->dimentions.width, playerTop);
                 }
             }
         }

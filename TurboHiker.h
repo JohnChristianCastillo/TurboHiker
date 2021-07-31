@@ -15,16 +15,14 @@ class TurboHiker {
     std::shared_ptr<Controller> controller;
 
 public:
-    explicit TurboHiker(float fps):model{std::make_shared<Model>(Model(fps))}
+    explicit TurboHiker(float fps)
     {
-
-
-
         // Initialize transformation instance
         float screenHeight = float(sf::VideoMode::getDesktopMode().height) * 0.75f;
         float screenWidth = screenHeight/8*6;
         std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::init(Dimentions{screenWidth, screenHeight});
 
+        model = std::make_shared<Model>(fps);
         view = std::make_shared<View>(fps);
         controller = std::make_shared<Controller>(model, view);
 

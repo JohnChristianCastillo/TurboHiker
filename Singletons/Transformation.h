@@ -42,13 +42,13 @@ public:
         * @return
         */
 
-    std::tuple<float, float> modelToView(const std::shared_ptr<Coordinates>& coords) const
+    std::tuple<float, float> modelToView(const std::shared_ptr<GlobalBounds>& globalBounds) const
     {
         //formula: newCoord = (x-csOrigMin)/(csOrigMax-csOrigMin) * (csDestMax-csDestMin) + csDestMin
         // calculating translated X
         //
-        float newX = (coords->lowLeft.first/6)*screenDimentions.width;
-        float newY = (coords->upRight.second/8)*screenDimentions.height;
+        float newX = (globalBounds->position.x/6)*screenDimentions.width;
+        float newY = (globalBounds->position.y/8)*screenDimentions.height;
         return std::make_tuple(newX, newY);
     }
 

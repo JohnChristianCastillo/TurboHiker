@@ -88,8 +88,9 @@ public:
         std::chrono::time_point<std::chrono::high_resolution_clock> initialTime =
                 std::chrono::high_resolution_clock::now();
         view->init();
-        view->draw();
-        std::tuple<float, float> viewCoords = singleton::Transformation::getInstance()->modelToView(model->getMainCharacter()->getCoordinates());
+        view->draw2(model->getMainCharacter(), model->getBackgrounds());
+        //view->draw();
+        std::tuple<float, float> viewCoords = singleton::Transformation::getInstance()->modelToView(model->getMainCharacter()->getGlobalBounds());
         std::cout << "MC position:" << std::get<0>(viewCoords) << ", " << std::get<1>(viewCoords) << std::endl;
         while (view->getWindow().isOpen()) {
             std::chrono::time_point<std::chrono::high_resolution_clock> finalTime =
@@ -105,33 +106,30 @@ public:
             bool moved = false;
             std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
 
-            switch(in){
-                case Input::UP:
-                    model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime.count());
-                    moved = true;
-
-
-                case Input::LEFT:
-                    model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed()*elapsedTime.count());
-                    moved = true;
-
-                case Input::RIGHT:
-                    model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime.count());
-                    moved = true;
-
-                case DOWN:
-                    break;
-                case ZERO:
-                    break;
-                case ONE:
-                    break;
+            if(in == Input::UP){
+                model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime.count());
+                moved = true;
+            }
+            else if(in == Input::DOWN){
+                model->setBackgroundMoveY(model->getBackgroundMove().y - mc->getMovementSpeed()*elapsedTime.count());
+                moved = true;
+            }
+            else if(in == Input::LEFT){
+                model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed()*elapsedTime.count());
+                moved = true;
+            }
+            else if(in == Input::RIGHT){
+                model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime.count());
+                moved = true;
             }
                 // if the player is moved then we want to first check for collisions
             if(moved){
 
-                model->collisionControl();
+                //model->collisionControl();
                 model->moveMC();
-                view->draw2(mc);
+                model->moveBackground();
+                view->draw2(mc, model->getBackgrounds());
+                model->resetMoves();
                 //view->draw();
 
             }

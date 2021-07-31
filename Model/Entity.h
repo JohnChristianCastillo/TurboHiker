@@ -9,33 +9,24 @@
 
 class Entity {
 protected:
-    std::shared_ptr<Coordinates> coordinates{};
+    std::shared_ptr<GlobalBounds> globalBounds;
     float movementSpeed; //used to determine the entities velocity
 
 public:
     virtual EntityTypes getType() const = 0;
-    virtual float getMovementSpeed() const = 0;
-    std::shared_ptr<Coordinates> getCoordinates() const{
-        return coordinates;
-    }
+    float getMovementSpeed() const{
+            return movementSpeed;
+    };
     std::shared_ptr<GlobalBounds> getGlobalBounds() const{
-        float width = coordinates->upRight.first - coordinates->lowLeft.first;
-        float height = coordinates->upRight.second - coordinates->lowLeft.second;
-
-        return std::make_shared<GlobalBounds>(coordinates->lowLeft.first, coordinates->upRight.second, Dimentions(width, height));
+        return globalBounds;
     }
     void setPosition(float x, float y){
-        float width = coordinates->upRight.first - coordinates->lowLeft.first;
-        float height = coordinates->upRight.second - coordinates->lowLeft.second;
-        std::pair<float, float> lowLeft = std::make_pair(x, y-height);
-        std::pair<float, float> upRight = std::make_pair(x+width, y);
-
-        coordinates = std::make_shared<Coordinates>(lowLeft, upRight);
+        globalBounds->position.x = x;
+        globalBounds->position.y = y;
     }
     void move(float offsetX, float offsetY){
-        this->setPosition(this->coordinates->lowLeft.first + offsetX,
-                          this->coordinates->lowLeft.second + offsetY);
-    }
+        globalBounds->position.x += offsetX;
+        globalBounds->position.y += offsetY;   }
     /*
     void move(float x, float y){
         coordinates->lowLeft.first += x;
@@ -43,6 +34,40 @@ public:
         coordinates->upRight.first += x;
         coordinates->upRight.second += y;
     };*/
+
+    /**
+     * Keep in mind that we are working with rectangle objects
+     * @param nextPosition
+     * @return
+     */
+    template<typename type>
+    bool intersects(const std::shared_ptr<GlobalBounds>& nextPosition) const{
+        type left = globalBounds->position.x - globalBounds->dimentions.width/2;
+        type top = globalBounds->position.y + globalBounds->dimentions.height/2;
+
+        type nextLeft = nextPosition->position.x - nextPosition->dimentions.width/2;
+        type nextTop = nextPosition->position.y + nextPosition->dimentions.height/2;
+
+        // Compute the min and max x and y of the the entity we're in
+        type thisMinX = std::min(left, static_cast<type>(left + globalBounds->dimentions.width));
+        type thisMaxX = std::max(left, static_cast<type>(left + globalBounds->dimentions.width));
+        type thisMinY = std::min(top, static_cast<type>(top + globalBounds->dimentions.height));
+        type thisMaxY = std::min(top, static_cast<type>(top + globalBounds->dimentions.height));
+
+        // Compute the min and max x and y of the the next position we're in
+        type r2MinX = std::min(nextLeft, static_cast<type>(nextLeft + nextPosition->dimentions.width));
+        type r2MaxX = std::max(nextLeft, static_cast<type>(nextLeft + nextPosition->dimentions.width));
+        type r2MinY = std::min(nextTop, static_cast<type>(nextTop + nextPosition->dimentions.height));
+        type r2MaxY = std::max(nextTop, static_cast<type>(nextTop + nextPosition->dimentions.height));
+
+        // Compute the intersection boundaries
+        type interLeft   = std::max(thisMinX, r2MinX);
+        type interTop    = std::max(thisMinY, r2MinY);
+        type interRight  = std::min(thisMaxX, r2MaxX);
+        type interBottom = std::min(thisMaxY, r2MaxY);
+
+        return (interLeft < interRight) && (interTop < interBottom);
+    }
 };
 
 

@@ -6,6 +6,7 @@
 #define TURBOHIKER_ENTITYMAKER_H
 
 #include "../Singletons/Random.h"
+#include "Background.h"
 #include "Enemy.h"
 #include "MainCharacter.h"
 #include "StaticHiker.h"
@@ -14,9 +15,9 @@
 
 class EntityMaker {
 public:
-    std::shared_ptr<MainCharacter> generateMainCharacter(){
+    std::shared_ptr<MainCharacter> generateMainCharacter(int lanes){
 
-        return std::make_shared<MainCharacter>(MainCharacter{});
+        return std::make_shared<MainCharacter>(MainCharacter{lanes});
     }
 
     std::vector<std::shared_ptr<Enemy>> generateEnemies(){
@@ -37,6 +38,12 @@ public:
             }
         }
         return returnEnemies;
+    }
+
+    std::vector<std::shared_ptr<Background>> generateBackground(){
+        return {std::make_shared<Background>(0),
+                std::make_shared<Background>(-1),
+                std::make_shared<Background>(-2)};
     }
 
 };

@@ -31,7 +31,7 @@ add_executable( TurboHiker
                 Singletons/Random.h
                 Singletons/Transformation.cpp
                 Singletons/Transformation.h
-        Discarded.h)
+        Discarded.h Model/Background.cpp Model/Background.h)
 
 #[[ COMMAND FOR WORKING WITH WINDOWS
 

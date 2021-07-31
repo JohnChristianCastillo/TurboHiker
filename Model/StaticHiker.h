@@ -14,9 +14,7 @@ public:
      * @param horizontalOffset
      */
     explicit StaticHiker(const int& horizontalOffset);
-    float getMovementSpeed() const override{
-        return movementSpeed;
-    }
+
     EntityTypes getType() const override { return EntityTypes::staticHiker; }
 };
 

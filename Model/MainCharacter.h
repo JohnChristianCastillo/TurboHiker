@@ -24,12 +24,9 @@ class MainCharacter: public Entity {
      *      |_____char_____|
      */
 public:
-     MainCharacter();
+     MainCharacter(int lanes);
      EntityTypes getType() const override{
          return EntityTypes::mainCharacter;
-     }
-     float getMovementSpeed() const override{
-         return movementSpeed;
      }
 
 
