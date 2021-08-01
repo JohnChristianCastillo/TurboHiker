@@ -82,42 +82,73 @@ public:
         backgroundMove = {};
     }
 
-    /**
-     * loop over all the enemy entities and move them
-     * at the same time, clear undisplayed enemies from the vector
-     */
-    void moveEnemies(const float elapsedTime){
-        //for(int i = model->getEnemies().size()-1; i >= 0; --i){
-        //    model->getEnemies().at(i)->move(0, model->getMainCharacter()->getMovementSpeed()/model->getFps());
-        //    if(model->getEnemies().at(i)->getCoordinates()->lowLeft.second > 8.f){
-//
-        //        model->getEnemies().erase(model->getEnemies().begin()+i);
-        //    }
-        //}
-        backgroundMove.y += 10*elapsedTime;
-    }
-
     void moveMC(){
         mainCharacter->move(playerMove.x, playerMove.y);
     }
 
     void moveBackground(){
+        Position bg1Pos = backgrounds[0]->getGlobalBounds()->position;
+        Position bg2Pos = backgrounds[1]->getGlobalBounds()->position;
+        Position mcPos = mainCharacter->getGlobalBounds()->position;
+        if (bg1Pos.y > mcPos.y) {
+            backgrounds[2]->setPosition(bg1Pos.x, bg1Pos.y);
+            backgrounds[0]->setPosition(bg1Pos.x,bg1Pos.y - backgrounds[0]->getGlobalBounds()->dimentions.height * 2);
+        } else if (bg2Pos.y > mcPos.y) {
+            backgrounds[2]->setPosition(bg2Pos.x, bg2Pos.y);
+            backgrounds[1]->setPosition(bg2Pos.x,bg2Pos.y - backgrounds[1]->getGlobalBounds()->dimentions.height * 2);
+
+        }
         for(const auto& bg: backgrounds){
             bg->move(backgroundMove.x, backgroundMove.y);
         }
     }
+    void moveEnemies(){
+        // generate new enemies if last generated enemy is past half the screen;
+        if(enemies.back()->getGlobalBounds()->position.y >= 4.f){
+            generateEnemies();
+        }
+        for(int i = enemies.size()-1; i>=0; --i){
+            std::shared_ptr<Enemy> enemy = enemies[i];
+            if(enemy->isCollided()) continue;
+            else if(enemy->getGlobalBounds()->position.y>=9.f){
+                //remove enemies outside of scope
+                enemies.erase(enemies.begin()+i);
+            }
+            else{
+                enemy->move(backgroundMove.x, backgroundMove.y);
+            }
+        }
+    }
+
+    void screenCollisionControl(){
+        Position mcPos = mainCharacter->getGlobalBounds()->position;
+        Dimentions mcDim = mainCharacter->getGlobalBounds()->dimentions;
+        /// Window collision control
+        /// left collision
+        if (mcPos.x - mcDim.width / 2 < 0) {
+            mainCharacter->setPosition(mcDim.width / 2, mainCharacter->getGlobalBounds()->position.y);
+        }
+        /// right collision
+        if (mcPos.x + mcDim.width > 6.f) {
+            mainCharacter->setPosition(6.f - mcDim.width, mcPos.y);
+        }
+    }
 
     void collisionControl(){
+        int counter = 1;
 
         for(const std::shared_ptr<Enemy>& wall: enemies){
             std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
             std::shared_ptr<GlobalBounds> wallBounds = wall->getGlobalBounds();
 
-            nextPosition = playerBounds;
+            nextPosition = std::make_shared<GlobalBounds>(*playerBounds);
             nextPosition->position.x += (playerMove.x - backgroundMove.x) * 10;
             nextPosition->position.y += (playerMove.y - backgroundMove.y) * 10;
 
+            std::cout << "wall" << counter << ": " << wallBounds->position.x <<" "<< wallBounds->position.y << std::endl;
+            std::cout << "player: " << nextPosition->position.x <<" "<< nextPosition->position.y << std::endl;
             if(wall->intersects<float>(nextPosition)){
+
                 std::cout << "Collision" << std::endl;
                 /// possible solution1: set playerMove x and y to 0
                 /// possible solution2:  first construct left and right collision,

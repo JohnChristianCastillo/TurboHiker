@@ -3,3 +3,9 @@
 //
 
 #include "Enemy.h"
+bool Enemy::isCollided() const {
+    return collided;
+}
+void Enemy::setCollided(bool collided) {
+    Enemy::collided = collided;
+}

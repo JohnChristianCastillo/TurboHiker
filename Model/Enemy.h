@@ -8,9 +8,15 @@
 #include "Entity.h"
 
 class Enemy: public Entity{
-    /**
-     * This is a pure virtual class
-     */
+protected:
+    bool collided{false};
+
+public:
+    bool isCollided() const;
+    void setCollided(bool collided);
+
+public:
+
 
 };
 

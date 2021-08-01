@@ -14,7 +14,6 @@ public:
      * @param horizontalOffset
      */
     explicit StaticHiker(const int& horizontalOffset);
-
     EntityTypes getType() const override { return EntityTypes::staticHiker; }
 };
 

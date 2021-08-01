@@ -9,10 +9,14 @@
 
 class Entity {
 protected:
+    int skin{-1}; //texture used
     std::shared_ptr<GlobalBounds> globalBounds;
     float movementSpeed; //used to determine the entities velocity
 
 public:
+    int getSkin();
+    void setSkin(int skin);
+
     virtual EntityTypes getType() const = 0;
     float getMovementSpeed() const{
             return movementSpeed;
@@ -66,7 +70,8 @@ public:
         type interRight  = std::min(thisMaxX, r2MaxX);
         type interBottom = std::min(thisMaxY, r2MaxY);
 
-        return (interLeft < interRight) && (interTop < interBottom);
+        bool b =(interLeft < interRight) && (interTop < interBottom);
+        return b;
     }
 };
 

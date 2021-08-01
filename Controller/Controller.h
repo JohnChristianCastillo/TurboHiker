@@ -22,73 +22,12 @@ public:
     Controller(std::shared_ptr<Model> model, std::shared_ptr<View> view):
         model(std::move(model)), view(std::move(view)){};
 
-    //////////////////////////////////////////////////////
-    /// This section contains MODEL REQUEST FUNCTIONS ///
-    ////////////////////////////////////////////////////
-    /**
-     * @return a const copy of the main character
-     */
-    std::shared_ptr<MainCharacter> getMainCharacter(){
-        return model->getMainCharacter();
-    }
-
-    std::vector<std::shared_ptr<Enemy>> getEnemies(){
-        return model->getEnemies();
-    }
-
-    void moveRight(const float elapsedTime){
-        //playerMove.x += model->getMainCharacter()->getMovementSpeed()*elapsedTime;
-        //std::shared_ptr<Coordinates> newCoords = model->getMainCharacter()->moveRight(elapsedTime*10.f);
-        //std::shared_ptr<singleton::Transformation> trans = singleton::Transformation::getInstance();
-        //std::tuple<float,float> x = trans->modelToView(newCoords);
-
-    }
-    void moveLeft(const float elapsedTime){
-        //playerMove.x -= model->getMainCharacter()->getMovementSpeed()*elapsedTime;
-
-        //float move = model->getMainCharacter()->getMovementSpeed()/model->getFps();
-        //if(model->getMainCharacter()->getCoordinates()->lowLeft.first + move >= 0){
-        //    model->getMainCharacter()->move(-move, 0);
-        //}
-        //std::cout << "Left" << std::endl;
-    }
-
-    /**
-     * loop over all the enemy entities and move them
-     * at the same time, clear undisplayed enemies from the vector
-     */
-    void moveEnemies(const float elapsedTime){
-        //for(int i = model->getEnemies().size()-1; i >= 0; --i){
-        //    model->getEnemies().at(i)->move(0, model->getMainCharacter()->getMovementSpeed()/model->getFps());
-        //    if(model->getEnemies().at(i)->getCoordinates()->lowLeft.second > 8.f){
-//
-        //        model->getEnemies().erase(model->getEnemies().begin()+i);
-        //    }
-        //}
-        //backgroundMove.y += 10*elapsedTime;
-    }
-
-    /*
-    //Input input = view->run();
-    //std::tuple<Input, float> input = view->run();
-    view->init();
-    std::tuple<Input,float> input;
-    do{
-        //while(std::get<0>(input) != Input::ZERO){
-        //while(input != Input::ZERO){
-        view->draw();
-        input = view->mainloop();
-        /*
-
-    while(std::get<0>(input) != Input::ZERO);
-     */
 
     void run(){
         /// CLOCK
         std::chrono::time_point<std::chrono::high_resolution_clock> initialTime =
                 std::chrono::high_resolution_clock::now();
-        view->init();
-        view->draw2(model->getMainCharacter(), model->getBackgrounds());
+        view->draw2(model->getMainCharacter(), model->getBackgrounds(), model->getEnemies());
         //view->draw();
         std::tuple<float, float> viewCoords = singleton::Transformation::getInstance()->modelToView(model->getMainCharacter()->getGlobalBounds());
         std::cout << "MC position:" << std::get<0>(viewCoords) << ", " << std::get<1>(viewCoords) << std::endl;
@@ -128,7 +67,10 @@ public:
                 //model->collisionControl();
                 model->moveMC();
                 model->moveBackground();
-                view->draw2(mc, model->getBackgrounds());
+                model->moveEnemies();
+                model->screenCollisionControl();
+                model->collisionControl();
+                view->draw2(mc, model->getBackgrounds(), model->getEnemies());
                 model->resetMoves();
                 //view->draw();
 

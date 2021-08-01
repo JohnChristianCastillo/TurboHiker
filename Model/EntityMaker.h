@@ -21,6 +21,7 @@ public:
     }
 
     std::vector<std::shared_ptr<Enemy>> generateEnemies(){
+        // assigns to which lane the enemy will go to:
         std::map<int,int> randomOffsetMapping{};
         std::shared_ptr<Random> random = Random::getInstance();
         int enemiesToGenerate = random->intInInterval(0,4);
