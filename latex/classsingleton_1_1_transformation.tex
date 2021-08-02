@@ -1,0 +1,49 @@
+\hypertarget{classsingleton_1_1_transformation}{}\section{singleton\+:\+:Transformation Class Reference}
+\label{classsingleton_1_1_transformation}\index{singleton\+::\+Transformation@{singleton\+::\+Transformation}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsingleton_1_1_transformation_a45a811840e91388f25054019c28a27cd}\label{classsingleton_1_1_transformation_a45a811840e91388f25054019c28a27cd}} 
+const \hyperlink{struct_dimentions}{Dimentions} \& {\bfseries get\+Screen\+Dimentions} ()
+\item 
+std\+::tuple$<$ float, float $>$ \hyperlink{classsingleton_1_1_transformation_a4db8bb77746a79641a057c19b30785c6}{model\+To\+View} (const std\+::shared\+\_\+ptr$<$ \hyperlink{struct_global_bounds}{Global\+Bounds} $>$ \&global\+Bounds) const
+\item 
+\mbox{\Hypertarget{classsingleton_1_1_transformation_afc296e4278c48d0ab5345192e189669e}\label{classsingleton_1_1_transformation_afc296e4278c48d0ab5345192e189669e}} 
+std\+::tuple$<$ float, float $>$ {\bfseries view\+To\+Model} (float x, float y) const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsingleton_1_1_transformation_ab4f0dbbfe1889d5c9f1b70131ba640d5}\label{classsingleton_1_1_transformation_ab4f0dbbfe1889d5c9f1b70131ba640d5}} 
+static std\+::shared\+\_\+ptr$<$ \hyperlink{classsingleton_1_1_transformation}{Transformation} $>$ {\bfseries get\+Instance} ()
+\item 
+\mbox{\Hypertarget{classsingleton_1_1_transformation_acef1b7fefa4473eaa785eb42b8ae6066}\label{classsingleton_1_1_transformation_acef1b7fefa4473eaa785eb42b8ae6066}} 
+static std\+::shared\+\_\+ptr$<$ \hyperlink{classsingleton_1_1_transformation}{Transformation} $>$ {\bfseries init} (\hyperlink{struct_dimentions}{Dimentions} dimentions)
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classsingleton_1_1_transformation_a4db8bb77746a79641a057c19b30785c6}\label{classsingleton_1_1_transformation_a4db8bb77746a79641a057c19b30785c6}} 
+\index{singleton\+::\+Transformation@{singleton\+::\+Transformation}!model\+To\+View@{model\+To\+View}}
+\index{model\+To\+View@{model\+To\+View}!singleton\+::\+Transformation@{singleton\+::\+Transformation}}
+\subsubsection{\texorpdfstring{model\+To\+View()}{modelToView()}}
+{\footnotesize\ttfamily std\+::tuple$<$float, float$>$ singleton\+::\+Transformation\+::model\+To\+View (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \hyperlink{struct_global_bounds}{Global\+Bounds} $>$ \&}]{global\+Bounds }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+converts the model\textquotesingle{}s (0,6) (0,8) coordinate system into the \hyperlink{class_view}{View}\textquotesingle{}s (0, screen\+Width) (0, screen\+Height) coordinate system 
+\begin{DoxyParams}{Parameters}
+{\em coords} & \\
+\hline
+{\em screen\+Width} & \\
+\hline
+{\em screen\+Height} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Singletons/Transformation.\+h\item 
+Singletons/Transformation.\+cpp\end{DoxyCompactItemize}

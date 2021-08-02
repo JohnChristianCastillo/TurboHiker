@@ -136,9 +136,16 @@ public:
     }
 
     void collisionControl(){
-        int counter = 1;
-        std::cout << "player: " << mainCharacter->getGlobalBounds()->position.x <<" "<< mainCharacter->getGlobalBounds()->position.y << std::endl;
-
+        for(int i = enemies.size()-1; i>=0; --i){
+            std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
+            nextPosition = std::make_shared<GlobalBounds>(*playerBounds);
+            nextPosition->position.x += (playerMove.x - backgroundMove.x);
+            nextPosition->position.y += (playerMove.y - backgroundMove.y);
+            if(enemies[i]->intersects<float>(nextPosition)){
+                enemies.erase(enemies.begin()+i);
+            }
+        }
+        /*
         for(const std::shared_ptr<Enemy>& wall: enemies){
             std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
             std::shared_ptr<GlobalBounds> wallBounds = wall->getGlobalBounds();
@@ -173,6 +180,7 @@ public:
                 playerLeft + playerBounds->dimentions.width > wallLeft) {
                     playerMove.y = 0.f;
                     // bottom of player set to top of wall
+                    //mainCharacter->setPosition(playerLeft, wallTop - playerBounds->dimentions.height);
                     mainCharacter->setPosition(playerLeft, wallTop - playerBounds->dimentions.height);
                 }
                 // Player Top collision
@@ -182,6 +190,7 @@ public:
                 playerLeft + playerBounds->dimentions.width > wallLeft) {
                     playerMove.y = 0.f;
                     // top of player set to bottom of wall                 plus cause y goes down
+                   // mainCharacter->setPosition(playerLeft, wallTop + wallBounds->dimentions.height);
                     mainCharacter->setPosition(playerLeft, wallTop + wallBounds->dimentions.height);
                 }
 
@@ -191,6 +200,7 @@ public:
                 playerTop < wallTop + wallBounds->dimentions.height &&
                 playerTop + playerBounds->dimentions.height > wallTop) {
                     playerMove.x = 0.f;
+                    //mainCharacter->setPosition(wallLeft - playerBounds->dimentions.width, playerTop);
                     mainCharacter->setPosition(wallLeft - playerBounds->dimentions.width, playerTop);
                 }
                 // Player Left collision
@@ -199,10 +209,11 @@ public:
                 playerTop < wallTop + wallBounds->dimentions.height &&
                 playerTop + playerBounds->dimentions.height > wallTop) {
                     playerMove.x = 0.f;
+                    //mainCharacter->setPosition(wallLeft + wallBounds->dimentions.width, playerTop);
                     mainCharacter->setPosition(wallLeft + wallBounds->dimentions.width, playerTop);
                 }
             }
-        }
+        }*/
     }
 
 

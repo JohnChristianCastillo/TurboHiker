@@ -1,0 +1,61 @@
+\hypertarget{class_view}{}\section{View Class Reference}
+\label{class_view}\index{View@{View}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_view_aa8b502dd59a99ba0ec5c961b099cd443}\label{class_view_aa8b502dd59a99ba0ec5c961b099cd443}} 
+const sf\+::\+Render\+Window \& {\bfseries get\+Window} () const
+\item 
+\hyperlink{class_view_a11dfb2fbc3e20eb48c96b8e8a20687cb}{View} (const float fps)
+\item 
+\mbox{\Hypertarget{class_view_a810ac2903e9bdbdcd3d92b677fc0e7e0}\label{class_view_a810ac2903e9bdbdcd3d92b677fc0e7e0}} 
+void {\bfseries initialize\+Window} (const float fps)
+\item 
+\mbox{\Hypertarget{class_view_af3b02b172b87fc315a98ce00f86074d4}\label{class_view_af3b02b172b87fc315a98ce00f86074d4}} 
+void {\bfseries load\+Textures} ()
+\item 
+\mbox{\Hypertarget{class_view_ab94417a6b73c205cece8432b7ab4458a}\label{class_view_ab94417a6b73c205cece8432b7ab4458a}} 
+void {\bfseries assign\+B\+Gand\+M\+C\+Textures} ()
+\item 
+\mbox{\Hypertarget{class_view_a0a285a78bd5d06cbef88dcbd0ad9a022}\label{class_view_a0a285a78bd5d06cbef88dcbd0ad9a022}} 
+Input {\bfseries poll\+Event} ()
+\item 
+\mbox{\Hypertarget{class_view_ae8d33c17a56173d3ef8f6ab47a1568d7}\label{class_view_ae8d33c17a56173d3ef8f6ab47a1568d7}} 
+Input {\bfseries get\+Keyboard\+Input} ()
+\item 
+\mbox{\Hypertarget{class_view_a30af1accdfddafd1318d301092934d67}\label{class_view_a30af1accdfddafd1318d301092934d67}} 
+void {\bfseries draw2} (const std\+::shared\+\_\+ptr$<$ \hyperlink{class_main_character}{Main\+Character} $>$ \&mc, const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_background}{Background} $>$$>$ \&backgrounds, const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_enemy}{Enemy} $>$$>$ \&enemies)
+\item 
+void \hyperlink{class_view_ad26b8f3c6e07b3a8292ad508c5d081b5}{draw} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_view_a11dfb2fbc3e20eb48c96b8e8a20687cb}\label{class_view_a11dfb2fbc3e20eb48c96b8e8a20687cb}} 
+\index{View@{View}!View@{View}}
+\index{View@{View}!View@{View}}
+\subsubsection{\texorpdfstring{View()}{View()}}
+{\footnotesize\ttfamily View\+::\+View (\begin{DoxyParamCaption}\item[{const float}]{fps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initialize the window our user will interact with 
+\begin{DoxyParams}{Parameters}
+{\em fps} & Frame limit set by user \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_view_ad26b8f3c6e07b3a8292ad508c5d081b5}\label{class_view_ad26b8f3c6e07b3a8292ad508c5d081b5}} 
+\index{View@{View}!draw@{draw}}
+\index{draw@{draw}!View@{View}}
+\subsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void View\+::draw (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Box collisions
+
+scroll when player hits center of screen
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+View/View.\+h\item 
+View/View.\+cpp\end{DoxyCompactItemize}

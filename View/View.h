@@ -161,6 +161,7 @@ public:
     void draw2(const std::shared_ptr<MainCharacter>& mc, const std::vector<std::shared_ptr<Background>>& backgrounds, const std::vector<std::shared_ptr<Enemy>>& enemies){
         std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::getInstance();
         std::tuple<float, float> carCoords = transformation->modelToView(mc->getGlobalBounds());
+        position.y = std::get<1>(carCoords);
         view.setCenter(position); // center camera on position
         carSprite.setPosition(std::get<0>(carCoords), std::get<1>(carCoords));
 

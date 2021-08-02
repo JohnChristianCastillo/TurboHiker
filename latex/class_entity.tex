@@ -1,0 +1,67 @@
+\hypertarget{class_entity}{}\section{Entity Class Reference}
+\label{class_entity}\index{Entity@{Entity}}
+Inheritance diagram for Entity\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_entity}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_entity_a2ab2f30624fe669fd8fb72ab7a3e0318}\label{class_entity_a2ab2f30624fe669fd8fb72ab7a3e0318}} 
+int {\bfseries get\+Skin} ()
+\item 
+\mbox{\Hypertarget{class_entity_a729e4d1d4a7f6f927f7fdf083c5dcc13}\label{class_entity_a729e4d1d4a7f6f927f7fdf083c5dcc13}} 
+virtual Entity\+Types {\bfseries get\+Type} () const =0
+\item 
+\mbox{\Hypertarget{class_entity_a2234159416866c9c4657c9c481f0e632}\label{class_entity_a2234159416866c9c4657c9c481f0e632}} 
+float {\bfseries get\+Movement\+Speed} () const
+\item 
+\mbox{\Hypertarget{class_entity_a5601a5a44bb9e13a001cbecb66154701}\label{class_entity_a5601a5a44bb9e13a001cbecb66154701}} 
+std\+::shared\+\_\+ptr$<$ \hyperlink{struct_global_bounds}{Global\+Bounds} $>$ {\bfseries get\+Global\+Bounds} () const
+\item 
+\mbox{\Hypertarget{class_entity_a93306ecdce9446da37560f5f2b5307c0}\label{class_entity_a93306ecdce9446da37560f5f2b5307c0}} 
+void {\bfseries set\+Position} (float x, float y)
+\item 
+\mbox{\Hypertarget{class_entity_a474692558c0fcb4f3d0b931022b847d8}\label{class_entity_a474692558c0fcb4f3d0b931022b847d8}} 
+void {\bfseries move} (float offsetX, float offsetY)
+\item 
+{\footnotesize template$<$typename type $>$ }\\bool \hyperlink{class_entity_a6dcfeadddb85cce9f5352b6553ab404b}{intersects} (const std\+::shared\+\_\+ptr$<$ \hyperlink{struct_global_bounds}{Global\+Bounds} $>$ \&next\+Position) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_entity_a153419f3400cd95918a437083b371eb3}\label{class_entity_a153419f3400cd95918a437083b371eb3}} 
+int {\bfseries skin} \{-\/1\}
+\item 
+\mbox{\Hypertarget{class_entity_ae604454cbac259c1229a0a142d4c02d0}\label{class_entity_ae604454cbac259c1229a0a142d4c02d0}} 
+std\+::shared\+\_\+ptr$<$ \hyperlink{struct_global_bounds}{Global\+Bounds} $>$ {\bfseries global\+Bounds}
+\item 
+\mbox{\Hypertarget{class_entity_ac28cd407994c232f1b71c886bb9aa584}\label{class_entity_ac28cd407994c232f1b71c886bb9aa584}} 
+float {\bfseries movement\+Speed}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_entity_a6dcfeadddb85cce9f5352b6553ab404b}\label{class_entity_a6dcfeadddb85cce9f5352b6553ab404b}} 
+\index{Entity@{Entity}!intersects@{intersects}}
+\index{intersects@{intersects}!Entity@{Entity}}
+\subsubsection{\texorpdfstring{intersects()}{intersects()}}
+{\footnotesize\ttfamily template$<$typename type $>$ \\
+bool Entity\+::intersects (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \hyperlink{struct_global_bounds}{Global\+Bounds} $>$ \&}]{next\+Position }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Keep in mind that we are working with rectangle objects 
+\begin{DoxyParams}{Parameters}
+{\em next\+Position} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Model/Entity.\+h\item 
+Model/Entity.\+cpp\end{DoxyCompactItemize}

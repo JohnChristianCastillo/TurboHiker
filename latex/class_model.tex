@@ -1,0 +1,91 @@
+\hypertarget{class_model}{}\section{Model Class Reference}
+\label{class_model}\index{Model@{Model}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_model_a8352e72694201310bb9547964f33805e}\label{class_model_a8352e72694201310bb9547964f33805e}} 
+const \hyperlink{struct_move}{Move} \& {\bfseries get\+Player\+Move} () const
+\item 
+\mbox{\Hypertarget{class_model_a0244b243926e1a87c665f3ad5e93f969}\label{class_model_a0244b243926e1a87c665f3ad5e93f969}} 
+void {\bfseries set\+Player\+MoveX} (const float \&moveX)
+\item 
+\mbox{\Hypertarget{class_model_aaf51aa15e5207002ab11bab7bc5ddf53}\label{class_model_aaf51aa15e5207002ab11bab7bc5ddf53}} 
+void {\bfseries set\+Player\+MoveY} (const float \&moveY)
+\item 
+\mbox{\Hypertarget{class_model_ae1dba27e8f978f6a0a88f19eaa7d4c35}\label{class_model_ae1dba27e8f978f6a0a88f19eaa7d4c35}} 
+const \hyperlink{struct_move}{Move} \& {\bfseries get\+Background\+Move} () const
+\item 
+\mbox{\Hypertarget{class_model_ac28ab3c0e3b6d7c18b6a73e7b9751d37}\label{class_model_ac28ab3c0e3b6d7c18b6a73e7b9751d37}} 
+void {\bfseries set\+Background\+MoveY} (const float \&moveY)
+\item 
+\mbox{\Hypertarget{class_model_acbf5b4b8802d6b98edd508abfc447d01}\label{class_model_acbf5b4b8802d6b98edd508abfc447d01}} 
+{\bfseries Model} (float frame\+Limit)
+\item 
+\mbox{\Hypertarget{class_model_aa4c3ab6b5c637225bd1136ca0b703344}\label{class_model_aa4c3ab6b5c637225bd1136ca0b703344}} 
+float {\bfseries get\+Fps} () const
+\item 
+\mbox{\Hypertarget{class_model_a4c501d09ee4fa6bcb9b93a20781e2e70}\label{class_model_a4c501d09ee4fa6bcb9b93a20781e2e70}} 
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_main_character}{Main\+Character} $>$ {\bfseries get\+Main\+Character} () const
+\item 
+\mbox{\Hypertarget{class_model_aecbb3a282ee591c997375c8bc77ce174}\label{class_model_aecbb3a282ee591c997375c8bc77ce174}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_background}{Background} $>$ $>$ {\bfseries get\+Backgrounds} () const
+\item 
+\mbox{\Hypertarget{class_model_ad2adcd81ad4cdd73b3db10a4e807caf4}\label{class_model_ad2adcd81ad4cdd73b3db10a4e807caf4}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_enemy}{Enemy} $>$ $>$ {\bfseries get\+Enemies} ()
+\item 
+\mbox{\Hypertarget{class_model_ad95392ecd55444f93ca2f471f2c97b09}\label{class_model_ad95392ecd55444f93ca2f471f2c97b09}} 
+std\+::shared\+\_\+ptr$<$ \hyperlink{class_main_character}{Main\+Character} $>$ {\bfseries generate\+MC} ()
+\item 
+\mbox{\Hypertarget{class_model_ab50b67ca385d1ab402ded5ecec7b96cc}\label{class_model_ab50b67ca385d1ab402ded5ecec7b96cc}} 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_background}{Background} $>$ $>$ {\bfseries generate\+Background} ()
+\item 
+std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \hyperlink{class_enemy}{Enemy} $>$ $>$ \hyperlink{class_model_a37263d57b165877f36157a9538c0b96b}{generate\+Enemies} ()
+\item 
+\mbox{\Hypertarget{class_model_af6ca3e8ebb3b6ac3a0d0d413e33e8693}\label{class_model_af6ca3e8ebb3b6ac3a0d0d413e33e8693}} 
+void {\bfseries reset\+Moves} ()
+\item 
+\mbox{\Hypertarget{class_model_ae330be8cd03370cc346432543b361c35}\label{class_model_ae330be8cd03370cc346432543b361c35}} 
+void {\bfseries move\+MC} ()
+\item 
+\mbox{\Hypertarget{class_model_ad7a90c028065c2baa83ee34904c3ded7}\label{class_model_ad7a90c028065c2baa83ee34904c3ded7}} 
+void {\bfseries move\+Background} ()
+\item 
+\mbox{\Hypertarget{class_model_aa8caf28eae1565d64633db18b0f4f5a6}\label{class_model_aa8caf28eae1565d64633db18b0f4f5a6}} 
+void {\bfseries move\+Enemies} ()
+\item 
+void \hyperlink{class_model_a342131d5e48ed3ab8d59f9b19c7f759a}{screen\+Collision\+Control} ()
+\item 
+void \hyperlink{class_model_a66849d75ce129d37a71eeec94e4b6d3d}{collision\+Control} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_model_a66849d75ce129d37a71eeec94e4b6d3d}\label{class_model_a66849d75ce129d37a71eeec94e4b6d3d}} 
+\index{Model@{Model}!collision\+Control@{collision\+Control}}
+\index{collision\+Control@{collision\+Control}!Model@{Model}}
+\subsubsection{\texorpdfstring{collision\+Control()}{collisionControl()}}
+{\footnotesize\ttfamily void Model\+::collision\+Control (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+possible solution1\+: set player\+Move x and y to 0 possible solution2\+: first construct left and right collision, bottom-\/top is simillar but inverted \mbox{\Hypertarget{class_model_a37263d57b165877f36157a9538c0b96b}\label{class_model_a37263d57b165877f36157a9538c0b96b}} 
+\index{Model@{Model}!generate\+Enemies@{generate\+Enemies}}
+\index{generate\+Enemies@{generate\+Enemies}!Model@{Model}}
+\subsubsection{\texorpdfstring{generate\+Enemies()}{generateEnemies()}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::shared\+\_\+ptr$<$\hyperlink{class_enemy}{Enemy}$>$ $>$ Model\+::generate\+Enemies (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Generates enemies of random types spawning them at the top part of the screen \begin{DoxyReturn}{Returns}
+A vector of generated enemies 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_model_a342131d5e48ed3ab8d59f9b19c7f759a}\label{class_model_a342131d5e48ed3ab8d59f9b19c7f759a}} 
+\index{Model@{Model}!screen\+Collision\+Control@{screen\+Collision\+Control}}
+\index{screen\+Collision\+Control@{screen\+Collision\+Control}!Model@{Model}}
+\subsubsection{\texorpdfstring{screen\+Collision\+Control()}{screenCollisionControl()}}
+{\footnotesize\ttfamily void Model\+::screen\+Collision\+Control (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Window collision control left collision
+
+right collision 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Model/Model.\+h\item 
+Model/Model.\+cpp\end{DoxyCompactItemize}
