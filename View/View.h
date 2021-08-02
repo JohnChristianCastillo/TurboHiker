@@ -23,7 +23,7 @@ class View {
 
     /// this can be deleted since it's in the singleton class but it's easier to call it this way
     float screenHeight = float(sf::VideoMode::getDesktopMode().height) * 0.75f;
-    float screenWidth = screenHeight/8*6;
+    float screenWidth = screenHeight/8.f*6.f;
 
     sf::RenderWindow window{sf::VideoMode(static_cast<unsigned int>(screenWidth),
                                                 static_cast<unsigned int>(screenHeight)),
@@ -130,7 +130,7 @@ public:
             }
         }
     }
-    Input getKeyboardInput(std::chrono::duration<float> elapsedTime) {
+    Input getKeyboardInput() {
 
         if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             sf::Vector2i p = sf::Mouse::getPosition();

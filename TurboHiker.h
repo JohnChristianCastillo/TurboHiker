@@ -19,7 +19,7 @@ public:
     {
         // Initialize transformation instance
         float screenHeight = float(sf::VideoMode::getDesktopMode().height) * 0.75f;
-        float screenWidth = screenHeight/8*6;
+        float screenWidth = screenHeight/8.f*6.f;
         std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::init(Dimentions{screenWidth, screenHeight});
 
         model = std::make_shared<Model>(fps);

@@ -15,7 +15,6 @@ protected:
 
 public:
     int getSkin();
-    void setSkin(int skin);
 
     virtual EntityTypes getType() const = 0;
     float getMovementSpeed() const{
@@ -28,6 +27,7 @@ public:
         globalBounds->position.x = x;
         globalBounds->position.y = y;
     }
+
     void move(float offsetX, float offsetY){
         globalBounds->position.x += offsetX;
         globalBounds->position.y += offsetY;   }
@@ -46,23 +46,27 @@ public:
      */
     template<typename type>
     bool intersects(const std::shared_ptr<GlobalBounds>& nextPosition) const{
-        type left = globalBounds->position.x - globalBounds->dimentions.width/2;
-        type top = globalBounds->position.y + globalBounds->dimentions.height/2;
 
+        // calculate leftX and topY of current
+        type left = globalBounds->position.x - globalBounds->dimentions.width/2;
+        type top = globalBounds->position.y - globalBounds->dimentions.height/2;
+
+        // calculate leftX and topY of other object
         type nextLeft = nextPosition->position.x - nextPosition->dimentions.width/2;
-        type nextTop = nextPosition->position.y + nextPosition->dimentions.height/2;
+        type nextTop = nextPosition->position.y - nextPosition->dimentions.height/2;
 
         // Compute the min and max x and y of the the entity we're in
-        type thisMinX = std::min(left, static_cast<type>(left + globalBounds->dimentions.width));
-        type thisMaxX = std::max(left, static_cast<type>(left + globalBounds->dimentions.width));
-        type thisMinY = std::min(top, static_cast<type>(top + globalBounds->dimentions.height));
-        type thisMaxY = std::min(top, static_cast<type>(top + globalBounds->dimentions.height));
+
+        type thisMinX = left;
+        type thisMaxX = static_cast<type>(left + globalBounds->dimentions.width);
+        type thisMinY = top;
+        type thisMaxY = static_cast<type>(top + globalBounds->dimentions.height);
 
         // Compute the min and max x and y of the the next position we're in
-        type r2MinX = std::min(nextLeft, static_cast<type>(nextLeft + nextPosition->dimentions.width));
-        type r2MaxX = std::max(nextLeft, static_cast<type>(nextLeft + nextPosition->dimentions.width));
-        type r2MinY = std::min(nextTop, static_cast<type>(nextTop + nextPosition->dimentions.height));
-        type r2MaxY = std::max(nextTop, static_cast<type>(nextTop + nextPosition->dimentions.height));
+        type r2MinX = nextLeft;
+        type r2MaxX = static_cast<type>(nextLeft + nextPosition->dimentions.width);
+        type r2MinY = nextTop;
+        type r2MaxY = static_cast<type>(nextTop + nextPosition->dimentions.height);
 
         // Compute the intersection boundaries
         type interLeft   = std::max(thisMinX, r2MinX);
@@ -72,6 +76,7 @@ public:
 
         bool b =(interLeft < interRight) && (interTop < interBottom);
         return b;
+
     }
 };
 

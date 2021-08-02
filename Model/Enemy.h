@@ -15,7 +15,6 @@ public:
     bool isCollided() const;
     void setCollided(bool collided);
 
-public:
 
 
 };

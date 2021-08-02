@@ -30,7 +30,6 @@ public:
     const Move &getBackgroundMove() const;
     void setBackgroundMoveY(const float &moveY);
 
-public:
     Model(float frameLimit):fps(frameLimit)
     {
         entityFactory = std::make_shared<EntityMaker>();
@@ -109,7 +108,9 @@ public:
         }
         for(int i = enemies.size()-1; i>=0; --i){
             std::shared_ptr<Enemy> enemy = enemies[i];
-            if(enemy->isCollided()) continue;
+            if(enemy->isCollided()) {
+                continue;
+            }
             else if(enemy->getGlobalBounds()->position.y>=9.f){
                 //remove enemies outside of scope
                 enemies.erase(enemies.begin()+i);
@@ -125,28 +126,28 @@ public:
         Dimentions mcDim = mainCharacter->getGlobalBounds()->dimentions;
         /// Window collision control
         /// left collision
-        if (mcPos.x - mcDim.width / 2 < 0) {
+        if (mcPos.x - (mcDim.width / 2) <= 0) {
             mainCharacter->setPosition(mcDim.width / 2, mainCharacter->getGlobalBounds()->position.y);
         }
         /// right collision
-        if (mcPos.x + mcDim.width > 6.f) {
-            mainCharacter->setPosition(6.f - mcDim.width, mcPos.y);
+        if (mcPos.x + (mcDim.width/2) >= 6.f) {
+            mainCharacter->setPosition(6.f - (mcDim.width/2), mcPos.y);
         }
     }
 
     void collisionControl(){
         int counter = 1;
+        std::cout << "player: " << mainCharacter->getGlobalBounds()->position.x <<" "<< mainCharacter->getGlobalBounds()->position.y << std::endl;
 
         for(const std::shared_ptr<Enemy>& wall: enemies){
             std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
             std::shared_ptr<GlobalBounds> wallBounds = wall->getGlobalBounds();
 
             nextPosition = std::make_shared<GlobalBounds>(*playerBounds);
-            nextPosition->position.x += (playerMove.x - backgroundMove.x) * 10;
-            nextPosition->position.y += (playerMove.y - backgroundMove.y) * 10;
+            nextPosition->position.x += (playerMove.x - backgroundMove.x);
+            nextPosition->position.y += (playerMove.y - backgroundMove.y);
 
-            std::cout << "wall" << counter << ": " << wallBounds->position.x <<" "<< wallBounds->position.y << std::endl;
-            std::cout << "player: " << nextPosition->position.x <<" "<< nextPosition->position.y << std::endl;
+            std::cout << "wall #" << counter++ << ": " << wallBounds->position.x <<" "<< wallBounds->position.y << std::endl;
             if(wall->intersects<float>(nextPosition)){
 
                 std::cout << "Collision" << std::endl;

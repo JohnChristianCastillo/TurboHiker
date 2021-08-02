@@ -24,14 +24,21 @@ add_executable( TurboHiker
                 Model/StaticHiker.cpp
                 Model/StaticHiker.h
 
-        View/View.cpp
-        View/View.h
+                View/View.cpp
+                View/View.h
 
                 Singletons/Random.cpp
                 Singletons/Random.h
                 Singletons/Transformation.cpp
                 Singletons/Transformation.h
-        Discarded.h Model/Background.cpp Model/Background.h)
+
+                Model/Background.cpp
+                Model/Background.h
+
+                Controller/Controller.cpp
+                Controller/Controller.h
+
+                Discarded.h )
 
 #[[ COMMAND FOR WORKING WITH WINDOWS
 

@@ -38,13 +38,39 @@ public:
             elapsedTime.count();
             initialTime = finalTime;
 
+
             /// poll event
             if(view->pollEvent() == Input::ZERO) return;
             /// get keyboard input
-            Input in = view->getKeyboardInput(elapsedTime);
+            Input in = view->getKeyboardInput();
             bool moved = false;
             std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
 
+            switch (in){
+
+                case UP:
+                    model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime.count());
+                    moved = true;
+                    break;
+                case DOWN:
+                    model->setBackgroundMoveY(model->getBackgroundMove().y - mc->getMovementSpeed()*elapsedTime.count());
+                    moved = true;
+                    break;
+
+                case LEFT:
+                    model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed()*elapsedTime.count());
+                    moved = true;
+                    break;
+
+                case RIGHT:
+                    model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime.count());
+                    moved = true;
+
+                default:
+                    break;
+            }
+
+            /*
             if(in == Input::UP){
                 model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime.count());
                 moved = true;
@@ -60,7 +86,7 @@ public:
             else if(in == Input::RIGHT){
                 model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime.count());
                 moved = true;
-            }
+            }*/
                 // if the player is moved then we want to first check for collisions
             if(moved){
 
