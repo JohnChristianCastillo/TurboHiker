@@ -9,3 +9,9 @@ bool Enemy::isCollided() const {
 void Enemy::setCollided(bool collided) {
     Enemy::collided = collided;
 }
+bool Enemy::isSteerRandolmy() const {
+    return steerRandolmy;
+}
+void Enemy::setSteerRandolmy(bool steerRandolmy) {
+    Enemy::steerRandolmy = steerRandolmy;
+}

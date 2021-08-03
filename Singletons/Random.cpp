@@ -3,4 +3,4 @@
 //
 
 #include "Random.h"
-std::shared_ptr<Random> Random::random = nullptr;
+std::shared_ptr<singleton::Random> singleton::Random::random = nullptr;

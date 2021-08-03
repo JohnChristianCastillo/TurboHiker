@@ -6,16 +6,28 @@
 #define TURBOHIKER_ENTITY_H
 
 #include "../HelperDataTypes.h"
-
+#include "../Singletons/Random.h"
+#include "iostream"
 class Entity {
 protected:
     int skin{-1}; //texture used
     std::shared_ptr<GlobalBounds> globalBounds;
     float movementSpeed; //used to determine the entities velocity
+    float slowingFactor{1};
 
 public:
     int getSkin();
 
+    /**
+     * slow player down by a factor of 60%
+     * this gradually returns to its original speed
+     */
+    void slowDown(){
+        slowingFactor = 0.01;
+    }
+    void speedUp(){
+        slowingFactor = 2;
+    }
     virtual EntityTypes getType() const = 0;
     float getMovementSpeed() const{
             return movementSpeed;
@@ -29,8 +41,17 @@ public:
     }
 
     void move(float offsetX, float offsetY){
+
         globalBounds->position.x += offsetX;
-        globalBounds->position.y += offsetY;   }
+        globalBounds->position.y += offsetY*slowingFactor;
+        if(slowingFactor < 1){
+            slowingFactor += 0.01;
+            std::cout << "I am slowe by: " << slowingFactor << std::endl;
+        }
+        else if(slowingFactor < 0){
+            slowingFactor -= 0.1;
+        }
+    }
     /*
     void move(float x, float y){
         coordinates->lowLeft.first += x;

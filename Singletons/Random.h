@@ -8,6 +8,7 @@
 #include "memory"
 #include <random>
 
+namespace singleton{
 class Random
 {
         static std::shared_ptr<Random> random;
@@ -48,5 +49,5 @@ public:
                 return distr(gen);
         }
 };
-
+}
 #endif // TURBOHIKER_RANDOM_H

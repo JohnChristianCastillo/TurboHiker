@@ -5,6 +5,7 @@
 #ifndef TURBOHIKER_MODEL_H
 #define TURBOHIKER_MODEL_H
 
+#include "../Observers/LiveScoring.h"
 #include "Enemy.h"
 #include "EntityMaker.h"
 #include "MainCharacter.h"
@@ -17,6 +18,7 @@ class Model {
 private:
     std::shared_ptr<EntityMaker> entityFactory;
     std::shared_ptr<MainCharacter> mainCharacter;
+    std::shared_ptr<LiveScoring> scoringSystem;
     std::vector<std::shared_ptr<Enemy>> enemies;
     std::vector<std::shared_ptr<Background>> backgrounds;
 
@@ -37,6 +39,7 @@ public:
         enemies = std::move(generateEnemies());
         mainCharacter = generateMC();
         backgrounds = generateBackground();
+        scoringSystem = std::make_shared<LiveScoring>();
     }
 
     float getFps() const;
@@ -108,8 +111,8 @@ public:
         }
         for(int i = enemies.size()-1; i>=0; --i){
             std::shared_ptr<Enemy> enemy = enemies[i];
-            if(enemy->isCollided()) {
-                continue;
+            if(enemy->isSteerRandolmy()) {
+                steerRandomly(enemy);
             }
             else if(enemy->getGlobalBounds()->position.y>=9.f){
                 //remove enemies outside of scope
@@ -135,15 +138,86 @@ public:
         }
     }
 
+    void steerRandomly(const std::shared_ptr<Enemy>& enemy){
+        Move enemyMove = backgroundMove;
+        std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
+        std::vector<Input> direction{Input::UP, Input::DOWN, Input::LEFT, Input::RIGHT};
+        int index = random->intInInterval(0,3);
+        switch(direction[index]){
+            case UP:
+                enemy->speedUp();
+                break;
+            case DOWN:
+                enemy->slowDown();
+            case LEFT:
+                enemyMove.y = 0;
+                if(enemyMove.x == 0){
+                    enemyMove.x -= 0.1f;
+                }
+                break;
+            case RIGHT:
+                enemyMove.y = 0;
+                if(enemyMove.x == 0){
+                    enemyMove.x += 0.1f;
+                }
+                break;
+            default:
+                break;
+        }
+        enemy->move(enemyMove.x, enemyMove.y);
+        enemy->setSteerRandolmy(false);
+    }
     void collisionControl(){
         for(int i = enemies.size()-1; i>=0; --i){
+            // we need to know if our player is yelling and an enemy sprite in in its vicinity if so we need to deduct points
+            if(mainCharacter->isYelling()){
+                std::vector<std::shared_ptr<GlobalBounds>> mcAuras = mainCharacter->getAura();
+                for(const auto& aura:mcAuras){
+                    if(enemies[i]->intersects<float>(aura)){
+                        scoringSystem->hikerOffended();
+                        enemies[i]->slowDown();
+                    }
+                }
+            }
+            // we need to know if our MC is scaring off enemy players, if so we add scarePoints to the player
+            // This in turn causes the enemy to panic steer
+            // this scarePoint has a threshold and once exceeded it can throw off the enemy
+            if(mainCharacter->isScaringEnemy()){
+                std::vector<std::shared_ptr<GlobalBounds>> mcAuras = mainCharacter->getAura();
+                bool enemyDeleted{false};
+                for(const auto& aura:mcAuras){
+                    if(enemies[i]->intersects<float>(aura)){
+                        if(enemies[i]->exceededScareThreshold()){
+                            enemies.erase(enemies.begin()+i);
+                            scoringSystem->hikerThrownOff();
+                            enemyDeleted = true;
+                            break;
+                        }
+                        else{
+                            // if it hasn't exceeded the threshold yet, we will steer the enemy randomly
+                            enemies[i]->setSteerRandolmy(true);
+                            scoringSystem->hikerOffended();
+
+                        }
+                    }
+                }
+                // if enemy is thrown off we need to skip the collision control
+                if(enemyDeleted){
+                    continue;
+                }
+            }
             std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
             nextPosition = std::make_shared<GlobalBounds>(*playerBounds);
             nextPosition->position.x += (playerMove.x - backgroundMove.x);
             nextPosition->position.y += (playerMove.y - backgroundMove.y);
+
             if(enemies[i]->intersects<float>(nextPosition)){
+                // if we collided we want to penalize our player by slowing it down and subtracting points
+                scoringSystem->crashed();
+                mainCharacter->slowDown();
                 enemies.erase(enemies.begin()+i);
             }
+
         }
         /*
         for(const std::shared_ptr<Enemy>& wall: enemies){

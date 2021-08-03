@@ -10,3 +10,15 @@ MainCharacter::MainCharacter(int lanes) {
     globalBounds = std::make_shared<GlobalBounds>(pos, dim);
     movementSpeed = 10;
 }
+bool MainCharacter::isYelling() const {
+    return yelling;
+}
+void MainCharacter::setYelling(bool yell) {
+    MainCharacter::yelling = yell;
+}
+bool MainCharacter::isScaringEnemy() const {
+    return scareEnemy;
+}
+void MainCharacter::setScareEnemy(bool scareEnemy) {
+    MainCharacter::scareEnemy = scareEnemy;
+}

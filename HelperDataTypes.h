@@ -25,6 +25,7 @@ struct Position{
     float x;
     float y;
     Position(float xCor, float yCor):x(xCor), y(yCor){}
+    Position(const Position& pos) = default;
 };
 
 enum EntityTypes
@@ -39,6 +40,7 @@ struct Dimentions{
     float width;
     float height;
     Dimentions(float _width, float _height):width(_width), height(_height){};
+    Dimentions(const Dimentions& dim) = default;
 };
 
 struct Move{
@@ -58,7 +60,7 @@ struct GlobalBounds{
     Position position;
     Dimentions dimentions;
 
-    GlobalBounds(Position& pos, Dimentions& dim): position(pos), dimentions(dim) {};
+    GlobalBounds(const Position& pos, const Dimentions& dim): position(pos), dimentions(dim) {};
 };
 #endif//TURBOHIKER_HELPERDATATYPES_H
 
