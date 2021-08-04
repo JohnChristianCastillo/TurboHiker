@@ -18,6 +18,7 @@ class Model {
 private:
     std::shared_ptr<EntityMaker> entityFactory;
     std::shared_ptr<MainCharacter> mainCharacter;
+    std::shared_ptr<SimpleAI> simpleAi;
     std::shared_ptr<LiveScoring> scoringSystem;
     std::vector<std::shared_ptr<Enemy>> enemies;
     std::vector<std::shared_ptr<Background>> backgrounds;
@@ -25,6 +26,11 @@ private:
     Move playerMove{};
     Move backgroundMove{};
     std::shared_ptr<GlobalBounds> nextPosition;
+
+    // simpleAI vars
+    bool enemyUp{false};
+    bool enemyLeft{false};
+    bool enemyRight{false};
 public:
     const Move &getPlayerMove() const;
     void setPlayerMoveX(const float &moveX);
@@ -32,12 +38,13 @@ public:
     const Move &getBackgroundMove() const;
     void setBackgroundMoveY(const float &moveY);
 
-    Model(float frameLimit):fps(frameLimit)
+    explicit Model(float frameLimit):fps(frameLimit)
     {
         entityFactory = std::make_shared<EntityMaker>();
 
         enemies = std::move(generateEnemies());
         mainCharacter = generateMC();
+        simpleAi = generateAI();
         backgrounds = generateBackground();
         scoringSystem = std::make_shared<LiveScoring>();
     }
@@ -47,6 +54,9 @@ public:
 
     std::shared_ptr<MainCharacter> getMainCharacter() const{
         return mainCharacter;
+    }
+    std::shared_ptr<SimpleAI> getSimpleAI() const{
+        return simpleAi;
     }
     std::vector<std::shared_ptr<Background>> getBackgrounds() const{
         return backgrounds;
@@ -60,6 +70,9 @@ public:
 
     std::shared_ptr<MainCharacter> generateMC(){
         return entityFactory->generateMainCharacter(lanes);
+    };
+    std::shared_ptr<SimpleAI> generateAI(){
+        return entityFactory->generateAI();
     };
 
     std::vector<std::shared_ptr<Background>> generateBackground(){
@@ -98,11 +111,20 @@ public:
         } else if (bg2Pos.y > mcPos.y) {
             backgrounds[2]->setPosition(bg2Pos.x, bg2Pos.y);
             backgrounds[1]->setPosition(bg2Pos.x,bg2Pos.y - backgrounds[1]->getGlobalBounds()->dimentions.height * 2);
-
         }
         for(const auto& bg: backgrounds){
-            bg->move(backgroundMove.x, backgroundMove.y);
+            if(mainCharacter->isSlowed()){
+                bg->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor());
+
+            }
+            else{
+                bg->move(backgroundMove.x, backgroundMove.y);
+            }
         }
+        if(mainCharacter->isSlowed()) {
+             mainCharacter->setSlowingFactor(mainCharacter->getSlowingFactor()+0.01f);
+        }
+
     }
     void moveEnemies(){
         // generate new enemies if last generated enemy is past half the screen;
@@ -119,7 +141,10 @@ public:
                 enemies.erase(enemies.begin()+i);
             }
             else{
-                enemy->move(backgroundMove.x, backgroundMove.y);
+                // advance ai at normal speed even if mc is slowed;
+                //simpleAi->move(0, -backgroundMove.y*mainCharacter->getSlowingFactor());
+
+                enemy->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor());
             }
         }
     }
@@ -135,6 +160,18 @@ public:
         /// right collision
         if (mcPos.x + (mcDim.width/2) >= 6.f) {
             mainCharacter->setPosition(6.f - (mcDim.width/2), mcPos.y);
+        }
+
+        /// Window collision control
+        Position aiPos = simpleAi->getGlobalBounds()->position;
+        Dimentions aiDim = simpleAi->getGlobalBounds()->dimentions;
+        /// left collision
+        if (aiPos.x - (aiDim.width / 2) <= 0) {
+            simpleAi->setPosition(aiDim.width / 2, simpleAi->getGlobalBounds()->position.y);
+        }
+        /// right collision
+        if (aiPos.x + (aiDim.width/2) >= 6.f) {
+            simpleAi->setPosition(6.f - (aiDim.width/2), aiPos.y);
         }
     }
 
@@ -167,13 +204,44 @@ public:
         enemy->move(enemyMove.x, enemyMove.y);
         enemy->setSteerRandolmy(false);
     }
+    /**
+     * This function checks collision between:
+     * 1: The main character and (the enemy spawned together with the simple AI)
+     * 2: The Simple AI and (the enemy spawned together with the main character)
+     *
+     * This combination is necessary to achieve only looping once through all the spawned enemy entities
+     */
     void collisionControl(){
+
         for(int i = enemies.size()-1; i>=0; --i){
+            // first initialize the next position of our player;
+            std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
+            nextPosition = std::make_shared<GlobalBounds>(*playerBounds);
+            nextPosition->position.x += (playerMove.x - backgroundMove.x);
+            nextPosition->position.y += (playerMove.y - backgroundMove.y);
+
+            // then we initialize the lookahead our AI has;
+
+            std::vector<std::shared_ptr<GlobalBounds>> simpleAILookAhead = simpleAi->getLookAhead();
+            for(int j = 0; j<=2; ++j){
+                // check whether the three frontal lookahead intersects with either the spawned enemy or the MC if so warn our AI
+                if(enemies[i]->getGlobalBounds()->intersects<float>(simpleAILookAhead[j]) or nextPosition->intersects<float>(simpleAILookAhead[j])){
+                    enemyUp = true;
+                    break;
+                }
+            }
+            if(enemies[i]->getGlobalBounds()->intersects<float>(simpleAILookAhead[3]) or nextPosition->intersects<float>(simpleAILookAhead[3])){
+                enemyLeft = true;
+            }
+            if(enemies[i]->getGlobalBounds()->intersects<float>(simpleAILookAhead[3]) or nextPosition->intersects<float>(simpleAILookAhead[3])){
+                enemyRight = true;
+            }
+
             // we need to know if our player is yelling and an enemy sprite in in its vicinity if so we need to deduct points
             if(mainCharacter->isYelling()){
                 std::vector<std::shared_ptr<GlobalBounds>> mcAuras = mainCharacter->getAura();
                 for(const auto& aura:mcAuras){
-                    if(enemies[i]->intersects<float>(aura)){
+                    if(enemies[i]->getGlobalBounds()->intersects<float>(aura)){
                         scoringSystem->hikerOffended();
                         enemies[i]->slowDown();
                     }
@@ -186,7 +254,7 @@ public:
                 std::vector<std::shared_ptr<GlobalBounds>> mcAuras = mainCharacter->getAura();
                 bool enemyDeleted{false};
                 for(const auto& aura:mcAuras){
-                    if(enemies[i]->intersects<float>(aura)){
+                    if(enemies[i]->getGlobalBounds()->intersects<float>(aura)){
                         if(enemies[i]->exceededScareThreshold()){
                             enemies.erase(enemies.begin()+i);
                             scoringSystem->hikerThrownOff();
@@ -206,12 +274,8 @@ public:
                     continue;
                 }
             }
-            std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
-            nextPosition = std::make_shared<GlobalBounds>(*playerBounds);
-            nextPosition->position.x += (playerMove.x - backgroundMove.x);
-            nextPosition->position.y += (playerMove.y - backgroundMove.y);
 
-            if(enemies[i]->intersects<float>(nextPosition)){
+            if(enemies[i]->getGlobalBounds()->intersects<float>(nextPosition)){
                 // if we collided we want to penalize our player by slowing it down and subtracting points
                 scoringSystem->crashed();
                 mainCharacter->slowDown();
@@ -219,6 +283,7 @@ public:
             }
 
         }
+        simpleAi->randomMove(enemyUp, enemyLeft, enemyRight, (playerMove.x+backgroundMove.y), 0);
         /*
         for(const std::shared_ptr<Enemy>& wall: enemies){
             std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();

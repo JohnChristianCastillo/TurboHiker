@@ -7,6 +7,7 @@
 
 #include "../Model/Background.h"
 #include "../Model/Enemy.h"
+#include "../Model/SimpleAI.h"
 #include "../Model/MainCharacter.h"
 #include "../Singletons/Transformation.h"
 #include "SFML/Graphics.hpp"
@@ -158,12 +159,23 @@ public:
         return Input::ONE;
     }
 
-    void draw2(const std::shared_ptr<MainCharacter>& mc, const std::vector<std::shared_ptr<Background>>& backgrounds, const std::vector<std::shared_ptr<Enemy>>& enemies){
+    void draw2(const std::shared_ptr<MainCharacter>& mc, const std::vector<std::shared_ptr<Background>>& backgrounds, const std::vector<std::shared_ptr<Enemy>>& enemies,
+               const std::shared_ptr<SimpleAI>& simpleAI){
         std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::getInstance();
         std::tuple<float, float> carCoords = transformation->modelToView(mc->getGlobalBounds());
-        position.y = std::get<1>(carCoords);
         view.setCenter(position); // center camera on position
         carSprite.setPosition(std::get<0>(carCoords), std::get<1>(carCoords));
+
+
+        sf::RectangleShape simpleAISprite(sf::Vector2f(30, 60));
+        simpleAISprite.setTexture(&enemyTextures[simpleAI->getSkin()]);
+        std::tuple<float, float> simpleAiCoords = transformation->modelToView(simpleAI->getGlobalBounds());
+
+        //view.setCenter(std::get<0>(simpleAiCoords) , std::get<1>(simpleAiCoords));
+        std::cout << "SimpleAI is at: " << std::get<0>(simpleAiCoords) << "  " <<  std::get<1>(simpleAiCoords) << std::endl;
+        std::cout << "MC is at: " << std::get<0>(carCoords) << "  " <<  std::get<1>(carCoords) << std::endl;
+        simpleAISprite.setPosition(std::get<0>(simpleAiCoords), std::get<1>(simpleAiCoords));
+
 
 
 
@@ -187,6 +199,19 @@ public:
         window.draw(backgroundImage2);
         window.draw(backgroundImage3);
         window.draw(carSprite);
+        window.draw(simpleAISprite);
+
+        for(auto i: simpleAI->getLookAhead()){
+            std::tuple<float, float> auraPos = transformation->modelToView(i);
+            /// Collision object
+            /// Next box visualization todo: remove for final
+            sf::RectangleShape nextBox{sf::Vector2f(carSprite.getSize())};
+            nextBox.setFillColor(sf::Color::Transparent);
+            nextBox.setOutlineColor(sf::Color::White);
+            nextBox.setOutlineThickness(3.f);
+            nextBox.setPosition(std::get<0>(auraPos), std::get<1>(auraPos));
+            window.draw(nextBox);
+        }
 
         for (auto& wall : enemies) {
             std::tuple<float, float> wallCoords = transformation->modelToView(wall->getGlobalBounds());
@@ -196,6 +221,7 @@ public:
             wallSprite.setPosition(std::get<0>(wallCoords), std::get<1>(wallCoords));
             window.draw(wallSprite);
         }
+
 
         window.display();
         window.clear();

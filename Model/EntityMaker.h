@@ -9,6 +9,7 @@
 #include "Background.h"
 #include "Enemy.h"
 #include "MainCharacter.h"
+#include "SimpleAI.h"
 #include "StaticHiker.h"
 #include <map>
 #include <vector>
@@ -20,6 +21,9 @@ public:
         return std::make_shared<MainCharacter>(MainCharacter{lanes});
     }
 
+    std::shared_ptr<SimpleAI> generateAI(){
+        return std::make_shared<SimpleAI>();
+    }
     std::vector<std::shared_ptr<Enemy>> generateEnemies(){
         // assigns to which lane the enemy will go to:
         std::map<int,int> randomOffsetMapping{};

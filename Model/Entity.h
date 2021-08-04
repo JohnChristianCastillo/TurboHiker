@@ -16,6 +16,13 @@ protected:
     float slowingFactor{1};
 
 public:
+    float getSlowingFactor() const;
+    void setSlowingFactor(float slowingFactor);
+
+protected:
+    bool slowed{false};
+
+public:
     int getSkin();
 
     /**
@@ -23,7 +30,14 @@ public:
      * this gradually returns to its original speed
      */
     void slowDown(){
+        slowed = true;
         slowingFactor = 0.01;
+    }
+    bool isSlowed(){
+        if(slowingFactor == 1){
+            slowed = false;
+        }
+        return slowed;
     }
     void speedUp(){
         slowingFactor = 2;
@@ -40,65 +54,13 @@ public:
         globalBounds->position.y = y;
     }
 
-    void move(float offsetX, float offsetY){
+    virtual void move(const float& xOffset, const float& yOffset){
 
-        globalBounds->position.x += offsetX;
-        globalBounds->position.y += offsetY*slowingFactor;
-        if(slowingFactor < 1){
-            slowingFactor += 0.01;
-            std::cout << "I am slowe by: " << slowingFactor << std::endl;
-        }
-        else if(slowingFactor < 0){
-            slowingFactor -= 0.1;
-        }
+        globalBounds->position.x += xOffset;
+        globalBounds->position.y += yOffset;
     }
-    /*
-    void move(float x, float y){
-        coordinates->lowLeft.first += x;
-        coordinates->lowLeft.second += y;
-        coordinates->upRight.first += x;
-        coordinates->upRight.second += y;
-    };*/
 
-    /**
-     * Keep in mind that we are working with rectangle objects
-     * @param nextPosition
-     * @return
-     */
-    template<typename type>
-    bool intersects(const std::shared_ptr<GlobalBounds>& nextPosition) const{
 
-        // calculate leftX and topY of current
-        type left = globalBounds->position.x - globalBounds->dimentions.width/2;
-        type top = globalBounds->position.y - globalBounds->dimentions.height/2;
-
-        // calculate leftX and topY of other object
-        type nextLeft = nextPosition->position.x - nextPosition->dimentions.width/2;
-        type nextTop = nextPosition->position.y - nextPosition->dimentions.height/2;
-
-        // Compute the min and max x and y of the the entity we're in
-
-        type thisMinX = left;
-        type thisMaxX = static_cast<type>(left + globalBounds->dimentions.width);
-        type thisMinY = top;
-        type thisMaxY = static_cast<type>(top + globalBounds->dimentions.height);
-
-        // Compute the min and max x and y of the the next position we're in
-        type r2MinX = nextLeft;
-        type r2MaxX = static_cast<type>(nextLeft + nextPosition->dimentions.width);
-        type r2MinY = nextTop;
-        type r2MaxY = static_cast<type>(nextTop + nextPosition->dimentions.height);
-
-        // Compute the intersection boundaries
-        type interLeft   = std::max(thisMinX, r2MinX);
-        type interTop    = std::max(thisMinY, r2MinY);
-        type interRight  = std::min(thisMaxX, r2MaxX);
-        type interBottom = std::min(thisMaxY, r2MaxY);
-
-        bool b =(interLeft < interRight) && (interTop < interBottom);
-        return b;
-
-    }
 };
 
 

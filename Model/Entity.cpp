@@ -14,3 +14,14 @@ int Entity::getSkin() {
         return skin;
     }
 }
+float Entity::getSlowingFactor() const {
+    return slowingFactor;
+}
+void Entity::setSlowingFactor(float slowingFactor) {
+    if(slowingFactor >=1){
+        Entity::slowingFactor = 1;
+    }
+    else{
+        Entity::slowingFactor = slowingFactor;
+    }
+}

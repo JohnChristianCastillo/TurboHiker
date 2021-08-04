@@ -50,9 +50,6 @@ public:
         //
         float newX = (globalBounds->position.x/6)*screenDimentions.width;
         float newY = (globalBounds->position.y/8)*screenDimentions.height;
-        if (globalBounds->position.x < 0 or globalBounds->position.y < 0){
-            std::cout << "hi";
-        }
         return std::make_tuple(newX, newY);
     }
 

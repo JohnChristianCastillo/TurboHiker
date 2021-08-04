@@ -27,7 +27,7 @@ public:
         /// CLOCK
         std::chrono::time_point<std::chrono::high_resolution_clock> initialTime =
                 std::chrono::high_resolution_clock::now();
-        view->draw2(model->getMainCharacter(), model->getBackgrounds(), model->getEnemies());
+        view->draw2(model->getMainCharacter(), model->getBackgrounds(), model->getEnemies(), model->getSimpleAI());
         //view->draw();
         std::tuple<float, float> viewCoords = singleton::Transformation::getInstance()->modelToView(model->getMainCharacter()->getGlobalBounds());
         std::cout << "MC position:" << std::get<0>(viewCoords) << ", " << std::get<1>(viewCoords) << std::endl;
@@ -96,7 +96,7 @@ public:
                 model->moveEnemies();
                 model->screenCollisionControl();
                 model->collisionControl();
-                view->draw2(mc, model->getBackgrounds(), model->getEnemies());
+                view->draw2(mc, model->getBackgrounds(), model->getEnemies(), model->getSimpleAI());
                 model->resetMoves();
                 //view->draw();
 
