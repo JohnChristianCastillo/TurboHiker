@@ -13,7 +13,7 @@ public:
      * Initializes a static hiker given a horizontal offset
      * @param horizontalOffset
      */
-    explicit StaticHiker(const int& horizontalOffset);
+    explicit StaticHiker(const float& horizontalOffset);
     EntityTypes getType() const override { return EntityTypes::staticHiker; }
 };
 

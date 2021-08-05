@@ -3,3 +3,6 @@
 //
 
 #include "LiveScoring.h"
+float LiveScoring::getScore() const {
+    return score;
+}

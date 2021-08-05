@@ -6,6 +6,7 @@
 #define TURBOHIKER_CONTROLLER_H
 
 #include "../Model/Model.h"
+#include "../Singletons/Timer.h"
 #include "../Singletons/Transformation.h"
 #include "../View/View.h"
 #include <iostream>
@@ -25,52 +26,58 @@ public:
 
     void run(){
         /// CLOCK
-        std::chrono::time_point<std::chrono::high_resolution_clock> initialTime =
-                std::chrono::high_resolution_clock::now();
-        view->draw2(model->getMainCharacter(), model->getBackgrounds(), model->getEnemies(), model->getSimpleAI());
+        std::shared_ptr<singleton::Timer> timer = singleton::Timer::getInstance();
+        view->draw2(model->getMainCharacter(), model->getBackgrounds(), model->getEnemies(), model->getSimpleAI(), model->getScoringSystem(), 0.f);
         //view->draw();
         std::tuple<float, float> viewCoords = singleton::Transformation::getInstance()->modelToView(model->getMainCharacter()->getGlobalBounds());
         std::cout << "MC position:" << std::get<0>(viewCoords) << ", " << std::get<1>(viewCoords) << std::endl;
+        float gameTime = 0.f;
         while (view->getWindow().isOpen()) {
-            std::chrono::time_point<std::chrono::high_resolution_clock> finalTime =
-                    std::chrono::high_resolution_clock::now();
-            std::chrono::duration<float> elapsedTime = finalTime - initialTime;
-            elapsedTime.count();
-            initialTime = finalTime;
+            timer->tick();
+            if(timer->getElapsedtime() >= 1/model->getFps()) {
+                float elapsedTime = timer->getElapsedtime();
+                timer->restart();
+
+                /// poll event
+                if (view->pollEvent() == Input::ZERO) return;
+                /// get keyboard input
+                std::vector<Input> inputs = view->getKeyboardInput();
+                bool moved = false;
+                std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
+
+                for (const auto &in : inputs) {
+                    switch (in) {
+                        case UP:
+                            model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed() * elapsedTime);
+                            moved = true;
+                            break;
+                        case DOWN:
+                            model->setBackgroundMoveY(model->getBackgroundMove().y - mc->getMovementSpeed() * elapsedTime);
+                            moved = true;
+                            break;
+                        case LEFT:
+                            model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed() * elapsedTime);
+                            moved = true;
+                            break;
+                        case RIGHT:
+                            model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed() * elapsedTime);
+                            moved = true;
+                            break;
+                        case HONKING:
+                            model->getMainCharacter()->setYelling(true);
+
+                            std::cout << "MC is Yelling at the enemy \n";
+
+                        case SCARING:
+                            model->getMainCharacter()->setScareEnemy(true);
+                            std::cout << "MC is scaring the enemy \n";
+                        default:
+                            break;
+                    }
+                }
 
 
-            /// poll event
-            if(view->pollEvent() == Input::ZERO) return;
-            /// get keyboard input
-            Input in = view->getKeyboardInput();
-            bool moved = false;
-            std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
-
-            switch (in){
-
-                case UP:
-                    model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime.count());
-                    moved = true;
-                    break;
-                case DOWN:
-                    model->setBackgroundMoveY(model->getBackgroundMove().y - mc->getMovementSpeed()*elapsedTime.count());
-                    moved = true;
-                    break;
-
-                case LEFT:
-                    model->setPlayerMoveX(model->getPlayerMove().x - mc->getMovementSpeed()*elapsedTime.count());
-                    moved = true;
-                    break;
-
-                case RIGHT:
-                    model->setPlayerMoveX(model->getPlayerMove().x + mc->getMovementSpeed()*elapsedTime.count());
-                    moved = true;
-
-                default:
-                    break;
-            }
-
-            /*
+                /*
             if(in == Input::UP){
                 model->setBackgroundMoveY(model->getBackgroundMove().y + mc->getMovementSpeed()*elapsedTime.count());
                 moved = true;
@@ -88,21 +95,19 @@ public:
                 moved = true;
             }*/
                 // if the player is moved then we want to first check for collisions
-            if(moved){
-
-                //model->collisionControl();
-                model->moveMC();
-                model->moveBackground();
-                model->moveEnemies();
-                model->screenCollisionControl();
-                model->collisionControl();
-                view->draw2(mc, model->getBackgrounds(), model->getEnemies(), model->getSimpleAI());
-                model->resetMoves();
-                //view->draw();
-
+                if (moved) {
+                    gameTime += elapsedTime;
+                    //model->collisionControl();
+                    model->moveMC();
+                    model->moveBackground();
+                    model->moveEnemies();
+                    model->screenCollisionControl();
+                    model->collisionControl();
+                    view->draw2(mc, model->getBackgrounds(), model->getEnemies(), model->getSimpleAI(), model->getScoringSystem(), gameTime);
+                    model->resetMoves();
+                    //view->draw();
+                }
             }
-
-
         }
 
     }

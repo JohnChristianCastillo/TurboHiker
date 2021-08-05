@@ -34,9 +34,11 @@ public:
             bool notFound{true};
             while(notFound){
                 int randomOffset = random->intInInterval(0,6);
+                //float randomOffsetOffset = random->floatInInterval(0, 1);
+                float randomOffsetOffset = 0;
                 //if not in mapping
                 if(randomOffsetMapping.find(randomOffset) == randomOffsetMapping.end()){
-                    std::shared_ptr<Enemy> tempEnemy = std::make_shared<StaticHiker>(randomOffset);
+                    std::shared_ptr<Enemy> tempEnemy = std::make_shared<StaticHiker>(static_cast<float>(randomOffset)+randomOffsetOffset);
                     returnEnemies.push_back(tempEnemy);
                     notFound = false;
                 }

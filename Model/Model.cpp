@@ -22,3 +22,6 @@ const Move &Model::getBackgroundMove() const {
 void Model::setBackgroundMoveY(const float &moveY) {
     Model::backgroundMove.y = moveY;
 }
+const std::shared_ptr<LiveScoring> &Model::getScoringSystem() const {
+    return scoringSystem;
+}

@@ -8,6 +8,11 @@
 
 class LiveScoring {
     float score;
+
+public:
+    float getScore() const;
+
+private:
     int health;
 
 public:

@@ -53,8 +53,9 @@ enum Input{
     DOWN,
     LEFT,
     RIGHT,
-    ZERO,
-    ONE
+    HONKING,
+    SCARING,
+    ZERO
 };
 struct GlobalBounds{
     Position position;

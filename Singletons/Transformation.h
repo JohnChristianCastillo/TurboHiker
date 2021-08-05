@@ -43,6 +43,11 @@ public:
         * @return
         */
 
+    /**
+     *
+     * @param globalBounds
+     * @return the center of the global bounds converted to the view coordinates
+     */
     std::tuple<float, float> modelToView(const std::shared_ptr<GlobalBounds>& globalBounds) const
     {
         //formula: newCoord = (x-csOrigMin)/(csOrigMax-csOrigMin) * (csDestMax-csDestMin) + csDestMin

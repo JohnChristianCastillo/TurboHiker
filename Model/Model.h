@@ -10,6 +10,7 @@
 #include "EntityMaker.h"
 #include "MainCharacter.h"
 #include <iostream>
+#include <utility>
 #include <vector>
 
 class Model {
@@ -31,14 +32,16 @@ private:
     bool enemyUp{false};
     bool enemyLeft{false};
     bool enemyRight{false};
+    bool enemyUpLeft{false};
+    bool enemyUpRight{false};
 public:
     const Move &getPlayerMove() const;
     void setPlayerMoveX(const float &moveX);
     void setPlayerMoveY(const float &moveY);
     const Move &getBackgroundMove() const;
     void setBackgroundMoveY(const float &moveY);
-
-    explicit Model(float frameLimit):fps(frameLimit)
+    const std::shared_ptr<LiveScoring> &getScoringSystem() const;
+    explicit Model(float frameLimit, const std::weak_ptr<LiveScoring>&  scoringObserver):fps(frameLimit), scoringSystem(std::move(scoringObserver))
     {
         entityFactory = std::make_shared<EntityMaker>();
 
@@ -143,8 +146,13 @@ public:
             else{
                 // advance ai at normal speed even if mc is slowed;
                 //simpleAi->move(0, -backgroundMove.y*mainCharacter->getSlowingFactor());
-
-                enemy->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor());
+                if(enemy->isSlowed()){
+                    enemy->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor()*enemy->getSlowingFactor());
+                    enemy->setSlowingFactor(enemy->getSlowingFactor()+0.1f);
+                }
+                else{
+                    enemy->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor());
+                }
             }
         }
     }
@@ -178,24 +186,19 @@ public:
     void steerRandomly(const std::shared_ptr<Enemy>& enemy){
         Move enemyMove = backgroundMove;
         std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
-        std::vector<Input> direction{Input::UP, Input::DOWN, Input::LEFT, Input::RIGHT};
-        int index = random->intInInterval(0,3);
+        std::vector<Input> direction{Input::LEFT, Input::RIGHT};
+        int index = random->intInInterval(0,1);
         switch(direction[index]){
-            case UP:
-                enemy->speedUp();
-                break;
-            case DOWN:
-                enemy->slowDown();
             case LEFT:
                 enemyMove.y = 0;
                 if(enemyMove.x == 0){
-                    enemyMove.x -= 0.1f;
+                    enemyMove.x -= 0.4f;
                 }
                 break;
             case RIGHT:
                 enemyMove.y = 0;
                 if(enemyMove.x == 0){
-                    enemyMove.x += 0.1f;
+                    enemyMove.x += 0.4f;
                 }
                 break;
             default:
@@ -225,16 +228,24 @@ public:
             std::vector<std::shared_ptr<GlobalBounds>> simpleAILookAhead = simpleAi->getLookAhead();
             for(int j = 0; j<=2; ++j){
                 // check whether the three frontal lookahead intersects with either the spawned enemy or the MC if so warn our AI
-                if(enemies[i]->getGlobalBounds()->intersects<float>(simpleAILookAhead[j]) or nextPosition->intersects<float>(simpleAILookAhead[j])){
+                if(simpleAILookAhead[j]->intersects<float>(enemies[i]->getGlobalBounds()) or simpleAILookAhead[j]->intersects<float>(nextPosition)){
                     enemyUp = true;
                     break;
                 }
             }
-            if(enemies[i]->getGlobalBounds()->intersects<float>(simpleAILookAhead[3]) or nextPosition->intersects<float>(simpleAILookAhead[3])){
+            if(simpleAILookAhead[3]->intersects<float>(enemies[i]->getGlobalBounds()) or simpleAILookAhead[3]->intersects<float>(nextPosition)){
                 enemyLeft = true;
             }
-            if(enemies[i]->getGlobalBounds()->intersects<float>(simpleAILookAhead[3]) or nextPosition->intersects<float>(simpleAILookAhead[3])){
+            if(simpleAILookAhead[4]->intersects<float>(enemies[i]->getGlobalBounds()) or simpleAILookAhead[4]->intersects<float>(nextPosition)){
                 enemyRight = true;
+            }
+            //up left
+            if(simpleAILookAhead[5]->intersects<float>(enemies[i]->getGlobalBounds()) or simpleAILookAhead[5]->intersects<float>(nextPosition)){
+                enemyUpLeft = true;
+            }
+            //up right
+            if(simpleAILookAhead[6]->intersects<float>(enemies[i]->getGlobalBounds()) or simpleAILookAhead[6]->intersects<float>(nextPosition)){
+                enemyUpRight = true;
             }
 
             // we need to know if our player is yelling and an enemy sprite in in its vicinity if so we need to deduct points
@@ -246,6 +257,7 @@ public:
                         enemies[i]->slowDown();
                     }
                 }
+                mainCharacter->setYelling(false);
             }
             // we need to know if our MC is scaring off enemy players, if so we add scarePoints to the player
             // This in turn causes the enemy to panic steer
@@ -269,6 +281,7 @@ public:
                         }
                     }
                 }
+                mainCharacter->setScareEnemy(false);
                 // if enemy is thrown off we need to skip the collision control
                 if(enemyDeleted){
                     continue;
@@ -283,7 +296,12 @@ public:
             }
 
         }
-        simpleAi->randomMove(enemyUp, enemyLeft, enemyRight, (playerMove.x+backgroundMove.y), 0);
+        simpleAi->randomMove(enemyUp, enemyLeft, enemyRight, enemyUpLeft, enemyUpRight, (playerMove.x+backgroundMove.y), 0);
+        enemyLeft = false;
+        enemyRight = false;
+        enemyUp = false;
+        enemyUpLeft = false;
+        enemyUpRight = false;
         /*
         for(const std::shared_ptr<Enemy>& wall: enemies){
             std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();

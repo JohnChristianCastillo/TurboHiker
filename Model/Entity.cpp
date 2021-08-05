@@ -3,11 +3,10 @@
 //
 
 #include "Entity.h"
-#include "../Singletons/Random.h"
 int Entity::getSkin() {
     if(skin == -1){
         std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
-        skin = random->intInInterval(1,12);
+        skin = random->intInInterval(1,11);
         return skin;
     }
     else{
@@ -17,11 +16,11 @@ int Entity::getSkin() {
 float Entity::getSlowingFactor() const {
     return slowingFactor;
 }
-void Entity::setSlowingFactor(float slowingFactor) {
+void Entity::setSlowingFactor(float sf) {
     if(slowingFactor >=1){
         Entity::slowingFactor = 1;
     }
     else{
-        Entity::slowingFactor = slowingFactor;
+        Entity::slowingFactor = sf;
     }
 }
