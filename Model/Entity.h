@@ -12,6 +12,11 @@ class Entity {
 protected:
     int skin{-1}; //texture used
     std::shared_ptr<GlobalBounds> globalBounds;
+
+public:
+    void setGlobalBounds(const std::shared_ptr<GlobalBounds> &globalBounds);
+
+protected:
     float movementSpeed; //used to determine the entities velocity
     float slowingFactor{1};
 
@@ -55,9 +60,11 @@ public:
     }
 
     virtual void move(const float& xOffset, const float& yOffset){
+        if(!(globalBounds->position.x + xOffset > 6 or globalBounds->position.x + xOffset <0)){
+            globalBounds->position.x += xOffset;
+            globalBounds->position.y += yOffset;
 
-        globalBounds->position.x += xOffset;
-        globalBounds->position.y += yOffset;
+        }
     }
 
 

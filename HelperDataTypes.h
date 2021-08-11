@@ -32,7 +32,8 @@ enum EntityTypes
 {
     mainCharacter,
     staticHiker,
-    background
+    background,
+    FinishLine
 };
 
 
@@ -55,7 +56,8 @@ enum Input{
     RIGHT,
     HONKING,
     SCARING,
-    ZERO
+    ZERO,
+    ENTER
 };
 struct GlobalBounds{
     Position position;

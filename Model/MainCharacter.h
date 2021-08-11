@@ -13,7 +13,24 @@ class MainCharacter: public Entity {
     bool scareEnemy{false};
 
 public:
-    bool isScaringEnemy() const;
+    void resetScareCooldown();
+    void decrementScareCooldown(){
+        if(scareCooldown >0){
+            std::cout << "decremented to:" << scareCooldown;
+            scareCooldown -= 0.1;
+        }
+    }
+
+private:
+    float scareCooldown{0};
+
+public:
+    float getScareCooldown() const;
+
+public:
+
+public:
+    bool isScaringEnemy();
     void setScareEnemy(bool scareEnemy);
 
 public:

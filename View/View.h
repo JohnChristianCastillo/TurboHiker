@@ -8,6 +8,7 @@
 #include "../Model/Background.h"
 #include "../Model/Enemy.h"
 #include "../Model/MainCharacter.h"
+#include "../Model/Model.h"
 #include "../Model/SimpleAI.h"
 #include "../Observers/LiveScoring.h"
 #include "../Singletons/Transformation.h"
@@ -17,8 +18,8 @@
 #include "SFML/Window.hpp"
 #include <chrono>
 #include <iostream>
-#include <utility>
 #include <sstream>
+#include <utility>
 
 class View {
 
@@ -44,6 +45,8 @@ class View {
     sf::Sprite backgroundImage1;
     sf::Sprite backgroundImage2;
     sf::Sprite backgroundImage3;
+    sf::Texture finishLineTexture;
+    sf::RectangleShape finishSprite;
 
     float speed = 1000.0f;
 
@@ -75,11 +78,11 @@ public:
         scoreText.setString("0");
         scoreText.setFillColor(sf::Color::White);
         scoreText.setOrigin(scoreText.getGlobalBounds().width/2, scoreText.getGlobalBounds().height/2);
-        scoreText.setPosition(screenWidth-150, 10);
+        scoreText.setPosition(screenWidth-200, 10);
 
     }
-    void drawScore(const std::shared_ptr<LiveScoring>& scoringSystem, const float& gameTime){
-        scoreText.setString(std::to_string(scoringSystem->getScore()) + "\n" + std::to_string(gameTime));
+    void drawScore(const std::shared_ptr<LiveScoring>& scoringSystem, const float& gameTime, const float& scareCooldown){
+        scoreText.setString(std::to_string(scoringSystem->getScore()) + "\n" + std::to_string(gameTime)+ "\nScare\nCooldown: " + std::to_string(scareCooldown));
         window.draw(scoreText);
     }
 
@@ -110,8 +113,12 @@ public:
             std::cout << "bg img not found" << std::endl;
         }
         //if (!backgroundTexture.loadFromFile("../assets/highway.png")) {
-        if (!backgroundTexture.loadFromFile("../assets/cars/Racing pack (420 assets)/PNG/Tiles/Asphalt road/road_asphalt01.png")) {
+        if (!backgroundTexture.loadFromFile("../assets/Roads/road_asphalt01.png")) {
             std::cout << "bg img not found" << std::endl;
+        }
+
+        if(!finishLineTexture.loadFromFile("../assets/finishLine.png")){
+            std::cout << "finish line image not found" << std::endl;
         }
         sf::Texture tempTure{};
         for(int i=1; i<=12; ++i){
@@ -136,6 +143,10 @@ public:
         carSprite.setTexture(&car);
         carSprite.setPosition(backgroundImage1.getGlobalBounds().width / 2,
                               backgroundImage1.getGlobalBounds().height - carSprite.getSize().y);
+        sf::RectangleShape finishObject(sf::Vector2f(screenWidth, 60));
+        finishSprite = std::move(finishObject);
+        finishSprite.setTexture(&finishLineTexture);
+        finishSprite.setScale(static_cast<float>(screenWidth)*2/static_cast<float>(finishLineTexture.getSize().x), static_cast<float>(screenHeight)/(15*static_cast<float>(finishLineTexture.getSize().y)));
 
     }
     Input pollEvent() {
@@ -163,23 +174,20 @@ public:
                     else if(event.key.code == sf::Keyboard::Right){
                         rightIsPressed = false;
                     }
-                    else if(event.key.code == sf::Keyboard::S){
-                        playerIsScaring = false;
-                    }
-                    else if(event.key.code == sf::Keyboard::D){
-                        playerIsHonking = false;
-                    }
 
                 }
             }
         }
     }
     std::vector<Input> getKeyboardInput() {
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+        /*if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             sf::Vector2i p = sf::Mouse::getPosition();
             std:: cout << p.x << ", " << p.y << std::endl;
-        }
+        }*/
 
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return)){
+            return {Input::ENTER};
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             leftIsPressed = false;
             rightIsPressed = true;
@@ -215,7 +223,7 @@ public:
         return produceKeyboardOutput();
     }
 
-    std::vector<Input> produceKeyboardOutput() const{
+    std::vector<Input> produceKeyboardOutput() {
         std::vector<Input> retVect{};
         if(upIsPressed){
             retVect.push_back(Input::UP);
@@ -231,24 +239,54 @@ public:
         }
         if(playerIsHonking){
             retVect.push_back(Input::HONKING);
+            playerIsHonking = false;
         }
         else if(playerIsScaring){
             retVect.push_back(Input::SCARING);
+            playerIsScaring = false;
         }
         return retVect;
     }
-    void draw2(const std::shared_ptr<MainCharacter>& mc, const std::vector<std::shared_ptr<Background>>& backgrounds, const std::vector<std::shared_ptr<Enemy>>& enemies,
-               const std::shared_ptr<SimpleAI>& simpleAI, const std::shared_ptr<LiveScoring>& scoringSystem,
-               float gameTime){
+    void endScreen(const std::shared_ptr<LiveScoring>& pointingSystem){
+        float score = pointingSystem->getScore();
+        float highScore = pointingSystem->getHighScore();
+        sf::Text endText;
+        endText.setCharacterSize(20);
+        endText.setFont(retro);
+        endText.setString("HIGH SCORE: " + std::to_string(highScore) + "\nYOUR SCORE: " + std::to_string(score));
+        endText.setFillColor(sf::Color::White);
+        endText.setPosition(screenWidth/2, screenHeight/2);
+        //endText.setOrigin(scoreText.getGlobalBounds().width/2, scoreText.getGlobalBounds().height/2);
+
+        endText.setOrigin(endText.getLocalBounds().left + endText.getLocalBounds().width / 2.0f, endText.getLocalBounds().top + endText.getLocalBounds().height / 2.0f);
+
+        window.draw(endText);
+        window.display();
+        window.clear();
+    }
+    void startScreen(){
+        sf::Text startText;
+        startText.setCharacterSize(20);
+        startText.setFont(retro);
+        startText.setString("PRESS ENTER KEY TO START");
+        startText.setFillColor(sf::Color::White);
+        startText.setOrigin(startText.getLocalBounds().left + startText.getLocalBounds().width / 2.0f, startText.getLocalBounds().top + startText.getLocalBounds().height / 2.0f);
+        startText.setPosition(screenWidth/2, screenHeight/2);
+
+        window.draw(startText);
+        window.display();
+        window.clear();
+    }
+    void draw2(const std::shared_ptr<Model>& model, float gameTime, bool finishLineGenerated = false){
         std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::getInstance();
-        std::tuple<float, float> carCoords = transformation->modelToView(mc->getGlobalBounds());
+        std::tuple<float, float> carCoords = transformation->modelToView(model->getMainCharacter()->getGlobalBounds());
         view.setCenter(position); // center camera on position
         carSprite.setPosition(std::get<0>(carCoords), std::get<1>(carCoords));
 
 
         sf::RectangleShape simpleAISprite(sf::Vector2f(30, 60));
-        simpleAISprite.setTexture(&enemyTextures[simpleAI->getSkin()]);
-        std::tuple<float, float> simpleAiCoords = transformation->modelToView(simpleAI->getGlobalBounds());
+        simpleAISprite.setTexture(&enemyTextures[model->getSimpleAI()->getSkin()]);
+        std::tuple<float, float> simpleAiCoords = transformation->modelToView(model->getSimpleAI()->getGlobalBounds());
 
         //view.setCenter(std::get<0>(simpleAiCoords) , std::get<1>(simpleAiCoords));
         //std::cout << "SimpleAI is at: " << std::get<0>(simpleAiCoords) << "  " <<  std::get<1>(simpleAiCoords) << std::endl;
@@ -258,9 +296,9 @@ public:
 
 
 
-        std::tuple<float, float> bg1 = transformation->modelToView(backgrounds[0]->getGlobalBounds());
-        std::tuple<float, float> bg2 = transformation->modelToView(backgrounds[1]->getGlobalBounds());
-        std::tuple<float, float> bg3 = transformation->modelToView(backgrounds[2]->getGlobalBounds());
+        std::tuple<float, float> bg1 = transformation->modelToView(model->getBackgrounds()[0]->getGlobalBounds());
+        std::tuple<float, float> bg2 = transformation->modelToView(model->getBackgrounds()[1]->getGlobalBounds());
+        std::tuple<float, float> bg3 = transformation->modelToView(model->getBackgrounds()[2]->getGlobalBounds());
         backgroundImage1.setPosition(std::get<0>(bg1), std::get<1>(bg1));
         backgroundImage2.setPosition(std::get<0>(bg2), std::get<1>(bg2));
         backgroundImage3.setPosition(std::get<0>(bg3), std::get<1>(bg3));
@@ -280,7 +318,7 @@ public:
         window.draw(carSprite);
         window.draw(simpleAISprite);
 
-        for(const auto& i: simpleAI->getLookAhead()){
+        for(const auto& i: model->getSimpleAI()->getLookAhead()){
             std::tuple<float, float> auraPos = transformation->modelToView(i);
             /// Collision object
             /// Next box visualization todo: remove for final
@@ -291,7 +329,7 @@ public:
             nextBox.setPosition(std::get<0>(auraPos), std::get<1>(auraPos));
             window.draw(nextBox);
         }
-        for(const auto& i: mc->getAura()){
+        for(const auto& i: model->getMainCharacter()->getAura()){
             std::tuple<float, float> auraPos = transformation->modelToView(i);
             /// Collision object
             /// Next box visualization todo: remove for final
@@ -303,181 +341,23 @@ public:
             window.draw(nextBox);
         }
 
-        for (auto& wall : enemies) {
+        for (auto& wall : model->getEnemies()) {
             std::tuple<float, float> wallCoords = transformation->modelToView(wall->getGlobalBounds());
-            int skin = wall->getSkin();
             sf::RectangleShape wallSprite(sf::Vector2f(30, 60));
             wallSprite.setTexture(&enemyTextures[wall->getSkin()]);
             wallSprite.setPosition(std::get<0>(wallCoords), std::get<1>(wallCoords));
             window.draw(wallSprite);
         }
+        if(finishLineGenerated){
+            std::tuple<float, float> finishLineCoords = transformation->modelToView(model->getFinishLine()->getGlobalBounds());
+            finishSprite.setPosition(std::get<0>(finishLineCoords), std::get<1>(finishLineCoords));
+            window.draw(finishSprite);
+        }
 
-        drawScore(scoringSystem, gameTime);
+        drawScore(model->getScoringSystem(), gameTime, model->getMainCharacter()->getScareCooldown());
         window.display();
         window.clear();
     }
-
-    void draw(){
-        /// Box collisions
-/*
-        for (auto& wall : walls) {
-            sf::FloatRect playerBounds = carSprite.getGlobalBounds();
-            sf::FloatRect wallBounds = wall.getGlobalBounds();
-
-            // gives us an outline with as offset our next move
-            nextPosition = playerBounds;
-            nextPosition.left += (playerMove.x - backgroundMove.x) ;
-            nextPosition.top += (playerMove.y - backgroundMove.y) ;
-
-            // todo: remove this for final
-            nextBox.setPosition(nextPosition.left, nextPosition.top);
-
-            if (wallBounds.intersects(nextPosition)) {
-                std::cout << "Collision" << std::endl;
-                /// possible solution1: set playerMove x and y to 0
-                /// possible solution2:  first construct left and right collision,
-                ///                     bottom-top is simillar but inverted
-                //   player            wall
-                //  ________          ________
-                // |        |        |        |
-                // |        |        |        |
-                // |        |        |        |
-                // |________|        |________|
-
-                // Player Bottom collision
-                if (playerBounds.top < wallBounds.top &&
-                playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height &&
-                playerBounds.left < wallBounds.left + wallBounds.width &&
-                playerBounds.left + playerBounds.width > wallBounds.left) {
-                    playerMove.y = 0.f;
-                    // bottom of player set to top of wall
-                    carSprite.setPosition(playerBounds.left, wallBounds.top - playerBounds.height);
-                }
-                // Player Top collision
-                else if (playerBounds.top > wallBounds.top &&
-                playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height &&
-                playerBounds.left < wallBounds.left + wallBounds.width &&
-                playerBounds.left + playerBounds.width > wallBounds.left) {
-                    playerMove.y = 0.f;
-                    // top of player set to bottom of wall                 plus cause y goes down
-                    carSprite.setPosition(playerBounds.left, wallBounds.top + wallBounds.height);
-                }
-
-                // Player right collision
-                else if (playerBounds.left < wallBounds.left &&
-                playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width &&
-                playerBounds.top < wallBounds.top + wallBounds.height &&
-                playerBounds.top + playerBounds.height > wallBounds.top) {
-                    playerMove.x = 0.f;
-                    carSprite.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);
-                }
-                // Player Left collision
-                else if (playerBounds.left > wallBounds.left &&
-                playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width &&
-                playerBounds.top < wallBounds.top + wallBounds.height &&
-                playerBounds.top + playerBounds.height > wallBounds.top) {
-                    playerMove.x = 0.f;
-                    carSprite.setPosition(wallBounds.left + wallBounds.width, playerBounds.top);
-                }
-            }
-        }
-*/
-
-
-
-
-/*
-        if (carSprite.getPosition().x - carSprite.getGlobalBounds().width / 2 < 0) {
-            carSprite.setPosition(carSprite.getGlobalBounds().width / 2, carSprite.getPosition().y);
-        }
-        /// right collision
-
-        float fDimx{singleton::Transformation::getInstance()->getScreenDimentions().width};
-        if (carSprite.getPosition().x + carSprite.getGlobalBounds().width > fDimx) {
-            carSprite.setPosition(fDimx - carSprite.getGlobalBounds().width,
-                                  carSprite.getPosition().y);
-        }
-*/
-        /**
-         * scroll when player hits center of screen
-         */
-        /*
-                    if(carSprite.getPosition().y + carSprite.getGlobalBounds().height/2 > screenHeight/2){
-                            std::cout <<carSprite.getPosition().y + carSprite.getGlobalBounds().height/2 << std::endl;
-                            std::cout <<screenHeight/2 << std::endl;
-                            position.y = carSprite.getPosition().y + carSprite.getGlobalBounds().height/4;
-                    }
-
-                    else{
-                            position.y = screenHeight/2;
-                    }*/
-
-        view.setCenter(position); // center camera on position
-        window.setView(view);
-        window.draw(carSprite);
-
-/*
-        for (auto& wall : walls) {
-            wall.move(backgroundMove);
-            window.draw(wall);
-        }
-*/
-
-        window.display();
-        window.clear();
-        //playerMove = {0.f, 0.f};
-        //backgroundMove = {0.f, 0.f};
-    }
-    /*
-    void drawMainCharacter(sf::RenderWindow& window) const{
-        auto pp = controller->getMainCharacter()->getCoordinates();
-        std::shared_ptr<Coordinates> viewCoords = singleton::Transformation::getInstance()->modelToView(pp);
-        float width = viewCoords->upRight.first - viewCoords->lowLeft.first;
-        float height = std::abs(viewCoords->upRight.second - viewCoords->lowLeft.second);
-
-        sf::RectangleShape mainCharacter{sf::Vector2f(width, height)};
-        //mainCharacter.setTexture(&mainCharTexture);
-        mainCharacter.setFillColor(sf::Color::Black);
-        mainCharacter.setPosition(width, height);
-
-
-        sf::View view;
-        //initialize to cover the whole screen
-        view.reset(sf::FloatRect(0,0, singleton::Transformation::getInstance()->getScreenDimentions().width/2, 1.5*singleton::Transformation::getInstance()->getScreenDimentions().height));
-        //how much of the view we want to see
-        view.setViewport(sf::FloatRect(0,0,1.0f, 1.0f));
-        sf::Vector2f position(singleton::Transformation::getInstance()->getScreenDimentions().width/2, 1.5*singleton::Transformation::getInstance()->getScreenDimentions().height);
-        view.setCenter(position);
-        window.setView(view);
-        window.draw(mainCharacter);
-    }
-    void drawEnemies()
-    {
-       for (auto& enemy : controller->getEnemies()) {
-            std::shared_ptr<Coordinates> viewCoords = singleton::Transformation::getInstance()->modelToView(enemy->getCoordinates());
-
-            float width = viewCoords->upRight.first - viewCoords->lowLeft.first;
-            float height = std::abs(viewCoords->upRight.second - viewCoords->lowLeft.second);
-
-            std::shared_ptr<sf::RectangleShape> enemySprite = std::make_shared<sf::RectangleShape>(sf::Vector2f(width, height));
-            enemySprite->setTexture(&enemyTextures.at(1));
-            enemySprite->setPosition(viewCoords->lowLeft.first, viewCoords->lowLeft.second);
-        }
-    }
-
-    void gatherMovement()
-    {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            controller->moveRight();
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            controller->moveLeft();
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            controller->moveEnemies();
-        }
-    }
-    */
 };
 
 

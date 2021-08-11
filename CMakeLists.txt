@@ -38,7 +38,7 @@ add_executable( TurboHiker
                 Controller/Controller.cpp
                 Controller/Controller.h
 
-                Discarded.h Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h)
+                Discarded.h Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h Model/Finish.cpp Model/Finish.h)
 
 #[[ COMMAND FOR WORKING WITH WINDOWS
 

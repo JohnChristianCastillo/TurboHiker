@@ -16,6 +16,8 @@ namespace singleton {
         std::chrono::high_resolution_clock::time_point initialTime;
         std::chrono::duration<float> elapsedtime;
         float timeScale;
+        float gameTime = 0.f;
+
 
         public:
             void restart(){
@@ -30,12 +32,22 @@ namespace singleton {
 
             static std::shared_ptr<Timer> getInstance() {
                 if (!timer) {
-                    timer = std::make_shared<Timer>(Timer());
+                    timer = std::move(std::make_shared<Timer>(Timer()));
                 }
                 return timer;
             }
+            void resetGameTime(){
+                gameTime = 0;
+            }
             float getElapsedtime(){
                 return elapsedtime.count();
+            }
+
+            float getGameTime(){
+                return gameTime;
+            }
+            void incrementGameTime(float incr){
+                gameTime += incr;
             }
     };
 }

@@ -3,6 +3,7 @@
 //
 
 #include "MainCharacter.h"
+#include "../Singletons/Timer.h"
 MainCharacter::MainCharacter(int lanes) {
     /// todo: 8 divided by lanes doesnt really make sense;
     Position pos = Position(6.f/static_cast<float>(lanes)*2, 5.5f);
@@ -16,9 +17,18 @@ bool MainCharacter::isYelling() const {
 void MainCharacter::setYelling(bool yell) {
     MainCharacter::yelling = yell;
 }
-bool MainCharacter::isScaringEnemy() const {
+bool MainCharacter::isScaringEnemy(){
     return scareEnemy;
 }
 void MainCharacter::setScareEnemy(bool scareEnemy) {
     MainCharacter::scareEnemy = scareEnemy;
+}
+float MainCharacter::getScareCooldown() const {
+    if(scareCooldown <0){
+        return 0;
+    }
+    return scareCooldown;
+}
+void MainCharacter::resetScareCooldown() {
+    MainCharacter::scareCooldown = 15;
 }

@@ -9,8 +9,8 @@
 
 class Enemy: public Entity{
 protected:
-    // counts how many times it has been scared
-    int scarePoints;
+    // counts how many times it has been yelled at
+    int yellPoints;
     bool collided{false};
     bool steerRandolmy{false};
 
@@ -19,16 +19,17 @@ public:
     void setSteerRandolmy(bool steerRandolmy);
 
 public:
-    bool isCollided() const;
-    void setCollided(bool collided);
-    bool exceededScareThreshold() const{
-        if(scarePoints >= 10){
+    void addYellPoints(){
+        yellPoints++;
+    }
+    bool exceededScareThreshold(){
+        std::shared_ptr<singleton::Random> rand = singleton::Random::getInstance();
+        int randomOffset = rand->intInInterval(0,10);
+        if(randomOffset + yellPoints>= 700){
             return true;
         }
+        yellPoints += randomOffset;
         return false;
-    }
-    void increaseScarePoints(){
-        scarePoints++;
     }
 
 

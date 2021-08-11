@@ -8,10 +8,11 @@
 #include "../Singletons/Random.h"
 #include "Background.h"
 #include "Enemy.h"
+#include "Finish.h"
 #include "MainCharacter.h"
 #include "SimpleAI.h"
 #include "StaticHiker.h"
-#include <map>
+#include <set>
 #include <vector>
 
 class EntityMaker {
@@ -20,29 +21,36 @@ public:
 
         return std::make_shared<MainCharacter>(MainCharacter{lanes});
     }
+    std::shared_ptr<Finish> generateFinishLine(){
+
+        return std::make_shared<Finish>();
+    }
 
     std::shared_ptr<SimpleAI> generateAI(){
         return std::make_shared<SimpleAI>();
     }
     std::vector<std::shared_ptr<Enemy>> generateEnemies(){
         // assigns to which lane the enemy will go to:
-        std::map<int,int> randomOffsetMapping{};
         std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
         int enemiesToGenerate = random->intInInterval(0,4);
         std::vector<std::shared_ptr<Enemy>> returnEnemies{};
-        for(int i = 1; i <= enemiesToGenerate; ++i){
-            bool notFound{true};
-            while(notFound){
-                int randomOffset = random->intInInterval(0,6);
-                //float randomOffsetOffset = random->floatInInterval(0, 1);
-                float randomOffsetOffset = 0;
-                //if not in mapping
-                if(randomOffsetMapping.find(randomOffset) == randomOffsetMapping.end()){
-                    std::shared_ptr<Enemy> tempEnemy = std::make_shared<StaticHiker>(static_cast<float>(randomOffset)+randomOffsetOffset);
-                    returnEnemies.push_back(tempEnemy);
-                    notFound = false;
-                }
+        std::set<int> set;
+        while(set.size() != enemiesToGenerate){
+            int randomOffset = random->intInInterval(0,6);
+            set.insert(randomOffset);
+        }
+        int i = 0;
+        for(auto randomOffset: set){
+            float randomOffsetOffset = random->floatInInterval(-0.2, 0.2);
+            std::shared_ptr<Enemy> tempEnemy = std::make_shared<StaticHiker>(static_cast<float>(randomOffset)+randomOffsetOffset);
+            float tempPosX = tempEnemy->getGlobalBounds()->position.x;
+            float tempWidth = tempEnemy->getGlobalBounds()->dimentions.width;
+            if(tempPosX + tempWidth/2 >= 6 or tempPosX - tempWidth/2 <=0){
+                tempEnemy = std::make_shared<StaticHiker>(static_cast<float>(randomOffset));
             }
+            returnEnemies.push_back(tempEnemy);
+            //std::cout << "Generated enemy#" <<  i++ << ": " << tempEnemy->getGlobalBounds()->position.x << std::endl;
+
         }
         return returnEnemies;
     }

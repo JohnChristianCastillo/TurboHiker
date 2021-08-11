@@ -1,9 +1,9 @@
 #include <iostream>
-#include "TurboHiker.h"
+#include "Controller/Controller.h"
 
 int main() {
-    TurboHiker turbo(120);
-    turbo.run();
+    Controller controller(120);
+    controller.run();
     return 0;
 }
 

@@ -24,3 +24,6 @@ void Entity::setSlowingFactor(float sf) {
         Entity::slowingFactor = sf;
     }
 }
+void Entity::setGlobalBounds(const std::shared_ptr<GlobalBounds> &globalBounds) {
+    Entity::globalBounds = globalBounds;
+}
