@@ -6,10 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable( TurboHiker
                 main.cpp
 
-                TurboHiker.cpp
-                TurboHiker.h
-
-                HelperDataTypes.h
+        HelperDataTypes.h
 
                 Model/Model.cpp
                 Model/Model.h
@@ -38,7 +35,7 @@ add_executable( TurboHiker
                 Controller/Controller.cpp
                 Controller/Controller.h
 
-                Discarded.h Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h Model/Finish.cpp Model/Finish.h)
+                Discarded.h Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h Model/Finish.cpp Model/Finish.h Model/PowerUps/SpeedUp.cpp Model/PowerUps/SpeedUp.h Model/PowerUps/PowerUp.cpp Model/PowerUps/PowerUp.h)
 
 #[[ COMMAND FOR WORKING WITH WINDOWS
 

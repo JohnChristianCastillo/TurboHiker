@@ -12,5 +12,5 @@ Finish::Finish() {
 
 }
 EntityTypes Finish::getType() const {
-    return EntityTypes::FinishLine;
+    return EntityTypes::finishLine;
 }

@@ -10,6 +10,8 @@
 #include "Enemy.h"
 #include "Finish.h"
 #include "MainCharacter.h"
+#include "PowerUps/PowerUp.h"
+#include "PowerUps/SpeedUp.h"
 #include "SimpleAI.h"
 #include "StaticHiker.h"
 #include <set>
@@ -39,7 +41,6 @@ public:
             int randomOffset = random->intInInterval(0,6);
             set.insert(randomOffset);
         }
-        int i = 0;
         for(auto randomOffset: set){
             float randomOffsetOffset = random->floatInInterval(-0.2, 0.2);
             std::shared_ptr<Enemy> tempEnemy = std::make_shared<StaticHiker>(static_cast<float>(randomOffset)+randomOffsetOffset);
@@ -53,6 +54,31 @@ public:
 
         }
         return returnEnemies;
+    }
+
+    std::vector<std::shared_ptr<PowerUp>> generatePowerUp(){
+        // assigns to which lane the enemy will go to:
+        std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
+        int powerUpsToGenerate = random->intInInterval(0,4);
+        std::vector<std::shared_ptr<PowerUp>> returnPowerUp{};
+        std::set<int> set;
+        while(set.size() != powerUpsToGenerate){
+            int randomOffset = random->intInInterval(0,6);
+            set.insert(randomOffset);
+        }
+        for(auto randomOffset: set){
+            float randomOffsetOffset = random->floatInInterval(-0.2, 0.2);
+            std::shared_ptr<PowerUp> powerUp = std::make_shared<SpeedUp>(static_cast<float>(randomOffset)+randomOffsetOffset);
+            float tempPosX = powerUp->getGlobalBounds()->position.x;
+            float tempWidth = powerUp->getGlobalBounds()->dimentions.width;
+            if(tempPosX + tempWidth/2 >= 6 or tempPosX - tempWidth/2 <=0){
+                powerUp = std::make_shared<SpeedUp>(static_cast<float>(randomOffset));
+            }
+            returnPowerUp.push_back(powerUp);
+            //std::cout << "Generated enemy#" <<  i++ << ": " << tempEnemy->getGlobalBounds()->position.x << std::endl;
+
+        }
+        return returnPowerUp;
     }
 
     std::vector<std::shared_ptr<Background>> generateBackground(){

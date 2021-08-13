@@ -17,6 +17,7 @@
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <sstream>
 #include <utility>
@@ -48,6 +49,7 @@ class View {
     sf::Texture finishLineTexture;
     sf::RectangleShape finishSprite;
 
+
     float speed = 1000.0f;
 
     // Set up viewport
@@ -76,7 +78,7 @@ public:
         scoreText.setCharacterSize(20);
         scoreText.setFont(retro);
         scoreText.setString("0");
-        scoreText.setFillColor(sf::Color::White);
+        scoreText.setFillColor(sf::Color::Black);
         scoreText.setOrigin(scoreText.getGlobalBounds().width/2, scoreText.getGlobalBounds().height/2);
         scoreText.setPosition(screenWidth-200, 10);
 
@@ -264,6 +266,20 @@ public:
         window.display();
         window.clear();
     }
+    void countDown(float time){
+        sf::Text countDownText;
+        countDownText.setCharacterSize(20);
+        countDownText.setFont(retro);
+        countDownText.setString("STARTING IN: " + std::to_string(static_cast<int>(std::ceil(time))));
+        countDownText.setFillColor(sf::Color::Black);
+        countDownText.setPosition(screenWidth/2, screenHeight/2);
+        //endText.setOrigin(scoreText.getGlobalBounds().width/2, scoreText.getGlobalBounds().height/2);
+
+        countDownText.setOrigin(countDownText.getLocalBounds().left + countDownText.getLocalBounds().width / 2.0f,
+                                countDownText.getLocalBounds().top + countDownText.getLocalBounds().height / 2.0f);
+
+        window.draw(countDownText);
+    }
     void startScreen(){
         sf::Text startText;
         startText.setCharacterSize(20);
@@ -277,7 +293,8 @@ public:
         window.display();
         window.clear();
     }
-    void draw2(const std::shared_ptr<Model>& model, float gameTime, bool finishLineGenerated = false){
+
+    void draw2(const std::shared_ptr<Model>& model, float gameTime, bool finishLineGenerated = false, bool startCountdown = false){
         std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::getInstance();
         std::tuple<float, float> carCoords = transformation->modelToView(model->getMainCharacter()->getGlobalBounds());
         view.setCenter(position); // center camera on position
@@ -355,6 +372,10 @@ public:
         }
 
         drawScore(model->getScoringSystem(), gameTime, model->getMainCharacter()->getScareCooldown());
+
+        if(startCountdown){
+            countDown(gameTime);
+        }
         window.display();
         window.clear();
     }

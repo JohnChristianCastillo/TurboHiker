@@ -33,7 +33,8 @@ enum EntityTypes
     mainCharacter,
     staticHiker,
     background,
-    FinishLine
+    finishLine,
+    speedUp
 };
 
 
@@ -47,6 +48,8 @@ struct Dimentions{
 struct Move{
     float x;
     float y;
+    Move(const float& _x, const float& _y): x(_x), y(_y){};
+    Move() = default;
 };
 
 enum Input{

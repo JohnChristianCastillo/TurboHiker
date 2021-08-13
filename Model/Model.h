@@ -25,9 +25,11 @@ private:
     std::vector<std::shared_ptr<Enemy>> enemies;
     std::vector<std::shared_ptr<Background>> backgrounds;
     std::shared_ptr<Finish> finishLine{nullptr};
+    std::vector<std::shared_ptr<PowerUp>> powerUps;
 
     Move playerMove{};
     Move backgroundMove{};
+    Move simpleAiMove{};
     std::shared_ptr<GlobalBounds> nextPosition;
 
     // simpleAI vars
@@ -38,10 +40,10 @@ private:
     bool enemyUpRight{false};
 public:
     const Move &getPlayerMove() const;
-    void setPlayerMoveX(const float &moveX);
-    void setPlayerMoveY(const float &moveY);
+    void setPlayerMove(const Move &move);
     const Move &getBackgroundMove() const;
-    void setBackgroundMoveY(const float &moveY);
+    void setBackgroundMove(const Move &move);
+    void setSimpleAIMove(const Move &move);
     const std::shared_ptr<LiveScoring> &getScoringSystem() const;
     explicit Model(float frameLimit, const std::weak_ptr<LiveScoring>&  scoringObserver):fps(frameLimit), scoringSystem(std::move(scoringObserver))
     {
@@ -75,6 +77,12 @@ public:
         }
         return enemies;
     }
+    std::vector<std::shared_ptr<PowerUp>> getPowerUps(){
+        if(powerUps.empty()){
+            powerUps = entityFactory->generatePowerUp();
+        }
+        return powerUps;
+    }
 
     void generateFinishLine(){
         finishLine = entityFactory->generateFinishLine();
@@ -103,11 +111,28 @@ public:
         return enemies;
     }
 
+    std::vector<std::shared_ptr<PowerUp>> generatePowerUps(){
+        // we can't just assign the generated enemies directly to our enemies container since enemies can be
+        // not empty
+        std::vector<std::shared_ptr<PowerUp>> generatedPowerUps = entityFactory->generatePowerUp();
+        for(std::shared_ptr<PowerUp>& powerUp: generatedPowerUps){
+            powerUps.push_back(std::move(powerUp));
+        }
+        return powerUps;
+    }
+
     void resetMoves(){
         playerMove = {};
         backgroundMove = {};
+        simpleAiMove = {};
     }
 
+    void moveSimpleAI(){
+        if(simpleAi->isSlowed()){
+            simpleAi->setSlowingFactor(simpleAi->getSlowingFactor()+0.02f);
+        }
+        simpleAi->move(simpleAiMove.x, (simpleAiMove.y*simpleAi->getSlowingFactor()+backgroundMove.y*mainCharacter->getSlowingFactor()));
+    }
     void moveMC(){
         mainCharacter->move(playerMove.x, playerMove.y);
     }
@@ -124,9 +149,9 @@ public:
             backgrounds[1]->setPosition(bg2Pos.x,bg2Pos.y - backgrounds[1]->getGlobalBounds()->dimentions.height * 2);
         }
         for(const auto& bg: backgrounds){
+            //if()b
             if(mainCharacter->isSlowed()){
                 bg->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor());
-
             }
             else{
                 bg->move(backgroundMove.x, backgroundMove.y);
@@ -142,7 +167,9 @@ public:
         // generate new enemies if last generated enemy is past half the screen;
         if(enemies.back()->getGlobalBounds()->position.y >= 4.f){
             generateEnemies();
+            generatePowerUps();
         }
+
         for(int i = enemies.size()-1; i>=0; --i){
             std::shared_ptr<Enemy> enemy = enemies[i];
             if(enemy->isSteerRandolmy()) {
@@ -160,7 +187,7 @@ public:
                     enemy->setSlowingFactor(enemy->getSlowingFactor()+0.1f);
                 }
                 else{
-                    enemy->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor());
+                    enemy->move(backgroundMove.x, backgroundMove.y*enemy->getSlowingFactor()*mainCharacter->getSlowingFactor());
                 }
             }
         }
@@ -307,14 +334,15 @@ public:
             }
 
         }
-        simpleAi->randomMove(enemyUp, enemyLeft, enemyRight, enemyUpLeft, enemyUpRight, (playerMove.x+backgroundMove.y), 0);
+        simpleAi->randomMove(enemyUp, enemyLeft, enemyRight, enemyUpLeft, enemyUpRight, simpleAiMove.y, simpleAiMove.y);
         enemyLeft = false;
         enemyRight = false;
         enemyUp = false;
         enemyUpLeft = false;
         enemyUpRight = false;
         mainCharacter->setYelling(false);
-        if(mainCharacter->isScaringEnemy()){
+        if(mainCharacter->isScaringEnemy() and mainCharacter->getScareCooldown() <= 0){
+            simpleAi->slowDown();
             mainCharacter->resetScareCooldown();
         }
         mainCharacter->decrementScareCooldown();
@@ -323,9 +351,7 @@ public:
         scoringSystem->advance();
         return false;
     }
-
-
-
+    const Move &getSimpleAiMove() const;
 };
 
 
