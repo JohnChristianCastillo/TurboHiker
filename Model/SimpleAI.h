@@ -5,7 +5,7 @@
 #ifndef TURBOHIKER_SIMPLEAI_H
 #define TURBOHIKER_SIMPLEAI_H
 
-#include "Enemy.h"
+#include "EnemyHikers/Enemy.h"
 
 class SimpleAI: public Enemy{
     // counts how many ticks it has been since the AI moved left or right

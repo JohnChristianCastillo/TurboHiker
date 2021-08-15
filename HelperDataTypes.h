@@ -32,9 +32,11 @@ enum EntityTypes
 {
     mainCharacter,
     staticHiker,
+    leftToRightHiker,
     background,
     finishLine,
-    speedUp
+    speedUp,
+    invincibilityStar
 };
 
 
@@ -50,6 +52,10 @@ struct Move{
     float y;
     Move(const float& _x, const float& _y): x(_x), y(_y){};
     Move() = default;
+    Move operator*(const float& movementSpeed){
+        x*=movementSpeed;
+        y*=movementSpeed;
+    }
 };
 
 enum Input{

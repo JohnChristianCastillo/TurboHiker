@@ -30,14 +30,14 @@ public:
 
         scoringSystem = std::make_shared<LiveScoring>();
         model = std::make_shared<Model>(fps, scoringSystem);
-        view = std::make_shared<View>(fps);
+        view = std::make_shared<View>(fps, model);
     }
 
 
     void resetObjects(){
         scoringSystem = std::make_shared<LiveScoring>();
         model = std::make_shared<Model>(fps, scoringSystem);
-        view = std::make_shared<View>(fps);
+        view = std::make_shared<View>(fps, model);
     }
 
     void run(){
@@ -80,11 +80,13 @@ public:
                 if (view->pollEvent() == Input::ZERO) {
                     return;
                 }
+                inputs = view->getKeyboardInput();
                 for (const auto &in : inputs) {
                     if (view->pollEvent() == Input::ZERO) return;
 
                     if(in == Input::ENTER){
                         resetObjects();
+                        timer->restart();
                         timer->resetGameTime();
                         view->draw2(model, timer->getGameTime());
                         stillOnEndScreen = false;
@@ -147,12 +149,12 @@ public:
                     model->moveMC();
                     model->moveBackground();
                     model->moveEnemies();
+                    model->movePowerUps();
                 }
             }
             model->moveSimpleAI();
             model->screenCollisionControl();
             if(model->collisionControl(finishLineGenerated)){
-
                 view->endScreen(model->getScoringSystem());
                 stillOnEndScreen = true;
                 continue;

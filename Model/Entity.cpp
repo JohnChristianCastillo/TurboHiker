@@ -16,14 +16,8 @@ int Entity::getSkin() {
 float Entity::getSlowingFactor() const {
     return slowingFactor;
 }
-void Entity::setSlowingFactor(float sf) {
-    if(slowingFactor >=1){
-        Entity::slowingFactor = 1;
-    }
-    else{
-        Entity::slowingFactor = sf;
-    }
-}
+
+
 void Entity::setGlobalBounds(const std::shared_ptr<GlobalBounds> &globalBounds) {
     Entity::globalBounds = globalBounds;
 }

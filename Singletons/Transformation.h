@@ -58,6 +58,11 @@ public:
         return std::make_tuple(newX, newY);
     }
 
+    Dimentions modelDimToViewDim(const Dimentions& modelDim) const{
+        float width = (modelDim.width/6)*screenDimentions.width;
+        float height = (modelDim.height/8)*screenDimentions.height;
+        return {width, height};
+    }
     std::tuple<float, float> viewToModel(float x, float y) const
     {
         //formula: newCoord = (x-csOrigMin)/(csOrigMax-csOrigMin) * (csDestMax-csDestMin) + csDestMin

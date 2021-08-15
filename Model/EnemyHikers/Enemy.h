@@ -5,7 +5,7 @@
 #ifndef TURBOHIKER_ENEMY_H
 #define TURBOHIKER_ENEMY_H
 
-#include "Entity.h"
+#include "../Entity.h"
 
 class Enemy: public Entity{
 protected:

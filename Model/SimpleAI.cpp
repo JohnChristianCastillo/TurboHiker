@@ -8,5 +8,5 @@ SimpleAI::SimpleAI() {
     Position pos = Position(2.f, 5.5f);
     Dimentions dim = Dimentions(0.222222f, 0.444444f);
     globalBounds = std::make_shared<GlobalBounds>(pos, dim);
-    movementSpeed = 10;
+    movementSpeed = 5;
 }

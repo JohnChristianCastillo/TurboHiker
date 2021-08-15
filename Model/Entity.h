@@ -12,22 +12,30 @@ class Entity {
 protected:
     int skin{-1}; //texture used
     std::shared_ptr<GlobalBounds> globalBounds;
+    float movementSpeed; //used to determine the entities velocity
+    float slowingFactor{1};
+    bool slowed{false};
+    bool sped{false};
 
 public:
     void setGlobalBounds(const std::shared_ptr<GlobalBounds> &globalBounds);
-
-protected:
-    float movementSpeed; //used to determine the entities velocity
-    float slowingFactor{1};
-
-public:
     float getSlowingFactor() const;
-    void setSlowingFactor(float slowingFactor);
-
-protected:
-    bool slowed{false};
-
-public:
+    void reduceSlowingEffect(float sf){
+        if(slowingFactor >=1){
+            slowingFactor = 1;
+        }
+        else{
+            slowingFactor = sf;
+        }
+    }
+    void reduceSpeedBoostEffect(float sf){
+        if(slowingFactor <=1){
+            slowingFactor = 1;
+        }
+        else{
+            slowingFactor = sf;
+        }
+    }
     int getSkin();
 
     /**
@@ -36,7 +44,12 @@ public:
      */
     void slowDown(){
         slowed = true;
-        slowingFactor = 0.01;
+        if(slowingFactor  > 2){
+            slowingFactor -= 0.9;
+        }
+        else{
+            slowingFactor = 0.01;
+        }
     }
     bool isSlowed(){
         if(slowingFactor == 1){
@@ -44,8 +57,21 @@ public:
         }
         return slowed;
     }
+    bool isSped(){
+        if(slowingFactor == 1){
+            sped = false;
+        }
+        return sped;
+    }
     void speedUp(){
-        slowingFactor = 2;
+        sped = true;
+        if(slowingFactor <= 1){
+            slowingFactor += 1;
+        }
+        else{
+            slowingFactor = 2;
+        }
+        //std::cout << "slowing factor: " << slowingFactor << std::endl;
     }
     virtual EntityTypes getType() const = 0;
     float getMovementSpeed() const{

@@ -7,7 +7,7 @@
 
 #include "../Observers/LiveScoring.h"
 #include "../Singletons/Transformation.h"
-#include "Enemy.h"
+#include "EnemyHikers/Enemy.h"
 #include "EntityMaker.h"
 #include "MainCharacter.h"
 #include <iostream>
@@ -30,7 +30,6 @@ private:
     Move playerMove{};
     Move backgroundMove{};
     Move simpleAiMove{};
-    std::shared_ptr<GlobalBounds> nextPosition;
 
     // simpleAI vars
     bool enemyUp{false};
@@ -128,10 +127,14 @@ public:
     }
 
     void moveSimpleAI(){
-        if(simpleAi->isSlowed()){
-            simpleAi->setSlowingFactor(simpleAi->getSlowingFactor()+0.02f);
-        }
         simpleAi->move(simpleAiMove.x, (simpleAiMove.y*simpleAi->getSlowingFactor()+backgroundMove.y*mainCharacter->getSlowingFactor()));
+        if(simpleAi->isSlowed()){
+            simpleAi->reduceSlowingEffect(simpleAi->getSlowingFactor()+0.02f);
+        }
+        if(simpleAi->isSped()){
+            simpleAi->reduceSpeedBoostEffect(simpleAi->getSlowingFactor()-0.01f);
+        }
+//        simpleAi->move(simpleAiMove.x, (simpleAiMove.y*simpleAi->getSlowingFactor() - backgroundMove.y*mainCharacter->getSlowingFactor()));
     }
     void moveMC(){
         mainCharacter->move(playerMove.x, playerMove.y);
@@ -149,16 +152,14 @@ public:
             backgrounds[1]->setPosition(bg2Pos.x,bg2Pos.y - backgrounds[1]->getGlobalBounds()->dimentions.height * 2);
         }
         for(const auto& bg: backgrounds){
-            //if()b
-            if(mainCharacter->isSlowed()){
-                bg->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor());
-            }
-            else{
-                bg->move(backgroundMove.x, backgroundMove.y);
-            }
+            bg->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor());
+
         }
         if(mainCharacter->isSlowed()) {
-             mainCharacter->setSlowingFactor(mainCharacter->getSlowingFactor()+0.01f);
+             mainCharacter->reduceSlowingEffect(mainCharacter->getSlowingFactor()+0.01f);
+        }
+        else if(mainCharacter->isSped()){
+            mainCharacter->reduceSpeedBoostEffect(mainCharacter->getSlowingFactor()-0.005f);
         }
 
 
@@ -167,11 +168,13 @@ public:
         // generate new enemies if last generated enemy is past half the screen;
         if(enemies.back()->getGlobalBounds()->position.y >= 4.f){
             generateEnemies();
-            generatePowerUps();
         }
 
         for(int i = enemies.size()-1; i>=0; --i){
             std::shared_ptr<Enemy> enemy = enemies[i];
+
+            float movement = backgroundMove.y*enemy->getMovementSpeed()*(mainCharacter->getSlowingFactor()+enemy->getSlowingFactor());
+
             if(enemy->isSteerRandolmy()) {
                 steerRandomly(enemy);
             }
@@ -180,15 +183,54 @@ public:
                 enemies.erase(enemies.begin()+i);
             }
             else{
+                //we first need to identify if it's a left to right hiker or a simple static hiker
                 // advance ai at normal speed even if mc is slowed;
-                //simpleAi->move(0, -backgroundMove.y*mainCharacter->getSlowingFactor());
                 if(enemy->isSlowed()){
-                    enemy->move(backgroundMove.x, backgroundMove.y*mainCharacter->getSlowingFactor()*enemy->getSlowingFactor());
-                    enemy->setSlowingFactor(enemy->getSlowingFactor()+0.1f);
+                    if(enemy->getType() == EntityTypes::leftToRightHiker){
+                        enemy->move(movement, movement);
+                        enemy->reduceSlowingEffect(enemy->getSlowingFactor()+0.1f);
+                    }
+                    else{
+                        enemy->move(0, movement);
+                        enemy->reduceSlowingEffect(enemy->getSlowingFactor()+0.1f);
+                    }
+
                 }
                 else{
-                    enemy->move(backgroundMove.x, backgroundMove.y*enemy->getSlowingFactor()*mainCharacter->getSlowingFactor());
+                    if(enemy->getType() == EntityTypes::leftToRightHiker){
+                        enemy->move(movement,movement);
+                    }
+                    else{
+                        enemy->move(0, movement);
+                    };
+
                 }
+            }
+        }
+    }
+
+    void movePowerUps(){
+        // generate new enemies if last generated enemy is past half the screen;
+        if(powerUps.empty()){
+            generatePowerUps();
+        }
+        else if(!powerUps.empty()){
+            if(powerUps.back()->getGlobalBounds()->position.y >= 4.f){
+                generatePowerUps();
+            }
+        }
+
+        for(int i = powerUps.size()-1; i>=0; --i){
+            std::shared_ptr<PowerUp> powerUp = powerUps[i];
+
+            float movement = backgroundMove.y*mainCharacter->getSlowingFactor();
+            if(powerUp->getGlobalBounds()->position.y>=9.f){
+                //remove enemies outside of scope
+                powerUps.erase(powerUps.begin()+i);
+            }
+
+            else{
+                powerUp->move(0, movement);
             }
         }
     }
@@ -243,35 +285,32 @@ public:
         enemy->move(enemyMove.x, enemyMove.y);
         enemy->setSteerRandolmy(false);
     }
-    /**
-     * This function checks collision between:
-     * 1: The main character and (the enemy spawned together with the simple AI)
-     * 2: The Simple AI and (the enemy spawned together with the main character)
-     *
-     * This combination is necessary to achieve only looping once through all the spawned enemy entities
-     */
-    bool collisionControl(bool finishLineGenerated){
 
+    bool finishLineCollisionControl(){
+        std::cout << "finishlinePos: " << finishLine->getGlobalBounds()->position.y << std::endl;
+        std::cout << "MCPOS: " << mainCharacter->getGlobalBounds()->position.y << std::endl;
+        if (finishLine->getGlobalBounds()->position.y > mainCharacter->getGlobalBounds()->position.y) {
+            return true;
+        }
+        finishLine->move(0, backgroundMove.y*mainCharacter->getSlowingFactor());
+        return false;
+    }
 
-        if(finishLineGenerated) {
-            std::cout << "finishlinePos: " << finishLine->getGlobalBounds()->position.y << std::endl;
-            std::cout << "MCPOS: " << mainCharacter->getGlobalBounds()->position.y << std::endl;
-            if (finishLine->getGlobalBounds()->position.y > mainCharacter->getGlobalBounds()->position.y) {
-                return true;
-            }
-            finishLine->move(0, backgroundMove.y);
-        }
-        // we need to first identify if our character is yelling, if so then we want to slow down our AI
-        // slowing down spawning enemies happen on the later section of this code
-        if(mainCharacter->isYelling()){
-            simpleAi->slowDown();
-        }
+    void collisionWithEnemyControl(){
         for(int i = enemies.size()-1; i>=0; --i){
             // first initialize the next position of our player;
+            std::shared_ptr<GlobalBounds> nextPosition;
             std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
             nextPosition = std::make_shared<GlobalBounds>(*playerBounds);
             nextPosition->position.x += (playerMove.x - backgroundMove.x);
             nextPosition->position.y += (playerMove.y - backgroundMove.y);
+
+            // then initialize the next position of our AI;
+            std::shared_ptr<GlobalBounds> simpleAInextPosition;
+            std::shared_ptr<GlobalBounds> simpleAIplayerBounds = simpleAi->getGlobalBounds();
+            simpleAInextPosition = std::make_shared<GlobalBounds>(*simpleAIplayerBounds);
+            simpleAInextPosition->position.x += (simpleAiMove.x - backgroundMove.x);
+            simpleAInextPosition->position.y += (simpleAiMove.y - backgroundMove.y);
 
             // then we initialize the lookahead our AI has;
 
@@ -308,42 +347,110 @@ public:
             // This in turn causes the enemy to panic steer
             // this scarePoint has a threshold and once exceeded it can throw off the enemy
             if(mainCharacter->isScaringEnemy() and mainCharacter->getScareCooldown() <= 0){
-                bool enemyDeleted{false};
                 if(enemies[i]->exceededScareThreshold()){
                     enemies.erase(enemies.begin()+i);
                     scoringSystem->hikerThrownOff();
-                    enemyDeleted = true;
+                    continue;
                 }
                 else{
                     // if it hasn't exceeded the threshold yet, we will steer the enemy randomly
                     enemies[i]->setSteerRandolmy(true);
                     scoringSystem->hikerOffended();
                 }
-
-                // if enemy is thrown off we need to skip the collision control
-                if(enemyDeleted){
-                    continue;
-                }
             }
 
             if(enemies[i]->getGlobalBounds()->intersects<float>(nextPosition)){
                 // if we collided we want to penalize our player by slowing it down and subtracting points
-                scoringSystem->crashed();
-                mainCharacter->slowDown();
+                // unless our main character is invincible
+                if(!mainCharacter->isInvincible()){
+                    scoringSystem->crashed();
+                    mainCharacter->slowDown();
+                }
+
+                enemies.erase(enemies.begin()+i);
+            }
+
+            if(enemies[i]->getGlobalBounds()->intersects<float>(simpleAInextPosition)){
+                // if we collided we want to penalize our player by slowing it down and subtracting points
+                simpleAi->slowDown();
                 enemies.erase(enemies.begin()+i);
             }
 
         }
+
+    }
+
+    void collisionWithPowerUpControl(){
+        for(int i = powerUps.size()-1; i>=0; --i){
+            std::shared_ptr<PowerUp> powerUp = powerUps[i];
+            // first initialize the next position of our player;
+            std::shared_ptr<GlobalBounds> nextPosition;
+            std::shared_ptr<GlobalBounds> playerBounds = mainCharacter->getGlobalBounds();
+            nextPosition = std::make_shared<GlobalBounds>(*playerBounds);
+            nextPosition->position.x += (playerMove.x - backgroundMove.x);
+            nextPosition->position.y += (playerMove.y - backgroundMove.y);
+
+            // then we initialize the lookahead our AI has;
+
+
+            std::shared_ptr<GlobalBounds> aiNextPosition;
+            std::shared_ptr<GlobalBounds> aiBounds = simpleAi->getGlobalBounds();
+            aiNextPosition = std::make_shared<GlobalBounds>(*aiBounds);
+            aiNextPosition->position.x += (simpleAiMove.x - backgroundMove.x);
+            aiNextPosition->position.y += (simpleAiMove.y - backgroundMove.y);
+
+
+            if(powerUps[i]->getGlobalBounds()->intersects<float>(nextPosition)){
+                // if we collided we want to check which powerup our player collided with;
+                if(powerUp->getType() == EntityTypes::speedUp){
+                    mainCharacter->speedUp();
+                }
+                else if(powerUp->getType() == EntityTypes::invincibilityStar){
+                    mainCharacter->startInvincibility();
+                }
+                powerUps.erase(powerUps.begin()+i);
+                return;// to avoid multiple players picking up power up
+            }
+            if(powerUps[i]->getGlobalBounds()->intersects<float>(aiNextPosition)){
+                // if we collided we want to check which powerup our player collided with;
+                if(powerUp->getType() == EntityTypes::speedUp){
+                    simpleAi->speedUp();
+                }
+                powerUps.erase(powerUps.begin()+i);
+            }
+        }
+
+    }
+    /**
+     * This function checks collision between:
+     * 1: The main character and (the enemy spawned together with the simple AI)
+     * 2: The Simple AI and (the enemy spawned together with the main character)
+     *
+     * This combination is necessary to achieve only looping once through all the spawned enemy entities
+     */
+    bool collisionControl(bool finishLineGenerated){
+
+
+        if(finishLineGenerated) {
+            if(finishLineCollisionControl()){
+                return true;
+            }
+        }
+        collisionWithPowerUpControl();
+        collisionWithEnemyControl();
+
         simpleAi->randomMove(enemyUp, enemyLeft, enemyRight, enemyUpLeft, enemyUpRight, simpleAiMove.y, simpleAiMove.y);
         enemyLeft = false;
         enemyRight = false;
         enemyUp = false;
         enemyUpLeft = false;
         enemyUpRight = false;
-        mainCharacter->setYelling(false);
         if(mainCharacter->isScaringEnemy() and mainCharacter->getScareCooldown() <= 0){
             simpleAi->slowDown();
             mainCharacter->resetScareCooldown();
+        }
+        if(mainCharacter->isInvincible()){
+            mainCharacter->decreaseInvincibilityDuration(0.05);
         }
         mainCharacter->decrementScareCooldown();
 

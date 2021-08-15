@@ -9,7 +9,7 @@ MainCharacter::MainCharacter(int lanes) {
     Position pos = Position(6.f/static_cast<float>(lanes)*2, 5.5f);
     Dimentions dim = Dimentions(0.222222f, 0.444444f);
     globalBounds = std::make_shared<GlobalBounds>(pos, dim);
-    movementSpeed = 10;
+    movementSpeed = 5;
 }
 bool MainCharacter::isYelling() const {
     return yelling;
@@ -31,4 +31,7 @@ float MainCharacter::getScareCooldown() const {
 }
 void MainCharacter::resetScareCooldown() {
     MainCharacter::scareCooldown = 15;
+}
+void MainCharacter::setInvincible(bool invincible) {
+    MainCharacter::invincible = invincible;
 }

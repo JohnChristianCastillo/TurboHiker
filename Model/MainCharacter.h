@@ -16,20 +16,45 @@ public:
     void resetScareCooldown();
     void decrementScareCooldown(){
         if(scareCooldown >0){
-            std::cout << "decremented to:" << scareCooldown;
+            //std::cout << "decremented to:" << scareCooldown;
             scareCooldown -= 0.1;
         }
     }
 
 private:
     float scareCooldown{0};
+    bool invincible{false};
+
+public:
+    void setInvincible(bool invincible);
+
+private:
+    float invincibleDuration{0};
 
 public:
     float getScareCooldown() const;
 
-public:
+    bool isInvincible(){
+        if(invincibleDuration <= 0){
+            invincible = false;
+            invincibleDuration = 0;
+        }
+        return invincible;
+    }
+    void startInvincibility(){
+        invincible = true;
+        invincibleDuration = 15.f;
+    }
+    void decreaseInvincibilityDuration(const float& decr){
+        invincibleDuration -= decr;
+        if(invincibleDuration < 0){
+            invincibleDuration = 0;
+        }
+    }
 
-public:
+    const float& getInvincibilityDuration() const{
+        return invincibleDuration;
+    }
     bool isScaringEnemy();
     void setScareEnemy(bool scareEnemy);
 

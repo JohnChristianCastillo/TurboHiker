@@ -6,7 +6,7 @@
 #define TURBOHIKER_VIEW_H
 
 #include "../Model/Background.h"
-#include "../Model/Enemy.h"
+#include "../Model/EnemyHikers/Enemy.h"
 #include "../Model/MainCharacter.h"
 #include "../Model/Model.h"
 #include "../Model/SimpleAI.h"
@@ -34,9 +34,9 @@ class View {
                                                      "TurboHiker!!!"};
 
     // Main Character entity:
-    sf::Texture car;
-
+    sf::Texture carTexture;
     sf::RectangleShape carSprite;
+
 
     // Enemy textures;
     std::vector<sf::Texture> enemyTextures;
@@ -46,9 +46,12 @@ class View {
     sf::Sprite backgroundImage1;
     sf::Sprite backgroundImage2;
     sf::Sprite backgroundImage3;
+
     sf::Texture finishLineTexture;
     sf::RectangleShape finishSprite;
 
+    sf::Texture invincibilityStarTexture;
+    sf::Texture speedBoostTexture;
 
     float speed = 1000.0f;
 
@@ -70,6 +73,8 @@ class View {
     bool rightIsPressed{false};
     bool playerIsHonking{false};
     bool playerIsScaring{false};
+
+
 public:
     const sf::RenderWindow &getWindow() const;
 
@@ -92,9 +97,17 @@ public:
      * Initialize the window our user will interact with
      * @param fps: Frame limit set by user
      */
-    View(const float fps){
+    View(const float fps, const std::shared_ptr<Model>& model){
 
-        initializeWindow(fps);
+        window.setFramerateLimit(static_cast<unsigned int>(fps));
+
+        // initialize the player
+        std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::getInstance();
+        Dimentions playerDim = transformation->modelDimToViewDim(model->getMainCharacter()->getGlobalBounds()->dimentions);
+
+        sf::RectangleShape carObject(sf::Vector2f(playerDim.width, playerDim.height));
+        carSprite = std::move(carObject);
+
         loadTextures();
         assignBGandMCTextures();
         // initialize to cover the whole screen
@@ -102,16 +115,14 @@ public:
         // how much of the view we want to see
         view.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
         initScoringSystem();
-    }
 
-    void initializeWindow(const float fps){
-        // create an instance of the window
-        window.setFramerateLimit(static_cast<unsigned int>(fps));
+
 
     }
+
 
     void loadTextures(){
-        if (!car.loadFromFile("../assets/cars/1.png")) {
+        if (!carTexture.loadFromFile("../assets/cars/1.png")) {
             std::cout << "bg img not found" << std::endl;
         }
         //if (!backgroundTexture.loadFromFile("../assets/highway.png")) {
@@ -122,6 +133,14 @@ public:
         if(!finishLineTexture.loadFromFile("../assets/finishLine.png")){
             std::cout << "finish line image not found" << std::endl;
         }
+
+        if(!invincibilityStarTexture.loadFromFile("../assets/invincibilityStar.png")){
+            std::cout << "invincibility star image not found" << std::endl;
+        }
+        if(!speedBoostTexture.loadFromFile("../assets/arrow_yellow.png")){
+            std::cout << "speedboost image not found" << std::endl;
+        }
+
         sf::Texture tempTure{};
         for(int i=1; i<=12; ++i){
             std::string fileLocation = "../assets/cars/"+std::to_string(i)+".png";
@@ -132,6 +151,7 @@ public:
         }
 
     }
+
     void assignBGandMCTextures(){
         backgroundImage1.setScale(static_cast<float>(screenWidth)/static_cast<float>(backgroundTexture.getSize().x), static_cast<float>(screenHeight)/static_cast<float>(backgroundTexture.getSize().y));
         backgroundImage2.setScale(static_cast<float>(screenWidth)/static_cast<float>(backgroundTexture.getSize().x), static_cast<float>(screenHeight)/static_cast<float>(backgroundTexture.getSize().y));
@@ -140,11 +160,10 @@ public:
         backgroundImage2.setTexture(backgroundTexture);
         backgroundImage3.setTexture(backgroundTexture);
 
-        sf::RectangleShape carObject(sf::Vector2f(30, 60));
-        carSprite = std::move(carObject);
-        carSprite.setTexture(&car);
-        carSprite.setPosition(backgroundImage1.getGlobalBounds().width / 2,
-                              backgroundImage1.getGlobalBounds().height - carSprite.getSize().y);
+
+
+        carSprite.setTexture(&carTexture);
+
         sf::RectangleShape finishObject(sf::Vector2f(screenWidth, 60));
         finishSprite = std::move(finishObject);
         finishSprite.setTexture(&finishLineTexture);
@@ -181,6 +200,7 @@ public:
             }
         }
     }
+
     std::vector<Input> getKeyboardInput() {
         /*if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             sf::Vector2i p = sf::Mouse::getPosition();
@@ -365,6 +385,20 @@ public:
             wallSprite.setPosition(std::get<0>(wallCoords), std::get<1>(wallCoords));
             window.draw(wallSprite);
         }
+
+        for(auto& powerUp: model->getPowerUps()){
+            std::tuple<float, float> wallCoords = transformation->modelToView(powerUp->getGlobalBounds());
+
+            sf::RectangleShape wallSprite(sf::Vector2f(30, 60));
+            if(powerUp->getType() == EntityTypes::speedUp){
+                wallSprite.setTexture(&speedBoostTexture);
+            }
+            else if(powerUp->getType() == EntityTypes::invincibilityStar){
+                wallSprite.setTexture(&invincibilityStarTexture);
+            }
+            wallSprite.setPosition(std::get<0>(wallCoords), std::get<1>(wallCoords));
+            window.draw(wallSprite);
+        }
         if(finishLineGenerated){
             std::tuple<float, float> finishLineCoords = transformation->modelToView(model->getFinishLine()->getGlobalBounds());
             finishSprite.setPosition(std::get<0>(finishLineCoords), std::get<1>(finishLineCoords));
@@ -373,6 +407,17 @@ public:
 
         drawScore(model->getScoringSystem(), gameTime, model->getMainCharacter()->getScareCooldown());
 
+        if(model->getMainCharacter()->isInvincible()){
+            sf::Text startText;
+            startText.setCharacterSize(20);
+            startText.setFont(retro);
+            startText.setString("INVINCIBLE!! "+ std::to_string(static_cast<int>(model->getMainCharacter()->getInvincibilityDuration())));
+            startText.setFillColor(sf::Color::Yellow);
+            startText.setOrigin(startText.getLocalBounds().left + startText.getLocalBounds().width / 2.0f, startText.getLocalBounds().top + startText.getLocalBounds().height / 2.0f);
+            startText.setPosition(screenWidth/2, screenHeight/2);
+
+            window.draw(startText);
+        }
         if(startCountdown){
             countDown(gameTime);
         }
