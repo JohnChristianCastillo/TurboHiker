@@ -173,7 +173,7 @@ public:
         for(int i = enemies.size()-1; i>=0; --i){
             std::shared_ptr<Enemy> enemy = enemies[i];
 
-            float movement = backgroundMove.y*enemy->getMovementSpeed()*(mainCharacter->getSlowingFactor()+enemy->getSlowingFactor());
+            float movement = backgroundMove.y*enemy->getMovementSpeed()*(mainCharacter->getSlowingFactor());
 
             if(enemy->isSteerRandolmy()) {
                 steerRandomly(enemy);
