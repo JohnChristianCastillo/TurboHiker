@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: Model/StaticHiker.h Source File</title>
+<title>My Project: Model/EnemyHikers/StaticHiker.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -57,8 +57,10 @@ $(function() {
 </div>
 
 <div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_312950da3f243a51cc00f4a947545131.html">Model</a></li>  </ul>
+    <ul>
+        <li class="navelem"><a class="el" href="dir_312950da3f243a51cc00f4a947545131.html">Model</a></li>
+        <li class="navelem"><a class="el" href="dir_b3585f286d1ef17176f7478650e2a1bc.html">EnemyHikers</a></li>
+    </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -66,10 +68,67 @@ $(function() {
 <div class="title">StaticHiker.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by JOHN CHRISTIAN CASTILLO on 7/18/2021.</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef TURBOHIKER_STATICHIKER_H</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define TURBOHIKER_STATICHIKER_H</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;Enemy.h&quot;</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div><div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="class_static_hiker.html">   10</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_static_hiker.html">StaticHiker</a>: <span class="keyword">public</span> <a class="code" href="class_enemy.html">Enemy</a> {</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">public</span>:</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_static_hiker.html#abdeca694baaf9fe7e69d968d49a8e75f">StaticHiker</a>(<span class="keyword">const</span> <span class="keywordtype">int</span>&amp; horizontalOffset);</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    EntityTypes getType()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> EntityTypes::staticHiker; }</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;};</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#endif//TURBOHIKER_STATICHIKER_H</span></div><div class="ttc" id="class_static_hiker_html_abdeca694baaf9fe7e69d968d49a8e75f"><div class="ttname"><a href="class_static_hiker.html#abdeca694baaf9fe7e69d968d49a8e75f">StaticHiker::StaticHiker</a></div><div class="ttdeci">StaticHiker(const int &amp;horizontalOffset)</div><div class="ttdef"><b>Definition:</b> StaticHiker.cpp:6</div></div>
-<div class="ttc" id="class_static_hiker_html"><div class="ttname"><a href="class_static_hiker.html">StaticHiker</a></div><div class="ttdef"><b>Definition:</b> StaticHiker.h:10</div></div>
-<div class="ttc" id="class_enemy_html"><div class="ttname"><a href="class_enemy.html">Enemy</a></div><div class="ttdef"><b>Definition:</b> Enemy.h:10</div></div>
-</div><!-- fragment --></div><!-- contents -->
+    <div class="fragment">
+        <div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span>
+        </div>
+        <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by JOHN CHRISTIAN CASTILLO on 7/18/2021.</span>
+        </div>
+        <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span>
+        </div>
+        <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+        <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef TURBOHIKER_STATICHIKER_H</span>
+        </div>
+        <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define TURBOHIKER_STATICHIKER_H</span>
+        </div>
+        <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+        <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;Enemy.h&quot;</span>
+        </div>
+        <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+        <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span
+                class="keyword">namespace </span><a class="code" href="namespace_t_h.html">TH</a> {
+        </div>
+        <div class="line"><a name="l00011"></a><span class="lineno"><a class="line"
+                                                                       href="class_t_h_1_1_static_hiker.html">   11</a></span>&#160;<span
+                class="keyword">class </span><a class="code" href="class_t_h_1_1_static_hiker.html">StaticHiker</a> :
+            <span class="keyword">public</span> <a class="code" href="class_t_h_1_1_enemy.html">Enemy</a></div>
+        <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
+        <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span
+                class="keyword">public</span>:
+        </div>
+        <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; <span
+                class="keyword">explicit</span> <a class="code"
+                                                   href="class_t_h_1_1_static_hiker.html#a205a709d674cce4378ab9e7580f02ea7">StaticHiker</a>(<span
+                class="keyword">const</span> <span class="keywordtype">float</span>&amp; horizontalOffset);
+        </div>
+        <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; EntityTypes getType()<span
+                class="keyword"> const override </span>{ <span class="keywordflow">return</span>
+            EntityTypes::staticHiker; }
+        </div>
+        <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;};</div>
+        <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;} <span class="comment">// namespace TH</span>
+        </div>
+        <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+        <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_STATICHIKER_H</span>
+        </div>
+        <div class="ttc" id="class_t_h_1_1_static_hiker_html_a205a709d674cce4378ab9e7580f02ea7">
+            <div class="ttname"><a href="class_t_h_1_1_static_hiker.html#a205a709d674cce4378ab9e7580f02ea7">TH::StaticHiker::StaticHiker</a>
+            </div>
+            <div class="ttdeci">StaticHiker(const float &amp;horizontalOffset)</div>
+            <div class="ttdef"><b>Definition:</b> StaticHiker.cpp:7</div>
+        </div>
+        <div class="ttc" id="namespace_t_h_html">
+            <div class="ttname"><a href="namespace_t_h.html">TH</a></div>
+            <div class="ttdef"><b>Definition:</b> Controller.h:16</div>
+        </div>
+        <div class="ttc" id="class_t_h_1_1_static_hiker_html">
+            <div class="ttname"><a href="class_t_h_1_1_static_hiker.html">TH::StaticHiker</a></div>
+            <div class="ttdef"><b>Definition:</b> StaticHiker.h:11</div>
+        </div>
+        <div class="ttc" id="class_t_h_1_1_enemy_html">
+            <div class="ttname"><a href="class_t_h_1_1_enemy.html">TH::Enemy</a></div>
+            <div class="ttdef"><b>Definition:</b> Enemy.h:11</div>
+        </div>
+    </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

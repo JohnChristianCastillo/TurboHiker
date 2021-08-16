@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['collisioncontrol',['collisionControl',['../class_model.html#a66849d75ce129d37a71eeec94e4b6d3d',1,'Model']]]
+  ['advance', ['advance', ['../class_t_h_1_1_o_b_s_e_r_v_e_r_1_1_live_scoring.html#a33d6151e9b324833256ce0f1cd6591f5', 1, 'TH::OBSERVER::LiveScoring']]]
 ];

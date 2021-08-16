@@ -66,9 +66,124 @@ $(function() {
 <div class="title">Random.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by JOHN CHRISTIAN CASTILLO on 12/24/2020.</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef TURBOHIKER_RANDOM_H</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define TURBOHIKER_RANDOM_H</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;memory&quot;</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;random&gt;</span></div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div><div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="class_random.html">   11</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_random.html">Random</a></div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keyword">static</span> std::shared_ptr&lt;Random&gt; random;</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">public</span>:</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">static</span> std::shared_ptr&lt;Random&gt; getInstance()</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                <span class="keywordflow">if</span> (!random) {</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                        random = std::make_shared&lt;Random&gt;();</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                        <span class="keywordflow">return</span> random;</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                }</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                <span class="keywordflow">return</span> random;</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        }</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div><div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_random.html#a35a3289bf89b45e55c3cb69bf36453c2">   30</a></span>&#160;        <span class="keywordtype">int</span> <a class="code" href="class_random.html#a35a3289bf89b45e55c3cb69bf36453c2">intInInterval</a>(<span class="keyword">const</span> <span class="keywordtype">int</span>&amp; left, <span class="keyword">const</span> <span class="keywordtype">int</span>&amp; right)<span class="keyword"> const</span></div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">        </span>{</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <span class="comment">/*std::random_device rd; // obtain a random number from hardware</span></div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">                std::mt19937 gen(rd()); // seed the generator</span></div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">                std::uniform_int_distribution&lt;&gt; distr(left, right); // define the range</span></div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">                //to use floats one can use std::uniform_real_distribution&lt;&gt;*/</span></div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                <span class="keywordflow">return</span> rand() % (left - right + 1) + left;</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div><div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_random.html#ab74f1a7b95a41426f87698f400b382e8">   43</a></span>&#160;        <span class="keywordtype">float</span> <a class="code" href="class_random.html#ab74f1a7b95a41426f87698f400b382e8">floatInInterval</a>(<span class="keyword">const</span> <span class="keywordtype">float</span>&amp; left, <span class="keyword">const</span> <span class="keywordtype">float</span>&amp; right)<span class="keyword"> const</span></div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">        </span>{</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                std::random_device rd;                               <span class="comment">// obtain a random number from hardware</span></div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                std::mt19937 gen(rd());                              <span class="comment">// seed the generator</span></div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                std::uniform_real_distribution&lt;&gt; distr(left, right); <span class="comment">// define the range</span></div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="keywordflow">return</span> distr(gen);</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;};</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_RANDOM_H</span></div><div class="ttc" id="class_random_html_ab74f1a7b95a41426f87698f400b382e8"><div class="ttname"><a href="class_random.html#ab74f1a7b95a41426f87698f400b382e8">Random::floatInInterval</a></div><div class="ttdeci">float floatInInterval(const float &amp;left, const float &amp;right) const</div><div class="ttdef"><b>Definition:</b> Random.h:43</div></div>
-<div class="ttc" id="class_random_html"><div class="ttname"><a href="class_random.html">Random</a></div><div class="ttdef"><b>Definition:</b> Random.h:11</div></div>
-<div class="ttc" id="class_random_html_a35a3289bf89b45e55c3cb69bf36453c2"><div class="ttname"><a href="class_random.html#a35a3289bf89b45e55c3cb69bf36453c2">Random::intInInterval</a></div><div class="ttdeci">int intInInterval(const int &amp;left, const int &amp;right) const</div><div class="ttdef"><b>Definition:</b> Random.h:30</div></div>
+<div class="fragment">
+    <div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div>
+    <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by JOHN CHRISTIAN CASTILLO on 12/24/2020.</span>
+    </div>
+    <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
+    <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+    <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef TURBOHIKER_RANDOM_H</span>
+    </div>
+    <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define TURBOHIKER_RANDOM_H</span>
+    </div>
+    <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+    <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;memory&quot;</span>
+    </div>
+    <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;random&gt;</span>
+    </div>
+    <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+    <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span
+            class="keyword">namespace </span><a class="code" href="namespace_t_h.html">TH</a> {
+    </div>
+    <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span
+            class="keyword">namespace </span>singleton {
+    </div>
+    <div class="line"><a name="l00013"></a><span class="lineno"><a class="line"
+                                                                   href="class_t_h_1_1singleton_1_1_random.html">   13</a></span>&#160;<span
+            class="keyword">class </span><a class="code" href="class_t_h_1_1singleton_1_1_random.html">Random</a></div>
+    <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+    <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; <span class="keyword">static</span>
+        std::shared_ptr&lt;Random&gt; random;
+    </div>
+    <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+    <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">public</span>:
+    </div>
+    <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; <span class="keyword">static</span>
+        std::shared_ptr&lt;Random&gt; getInstance()
+    </div>
+    <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; {</div>
+    <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; <span class="keywordflow">if</span>
+        (!random) {
+    </div>
+    <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; random = std::make_shared&lt;Random&gt;();
+    </div>
+    <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; <span
+            class="keywordflow">return</span> random;
+    </div>
+    <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; }</div>
+    <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; <span
+            class="keywordflow">return</span> random;
+    </div>
+    <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; }</div>
+    <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+    <div class="line"><a name="l00032"></a><span class="lineno"><a class="line"
+                                                                   href="class_t_h_1_1singleton_1_1_random.html#a315535c8a7663fb534fc1eaf05ccaa82">   32</a></span>&#160;
+        <span class="keywordtype">int</span> <a class="code"
+                                                href="class_t_h_1_1singleton_1_1_random.html#a315535c8a7663fb534fc1eaf05ccaa82">intInInterval</a>(<span
+                class="keyword">const</span> <span class="keywordtype">int</span>&amp; left, <span
+                class="keyword">const</span> <span class="keywordtype">int</span>&amp; right)<span class="keyword"> const</span>
+    </div>
+    <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">        </span>{
+    </div>
+    <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; <span class="comment">/*std::random_device rd; // obtain a random number from hardware</span>
+    </div>
+    <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">                std::mt19937 gen(rd()); // seed the generator</span>
+    </div>
+    <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">                std::uniform_int_distribution&lt;&gt; distr(left, right); // define the range</span>
+    </div>
+    <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">                //to use floats one can use std::uniform_real_distribution&lt;&gt;*/</span>
+    </div>
+    <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; <span class="comment">// return rand() % (left - right + 1) + left;</span>
+    </div>
+    <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; <span
+            class="keywordflow">return</span> rand() % (right - left + 1) + left;
+    </div>
+    <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; }</div>
+    <div class="line"><a name="l00046"></a><span class="lineno"><a class="line"
+                                                                   href="class_t_h_1_1singleton_1_1_random.html#ad8755a71caf147a08d660553dce11a50">   46</a></span>&#160;
+        <span class="keywordtype">float</span> <a class="code"
+                                                  href="class_t_h_1_1singleton_1_1_random.html#ad8755a71caf147a08d660553dce11a50">floatInInterval</a>(<span
+                class="keyword">const</span> <span class="keywordtype">float</span>&amp; left, <span class="keyword">const</span>
+        <span class="keywordtype">float</span>&amp; right)<span class="keyword"> const</span></div>
+    <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">        </span>{
+    </div>
+    <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; std::random_device rd; <span
+            class="comment">// obtain a random number from hardware</span></div>
+    <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; std::mt19937 gen(rd()); <span
+            class="comment">// seed the generator</span></div>
+    <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; std::uniform_real_distribution&lt;&gt;
+        distr(left, right); <span class="comment">// define the range</span></div>
+    <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; <span
+            class="keywordflow">return</span> distr(gen);
+    </div>
+    <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; }</div>
+    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
+    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;} <span class="comment">// namespace singleton</span>
+    </div>
+    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;} <span class="comment">// namespace TH</span>
+    </div>
+    <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_RANDOM_H</span>
+    </div>
+    <div class="ttc" id="namespace_t_h_html">
+        <div class="ttname"><a href="namespace_t_h.html">TH</a></div>
+        <div class="ttdef"><b>Definition:</b> Controller.h:16</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1singleton_1_1_random_html">
+        <div class="ttname"><a href="class_t_h_1_1singleton_1_1_random.html">TH::singleton::Random</a></div>
+        <div class="ttdef"><b>Definition:</b> Random.h:13</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1singleton_1_1_random_html_ad8755a71caf147a08d660553dce11a50">
+        <div class="ttname"><a href="class_t_h_1_1singleton_1_1_random.html#ad8755a71caf147a08d660553dce11a50">TH::singleton::Random::floatInInterval</a>
+        </div>
+        <div class="ttdeci">float floatInInterval(const float &amp;left, const float &amp;right) const</div>
+        <div class="ttdef"><b>Definition:</b> Random.h:46</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1singleton_1_1_random_html_a315535c8a7663fb534fc1eaf05ccaa82">
+        <div class="ttname"><a href="class_t_h_1_1singleton_1_1_random.html#a315535c8a7663fb534fc1eaf05ccaa82">TH::singleton::Random::intInInterval</a>
+        </div>
+        <div class="ttdeci">int intInInterval(const int &amp;left, const int &amp;right) const</div>
+        <div class="ttdef"><b>Definition:</b> Random.h:32</div>
+    </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

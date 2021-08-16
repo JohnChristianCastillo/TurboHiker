@@ -12,7 +12,7 @@ namespace OBSERVER {
 class LiveScoring
 {
         float score;
-        void saveHighScore()
+        void saveHighScore() const
         {
                 std::ofstream writeFile("../assets/Highscore.txt");
                 if (writeFile.is_open()) {

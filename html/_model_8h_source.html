@@ -66,13 +66,983 @@ $(function() {
 <div class="title">Model.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by JOHN CHRISTIAN CASTILLO on 7/18/2021.</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef TURBOHIKER_MODEL_H</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define TURBOHIKER_MODEL_H</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;Enemy.h&quot;</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;EntityMaker.h&quot;</span></div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;MainCharacter.h&quot;</span></div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div><div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="class_model.html">   14</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_model.html">Model</a> {</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">int</span> lanes{4};</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">float</span> fps;</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">private</span>:</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    std::shared_ptr&lt;EntityMaker&gt; entityFactory;</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    std::shared_ptr&lt;MainCharacter&gt; mainCharacter;</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt; enemies;</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    std::vector&lt;std::shared_ptr&lt;Background&gt;&gt; backgrounds;</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="struct_move.html">Move</a> playerMove{};</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="struct_move.html">Move</a> backgroundMove{};</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    std::shared_ptr&lt;GlobalBounds&gt; nextPosition;</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">public</span>:</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_move.html">Move</a> &amp;getPlayerMove() <span class="keyword">const</span>;</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">void</span> setPlayerMoveX(<span class="keyword">const</span> <span class="keywordtype">float</span> &amp;moveX);</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">void</span> setPlayerMoveY(<span class="keyword">const</span> <span class="keywordtype">float</span> &amp;moveY);</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_move.html">Move</a> &amp;getBackgroundMove() <span class="keyword">const</span>;</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">void</span> setBackgroundMoveY(<span class="keyword">const</span> <span class="keywordtype">float</span> &amp;moveY);</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="class_model.html">Model</a>(<span class="keywordtype">float</span> frameLimit):fps(frameLimit)</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    {</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        entityFactory = std::make_shared&lt;EntityMaker&gt;();</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        enemies = std::move(<a class="code" href="class_model.html#a37263d57b165877f36157a9538c0b96b">generateEnemies</a>());</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        mainCharacter = generateMC();</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        backgrounds = generateBackground();</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">float</span> getFps() <span class="keyword">const</span>;</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    std::shared_ptr&lt;MainCharacter&gt; getMainCharacter()<span class="keyword"> const</span>{</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">return</span> mainCharacter;</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    std::vector&lt;std::shared_ptr&lt;Background&gt;&gt; getBackgrounds()<span class="keyword"> const</span>{</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">return</span> backgrounds;</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt; getEnemies(){</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">if</span>(enemies.empty()){</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            enemies = entityFactory-&gt;generateEnemies();</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">return</span> enemies;</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    std::shared_ptr&lt;MainCharacter&gt; generateMC(){</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">return</span> entityFactory-&gt;generateMainCharacter(lanes);</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    };</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    std::vector&lt;std::shared_ptr&lt;Background&gt;&gt; generateBackground(){</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">return</span> entityFactory-&gt;generateBackground();</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div><div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_model.html#a37263d57b165877f36157a9538c0b96b">   69</a></span>&#160;    std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt; <a class="code" href="class_model.html#a37263d57b165877f36157a9538c0b96b">generateEnemies</a>(){</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">// we can&#39;t just assign the generated enemies directly to our enemies container since enemies can be</span></div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="comment">// not empty</span></div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt; generatedEnemies = entityFactory-&gt;generateEnemies();</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">for</span>(std::shared_ptr&lt;Enemy&gt;&amp; enemy: generatedEnemies){</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            enemies.push_back(std::move(enemy));</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">return</span> enemies;</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> resetMoves(){</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        playerMove = {};</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        backgroundMove = {};</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">void</span> moveMC(){</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        mainCharacter-&gt;move(playerMove.x, playerMove.y);</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">void</span> moveBackground(){</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <a class="code" href="struct_position.html">Position</a> bg1Pos = backgrounds[0]-&gt;getGlobalBounds()-&gt;position;</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <a class="code" href="struct_position.html">Position</a> bg2Pos = backgrounds[1]-&gt;getGlobalBounds()-&gt;position;</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <a class="code" href="struct_position.html">Position</a> mcPos = mainCharacter-&gt;getGlobalBounds()-&gt;position;</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">if</span> (bg1Pos.y &gt; mcPos.y) {</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            backgrounds[2]-&gt;setPosition(bg1Pos.x, bg1Pos.y);</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            backgrounds[0]-&gt;setPosition(bg1Pos.x,bg1Pos.y - backgrounds[0]-&gt;getGlobalBounds()-&gt;dimentions.height * 2);</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bg2Pos.y &gt; mcPos.y) {</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            backgrounds[2]-&gt;setPosition(bg2Pos.x, bg2Pos.y);</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            backgrounds[1]-&gt;setPosition(bg2Pos.x,bg2Pos.y - backgrounds[1]-&gt;getGlobalBounds()-&gt;dimentions.height * 2);</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; bg: backgrounds){</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            bg-&gt;move(backgroundMove.x, backgroundMove.y);</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">void</span> moveEnemies(){</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="comment">// generate new enemies if last generated enemy is past half the screen;</span></div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordflow">if</span>(enemies.back()-&gt;getGlobalBounds()-&gt;position.y &gt;= 4.f){</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <a class="code" href="class_model.html#a37263d57b165877f36157a9538c0b96b">generateEnemies</a>();</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = enemies.size()-1; i&gt;=0; --i){</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            std::shared_ptr&lt;Enemy&gt; enemy = enemies[i];</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">if</span>(enemy-&gt;isCollided()) {</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                <span class="keywordflow">continue</span>;</div><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            }</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span>(enemy-&gt;getGlobalBounds()-&gt;position.y&gt;=9.f){</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                <span class="comment">//remove enemies outside of scope</span></div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                enemies.erase(enemies.begin()+i);</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            }</div><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keywordflow">else</span>{</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                enemy-&gt;move(backgroundMove.x, backgroundMove.y);</div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            }</div><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div><div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="class_model.html#a342131d5e48ed3ab8d59f9b19c7f759a">  124</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_model.html#a342131d5e48ed3ab8d59f9b19c7f759a">screenCollisionControl</a>(){</div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <a class="code" href="struct_position.html">Position</a> mcPos = mainCharacter-&gt;getGlobalBounds()-&gt;position;</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <a class="code" href="struct_dimentions.html">Dimentions</a> mcDim = mainCharacter-&gt;getGlobalBounds()-&gt;dimentions;</div><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">if</span> (mcPos.x - (mcDim.width / 2) &lt;= 0) {</div><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            mainCharacter-&gt;setPosition(mcDim.width / 2, mainCharacter-&gt;getGlobalBounds()-&gt;position.y);</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">if</span> (mcPos.x + (mcDim.width/2) &gt;= 6.f) {</div><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            mainCharacter-&gt;setPosition(6.f - (mcDim.width/2), mcPos.y);</div><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        }</div><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    }</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div><div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="class_model.html#a66849d75ce129d37a71eeec94e4b6d3d">  138</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_model.html#a66849d75ce129d37a71eeec94e4b6d3d">collisionControl</a>(){</div><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keywordtype">int</span> counter = 1;</div><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;player: &quot;</span> &lt;&lt; mainCharacter-&gt;getGlobalBounds()-&gt;position.x &lt;&lt;<span class="stringliteral">&quot; &quot;</span>&lt;&lt; mainCharacter-&gt;getGlobalBounds()-&gt;position.y &lt;&lt; std::endl;</div><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div><div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">const</span> std::shared_ptr&lt;Enemy&gt;&amp; wall: enemies){</div><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            std::shared_ptr&lt;GlobalBounds&gt; playerBounds = mainCharacter-&gt;getGlobalBounds();</div><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            std::shared_ptr&lt;GlobalBounds&gt; wallBounds = wall-&gt;getGlobalBounds();</div><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            nextPosition = std::make_shared&lt;GlobalBounds&gt;(*playerBounds);</div><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            nextPosition-&gt;position.x += (playerMove.x - backgroundMove.x);</div><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            nextPosition-&gt;position.y += (playerMove.y - backgroundMove.y);</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;wall #&quot;</span> &lt;&lt; counter++ &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; wallBounds-&gt;position.x &lt;&lt;<span class="stringliteral">&quot; &quot;</span>&lt;&lt; wallBounds-&gt;position.y &lt;&lt; std::endl;</div><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">if</span>(wall-&gt;intersects&lt;<span class="keywordtype">float</span>&gt;(nextPosition)){</div><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                std::cout &lt;&lt; <span class="stringliteral">&quot;Collision&quot;</span> &lt;&lt; std::endl;</div><div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                <span class="comment">//   player            wall</span></div><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                <span class="comment">//  ________          ________</span></div><div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                <span class="comment">// |        |        |        |</span></div><div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                <span class="comment">// |        |        |        |</span></div><div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                <span class="comment">// |        |        |        |</span></div><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                <span class="comment">// |________|        |________|</span></div><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                <span class="comment">// Player Bottom collision</span></div><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                <span class="keywordtype">float</span> playerTop = playerBounds-&gt;position.y + playerBounds-&gt;dimentions.height/2;</div><div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                <span class="keywordtype">float</span> wallTop = wallBounds-&gt;position.y + wallBounds-&gt;dimentions.height/2;</div><div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                <span class="keywordtype">float</span> playerLeft = playerBounds-&gt;position.x - playerBounds-&gt;dimentions.width/2;</div><div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                <span class="keywordtype">float</span> wallLeft = wallBounds-&gt;position.x - wallBounds-&gt;dimentions.width/2;</div><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                <span class="keywordflow">if</span> (playerTop &lt; wallTop &amp;&amp;</div><div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                playerTop + playerBounds-&gt;dimentions.height &lt; wallTop + wallBounds-&gt;dimentions.height &amp;&amp;</div><div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                playerLeft &lt; wallLeft + wallBounds-&gt;dimentions.width &amp;&amp;</div><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                playerLeft + playerBounds-&gt;dimentions.width &gt; wallLeft) {</div><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                    playerMove.y = 0.f;</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                    <span class="comment">// bottom of player set to top of wall</span></div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                    mainCharacter-&gt;setPosition(playerLeft, wallTop - playerBounds-&gt;dimentions.height);</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                }</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                <span class="comment">// Player Top collision</span></div><div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (playerTop &gt; wallTop &amp;&amp;</div><div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                playerTop + playerBounds-&gt;dimentions.height &gt; wallTop + wallBounds-&gt;dimentions.height &amp;&amp;</div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                playerLeft &lt; wallLeft + wallBounds-&gt;dimentions.width &amp;&amp;</div><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                playerLeft + playerBounds-&gt;dimentions.width &gt; wallLeft) {</div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                    playerMove.y = 0.f;</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                    <span class="comment">// top of player set to bottom of wall                 plus cause y goes down</span></div><div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                    mainCharacter-&gt;setPosition(playerLeft, wallTop + wallBounds-&gt;dimentions.height);</div><div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                }</div><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div><div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                <span class="comment">// Player right collision</span></div><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (playerLeft &lt; wallLeft &amp;&amp;</div><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                playerLeft + playerBounds-&gt;dimentions.width &lt; wallLeft + wallBounds-&gt;dimentions.width &amp;&amp;</div><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                playerTop &lt; wallTop + wallBounds-&gt;dimentions.height &amp;&amp;</div><div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                playerTop + playerBounds-&gt;dimentions.height &gt; wallTop) {</div><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                    playerMove.x = 0.f;</div><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                    mainCharacter-&gt;setPosition(wallLeft - playerBounds-&gt;dimentions.width, playerTop);</div><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                }</div><div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                <span class="comment">// Player Left collision</span></div><div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (playerLeft &gt; wallLeft &amp;&amp;</div><div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                playerLeft + playerBounds-&gt;dimentions.width &gt; wallLeft + wallBounds-&gt;dimentions.width &amp;&amp;</div><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                playerTop &lt; wallTop + wallBounds-&gt;dimentions.height &amp;&amp;</div><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                playerTop + playerBounds-&gt;dimentions.height &gt; wallTop) {</div><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                    playerMove.x = 0.f;</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                    mainCharacter-&gt;setPosition(wallLeft + wallBounds-&gt;dimentions.width, playerTop);</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                }</div><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            }</div><div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        }</div><div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div><div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div><div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div><div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;};</div><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div><div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div><div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="preprocessor">#endif//TURBOHIKER_MODEL_H</span></div><div class="ttc" id="class_model_html"><div class="ttname"><a href="class_model.html">Model</a></div><div class="ttdef"><b>Definition:</b> Model.h:14</div></div>
-<div class="ttc" id="class_model_html_a66849d75ce129d37a71eeec94e4b6d3d"><div class="ttname"><a href="class_model.html#a66849d75ce129d37a71eeec94e4b6d3d">Model::collisionControl</a></div><div class="ttdeci">void collisionControl()</div><div class="ttdef"><b>Definition:</b> Model.h:138</div></div>
-<div class="ttc" id="struct_dimentions_html"><div class="ttname"><a href="struct_dimentions.html">Dimentions</a></div><div class="ttdef"><b>Definition:</b> HelperDataTypes.h:38</div></div>
-<div class="ttc" id="class_model_html_a37263d57b165877f36157a9538c0b96b"><div class="ttname"><a href="class_model.html#a37263d57b165877f36157a9538c0b96b">Model::generateEnemies</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; Enemy &gt; &gt; generateEnemies()</div><div class="ttdef"><b>Definition:</b> Model.h:69</div></div>
-<div class="ttc" id="struct_move_html"><div class="ttname"><a href="struct_move.html">Move</a></div><div class="ttdef"><b>Definition:</b> HelperDataTypes.h:44</div></div>
-<div class="ttc" id="struct_position_html"><div class="ttname"><a href="struct_position.html">Position</a></div><div class="ttdef"><b>Definition:</b> HelperDataTypes.h:24</div></div>
-<div class="ttc" id="class_model_html_a342131d5e48ed3ab8d59f9b19c7f759a"><div class="ttname"><a href="class_model.html#a342131d5e48ed3ab8d59f9b19c7f759a">Model::screenCollisionControl</a></div><div class="ttdeci">void screenCollisionControl()</div><div class="ttdef"><b>Definition:</b> Model.h:124</div></div>
+<div class="fragment">
+    <div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div>
+    <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by JOHN CHRISTIAN CASTILLO on 7/18/2021.</span>
+    </div>
+    <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
+    <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+    <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef TURBOHIKER_MODEL_H</span>
+    </div>
+    <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define TURBOHIKER_MODEL_H</span>
+    </div>
+    <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+    <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../Observers/LiveScoring.h&quot;</span>
+    </div>
+    <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;../Singletons/Transformation.h&quot;</span>
+    </div>
+    <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;EnemyHikers/Enemy.h&quot;</span>
+    </div>
+    <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;EntityMaker.h&quot;</span>
+    </div>
+    <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;MainCharacter.h&quot;</span>
+    </div>
+    <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span>
+    </div>
+    <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span>
+    </div>
+    <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span>
+    </div>
+    <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+    <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span
+            class="keyword">namespace </span><a class="code" href="namespace_t_h.html">TH</a> {
+    </div>
+    <div class="line"><a name="l00018"></a><span class="lineno"><a class="line"
+                                                                   href="class_t_h_1_1_model.html">   18</a></span>&#160;<span
+            class="keyword">class </span><a class="code" href="class_t_h_1_1_model.html">Model</a></div>
+    <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
+    <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; <span class="keywordtype">int</span>
+        lanes{4};
+    </div>
+    <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; <span
+            class="keywordtype">float</span> fps;
+    </div>
+    <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+    <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">private</span>:
+    </div>
+    <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; std::shared_ptr&lt;EntityMaker&gt;
+        entityFactory;
+    </div>
+    <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; std::shared_ptr&lt;MainCharacter&gt;
+        mainCharacter;
+    </div>
+    <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; std::shared_ptr&lt;SimpleAI&gt;
+        simpleAi;
+    </div>
+    <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; std::shared_ptr&lt;OBSERVER::LiveScoring&gt;
+        scoringSystem;
+    </div>
+    <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt;
+        enemies;
+    </div>
+    <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; std::vector&lt;std::shared_ptr&lt;Background&gt;&gt;
+        backgrounds;
+    </div>
+    <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; std::shared_ptr&lt;Finish&gt;
+        finishLine{<span class="keyword">nullptr</span>};
+    </div>
+    <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; std::vector&lt;std::shared_ptr&lt;PowerUp&gt;&gt;
+        powerUps;
+    </div>
+    <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+    <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_move.html">Move</a>
+        playerMove{};
+    </div>
+    <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_move.html">Move</a>
+        backgroundMove{};
+    </div>
+    <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_move.html">Move</a>
+        simpleAiMove{};
+    </div>
+    <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+    <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; <span class="comment">// simpleAI vars</span>
+    </div>
+    <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; <span class="keywordtype">bool</span>
+        enemyUp{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; <span class="keywordtype">bool</span>
+        enemyLeft{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; <span class="keywordtype">bool</span>
+        enemyRight{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; <span class="keywordtype">bool</span>
+        enemyUpLeft{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; <span class="keywordtype">bool</span>
+        enemyUpRight{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+    <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:
+    </div>
+    <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; <span class="keyword">const</span> <a
+            class="code" href="struct_t_h_1_1_move.html">Move</a>&amp; getPlayerMove() <span
+            class="keyword">const</span>;
+    </div>
+    <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; <span class="keywordtype">void</span>
+        setPlayerMove(<span class="keyword">const</span> <a class="code" href="struct_t_h_1_1_move.html">Move</a>&amp;
+        move);
+    </div>
+    <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; <span class="keyword">const</span> <a
+            class="code" href="struct_t_h_1_1_move.html">Move</a>&amp; getBackgroundMove() <span
+            class="keyword">const</span>;
+    </div>
+    <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; <span class="keywordtype">void</span>
+        setBackgroundMove(<span class="keyword">const</span> <a class="code" href="struct_t_h_1_1_move.html">Move</a>&amp;
+        move);
+    </div>
+    <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; <span class="keywordtype">void</span>
+        setSimpleAIMove(<span class="keyword">const</span> <a class="code" href="struct_t_h_1_1_move.html">Move</a>&amp;
+        move);
+    </div>
+    <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; <span class="keyword">const</span>
+        std::shared_ptr&lt;OBSERVER::LiveScoring&gt;&amp; getScoringSystem() <span class="keyword">const</span>;
+    </div>
+    <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; <span class="keyword">explicit</span>
+        <a class="code" href="class_t_h_1_1_model.html">Model</a>(<span class="keywordtype">float</span> frameLimit,
+        <span class="keyword">const</span> std::weak_ptr&lt;OBSERVER::LiveScoring&gt;&amp; scoringObserver)
+    </div>
+    <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; : fps(frameLimit),
+        scoringSystem(std::move(scoringObserver))
+    </div>
+    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; {</div>
+    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; entityFactory = std::make_shared&lt;EntityMaker&gt;();
+    </div>
+    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+    <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; enemies = std::move(<a class="code"
+                                                                                                          href="class_t_h_1_1_model.html#ad58c659b2865c0b813df834deeff4fdc">generateEnemies</a>());
+    </div>
+    <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; mainCharacter = generateMC();</div>
+    <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; simpleAi = generateAI();</div>
+    <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; backgrounds = generateBackground();
+    </div>
+    <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; scoringSystem = std::make_shared&lt;OBSERVER::LiveScoring&gt;();
+    </div>
+    <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; }</div>
+    <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+    <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; <span
+            class="keywordtype">float</span> getFps() <span class="keyword">const</span>;
+    </div>
+    <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+    <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; std::shared_ptr&lt;MainCharacter&gt;
+        getMainCharacter()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mainCharacter; }
+    </div>
+    <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; std::shared_ptr&lt;Finish&gt;
+        getFinishLine()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> finishLine; }
+    </div>
+    <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; std::shared_ptr&lt;SimpleAI&gt;
+        getSimpleAI()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> simpleAi; }
+    </div>
+    <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; std::vector&lt;std::shared_ptr&lt;Background&gt;&gt;
+        getBackgrounds()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> backgrounds; }
+    </div>
+    <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt;
+        getEnemies()
+    </div>
+    <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; {</div>
+    <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; <span class="keywordflow">if</span>
+        (enemies.empty()) {
+    </div>
+    <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; enemies = entityFactory-&gt;generateEnemies();
+    </div>
+    <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; }</div>
+    <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; <span
+            class="keywordflow">return</span> enemies;
+    </div>
+    <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; }</div>
+    <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; std::vector&lt;std::shared_ptr&lt;PowerUp&gt;&gt;
+        getPowerUps()
+    </div>
+    <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; {</div>
+    <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; <span class="keywordflow">if</span>
+        (powerUps.empty()) {
+    </div>
+    <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; powerUps = entityFactory-&gt;generatePowerUp();
+    </div>
+    <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; }</div>
+    <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; <span
+            class="keywordflow">return</span> powerUps;
+    </div>
+    <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; }</div>
+    <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+    <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; <span class="keywordtype">void</span>
+        generateFinishLine() { finishLine = entityFactory-&gt;generateFinishLine(); }
+    </div>
+    <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; std::shared_ptr&lt;MainCharacter&gt;
+        generateMC() { <span class="keywordflow">return</span> entityFactory-&gt;generateMainCharacter(lanes); };
+    </div>
+    <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; std::shared_ptr&lt;SimpleAI&gt;
+        generateAI() { <span class="keywordflow">return</span> entityFactory-&gt;generateAI(); };
+    </div>
+    <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+    <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; std::vector&lt;std::shared_ptr&lt;Background&gt;&gt;
+        generateBackground() { <span class="keywordflow">return</span> entityFactory-&gt;generateBackground(); }
+    </div>
+    <div class="line"><a name="l00093"></a><span class="lineno"><a class="line"
+                                                                   href="class_t_h_1_1_model.html#ad58c659b2865c0b813df834deeff4fdc">   93</a></span>&#160;
+        std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt; <a class="code"
+                                                           href="class_t_h_1_1_model.html#ad58c659b2865c0b813df834deeff4fdc">generateEnemies</a>()
+    </div>
+    <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; {</div>
+    <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; <span class="comment">// we can&#39;t just assign the generated enemies directly to our enemies container since enemies can be</span>
+    </div>
+    <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; <span
+            class="comment">// not empty</span></div>
+    <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt;
+        generatedEnemies = entityFactory-&gt;generateEnemies();
+    </div>
+    <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; <span class="keywordflow">for</span>
+        (std::shared_ptr&lt;Enemy&gt;&amp; enemy : generatedEnemies) {
+    </div>
+    <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; enemies.push_back(std::move(enemy));
+    </div>
+    <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; }</div>
+    <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; <span
+            class="keywordflow">return</span> enemies;
+    </div>
+    <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; }</div>
+    <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+    <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; std::vector&lt;std::shared_ptr&lt;PowerUp&gt;&gt;
+        generatePowerUps()
+    </div>
+    <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; {</div>
+    <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; <span class="comment">// we can&#39;t just assign the generated enemies directly to our enemies container since enemies can be</span>
+    </div>
+    <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; <span
+            class="comment">// not empty</span></div>
+    <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; std::vector&lt;std::shared_ptr&lt;PowerUp&gt;&gt;
+        generatedPowerUps = entityFactory-&gt;generatePowerUp();
+    </div>
+    <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; <span class="keywordflow">for</span>
+        (std::shared_ptr&lt;PowerUp&gt;&amp; powerUp : generatedPowerUps) {
+    </div>
+    <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;
+        powerUps.push_back(std::move(powerUp));
+    </div>
+    <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; }</div>
+    <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; <span
+            class="keywordflow">return</span> powerUps;
+    </div>
+    <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; }</div>
+    <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+    <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; <span class="keywordtype">void</span>
+        resetMoves()
+    </div>
+    <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; {</div>
+    <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; playerMove = {};</div>
+    <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; backgroundMove = {};</div>
+    <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; simpleAiMove = {};</div>
+    <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; }</div>
+    <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+    <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; <span class="keywordtype">void</span>
+        moveSimpleAI()
+    </div>
+    <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; {</div>
+    <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; simpleAi-&gt;move(simpleAiMove.x,
+        (simpleAiMove.y * simpleAi-&gt;getSlowingFactor() +
+    </div>
+    <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; backgroundMove.y * mainCharacter-&gt;getSlowingFactor()));
+    </div>
+    <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; <span class="keywordflow">if</span>
+        (simpleAi-&gt;isSlowed()) {
+    </div>
+    <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; simpleAi-&gt;reduceSlowingEffect(simpleAi-&gt;getSlowingFactor()
+        + 0.02f);
+    </div>
+    <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; }</div>
+    <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; <span class="keywordflow">if</span>
+        (simpleAi-&gt;isSped()) {
+    </div>
+    <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; simpleAi-&gt;reduceSpeedBoostEffect(simpleAi-&gt;getSlowingFactor()
+        - 0.01f);
+    </div>
+    <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; }</div>
+    <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; <span class="comment">//        simpleAi-&gt;move(simpleAiMove.x, (simpleAiMove.y*simpleAi-&gt;getSlowingFactor() -</span>
+    </div>
+    <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; <span class="comment">//        backgroundMove.y*mainCharacter-&gt;getSlowingFactor()));</span>
+    </div>
+    <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; }</div>
+    <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; <span class="keywordtype">void</span>
+        moveMC() { mainCharacter-&gt;move(playerMove.x, playerMove.y); }
+    </div>
+    <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
+    <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; <span class="keywordtype">void</span>
+        moveBackground()
+    </div>
+    <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; {</div>
+    <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_position.html">Position</a>
+        bg1Pos = backgrounds[0]-&gt;getGlobalBounds()-&gt;position;
+    </div>
+    <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_position.html">Position</a>
+        bg2Pos = backgrounds[1]-&gt;getGlobalBounds()-&gt;position;
+    </div>
+    <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_position.html">Position</a>
+        mcPos = mainCharacter-&gt;getGlobalBounds()-&gt;position;
+    </div>
+    <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; <span class="keywordflow">if</span>
+        (bg1Pos.y &gt; mcPos.y) {
+    </div>
+    <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; backgrounds[2]-&gt;setPosition(bg1Pos.x,
+        bg1Pos.y);
+    </div>
+    <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; backgrounds[0]-&gt;setPosition(</div>
+    <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; bg1Pos.x, bg1Pos.y - backgrounds[0]-&gt;getGlobalBounds()-&gt;dimentions.height
+        * 2);
+    </div>
+    <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; } <span
+            class="keywordflow">else</span> <span class="keywordflow">if</span> (bg2Pos.y &gt; mcPos.y) {
+    </div>
+    <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; backgrounds[2]-&gt;setPosition(bg2Pos.x,
+        bg2Pos.y);
+    </div>
+    <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; backgrounds[1]-&gt;setPosition(</div>
+    <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; bg2Pos.x, bg2Pos.y - backgrounds[1]-&gt;getGlobalBounds()-&gt;dimentions.height
+        * 2);
+    </div>
+    <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; }</div>
+    <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; <span class="keywordflow">for</span>
+        (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; bg : backgrounds) {
+    </div>
+    <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; bg-&gt;move(backgroundMove.x,
+        backgroundMove.y * mainCharacter-&gt;getSlowingFactor());
+    </div>
+    <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; }</div>
+    <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; <span class="keywordflow">if</span>
+        (mainCharacter-&gt;isSlowed()) {
+    </div>
+    <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; mainCharacter-&gt;reduceSlowingEffect(mainCharacter-&gt;getSlowingFactor()
+        + 0.01f);
+    </div>
+    <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; } <span
+            class="keywordflow">else</span> <span class="keywordflow">if</span> (mainCharacter-&gt;isSped()) {
+    </div>
+    <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; mainCharacter-&gt;reduceSpeedBoostEffect(mainCharacter-&gt;getSlowingFactor()
+        - 0.005f);
+    </div>
+    <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; }</div>
+    <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; }</div>
+    <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; <span class="keywordtype">void</span>
+        moveEnemies()
+    </div>
+    <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; {</div>
+    <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; <span class="comment">// generate new enemies if last generated enemy is past half the screen;</span>
+    </div>
+    <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; <span class="keywordflow">if</span>
+        (enemies.back()-&gt;getGlobalBounds()-&gt;position.y &gt;= 4.f) {
+    </div>
+    <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; <a class="code"
+                                                                                      href="class_t_h_1_1_model.html#ad58c659b2865c0b813df834deeff4fdc">generateEnemies</a>();
+    </div>
+    <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; }</div>
+    <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+    <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; <span class="keywordflow">for</span>
+        (<span class="keywordtype">int</span> i = enemies.size() - 1; i &gt;= 0; --i) {
+    </div>
+    <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; std::shared_ptr&lt;Enemy&gt; enemy =
+        enemies[i];
+    </div>
+    <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
+    <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; <span
+            class="keywordtype">float</span> movement =
+    </div>
+    <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; backgroundMove.y * enemy-&gt;getMovementSpeed()
+        * (mainCharacter-&gt;getSlowingFactor());
+    </div>
+    <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+    <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; <span class="keywordflow">if</span>
+        (enemy-&gt;isSteerRandolmy()) {
+    </div>
+    <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; steerRandomly(enemy);</div>
+    <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; } <span
+            class="keywordflow">else</span> <span class="keywordflow">if</span> (enemy-&gt;getGlobalBounds()-&gt;position.y
+        &gt;= 9.f) {
+    </div>
+    <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; <span class="comment">// remove enemies outside of scope</span>
+    </div>
+    <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; enemies.erase(enemies.begin() + i);
+    </div>
+    <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; } <span
+            class="keywordflow">else</span> {
+    </div>
+    <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; <span class="comment">// we first need to identify if it&#39;s a left to right hiker or a simple static hiker</span>
+    </div>
+    <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; <span class="comment">//  advance ai at normal speed even if mc is slowed;</span>
+    </div>
+    <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; <span class="keywordflow">if</span>
+        (enemy-&gt;isSlowed()) {
+    </div>
+    <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; <span class="keywordflow">if</span>
+        (enemy-&gt;getType() == EntityTypes::leftToRightHiker) {
+    </div>
+    <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; enemy-&gt;move(movement, movement);
+    </div>
+    <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; enemy-&gt;reduceSlowingEffect(enemy-&gt;getSlowingFactor()
+        + 0.1f);
+    </div>
+    <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; } <span
+            class="keywordflow">else</span> {
+    </div>
+    <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; enemy-&gt;move(0, movement);</div>
+    <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; enemy-&gt;reduceSlowingEffect(enemy-&gt;getSlowingFactor()
+        + 0.1f);
+    </div>
+    <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; }</div>
+    <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+    <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; } <span
+            class="keywordflow">else</span> {
+    </div>
+    <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; <span class="keywordflow">if</span>
+        (enemy-&gt;getType() == EntityTypes::leftToRightHiker) {
+    </div>
+    <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; enemy-&gt;move(movement, movement);
+    </div>
+    <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; } <span
+            class="keywordflow">else</span> {
+    </div>
+    <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; enemy-&gt;move(0, movement);</div>
+    <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; };</div>
+    <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; }</div>
+    <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; }</div>
+    <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; }</div>
+    <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; }</div>
+    <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
+    <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; <span class="keywordtype">void</span>
+        movePowerUps()
+    </div>
+    <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; {</div>
+    <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; <span class="comment">// generate new enemies if last generated enemy is past half the screen;</span>
+    </div>
+    <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; <span class="keywordflow">if</span>
+        (powerUps.empty()) {
+    </div>
+    <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; generatePowerUps();</div>
+    <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; } <span
+            class="keywordflow">else</span> <span class="keywordflow">if</span> (!powerUps.empty()) {
+    </div>
+    <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; <span class="keywordflow">if</span>
+        (powerUps.back()-&gt;getGlobalBounds()-&gt;position.y &gt;= 4.f) {
+    </div>
+    <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; generatePowerUps();</div>
+    <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; }</div>
+    <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; }</div>
+    <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
+    <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; <span class="keywordflow">for</span>
+        (<span class="keywordtype">int</span> i = powerUps.size() - 1; i &gt;= 0; --i) {
+    </div>
+    <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; std::shared_ptr&lt;PowerUp&gt;
+        powerUp = powerUps[i];
+    </div>
+    <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
+    <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; <span
+            class="keywordtype">float</span> movement = backgroundMove.y * mainCharacter-&gt;getSlowingFactor();
+    </div>
+    <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; <span class="keywordflow">if</span>
+        (powerUp-&gt;getGlobalBounds()-&gt;position.y &gt;= 9.f) {
+    </div>
+    <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; <span class="comment">// remove enemies outside of scope</span>
+    </div>
+    <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; powerUps.erase(powerUps.begin() + i);
+    </div>
+    <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; }</div>
+    <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+    <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; <span class="keywordflow">else</span>
+        {
+    </div>
+    <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; powerUp-&gt;move(0, movement);</div>
+    <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; }</div>
+    <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; }</div>
+    <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; }</div>
+    <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
+    <div class="line"><a name="l00227"></a><span class="lineno"><a class="line"
+                                                                   href="class_t_h_1_1_model.html#a28a54d5827461003374b7491c5981e2d">  227</a></span>&#160;
+        <span class="keywordtype">void</span> <a class="code"
+                                                 href="class_t_h_1_1_model.html#a28a54d5827461003374b7491c5981e2d">screenCollisionControl</a>()
+    </div>
+    <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; {</div>
+    <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_position.html">Position</a>
+        mcPos = mainCharacter-&gt;getGlobalBounds()-&gt;position;
+    </div>
+    <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_dimentions.html">Dimentions</a>
+        mcDim = mainCharacter-&gt;getGlobalBounds()-&gt;dimentions;
+    </div>
+    <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; <span class="keywordflow">if</span>
+        (mcPos.x - (mcDim.width / 2) &lt;= 0) {
+    </div>
+    <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; mainCharacter-&gt;setPosition(mcDim.width
+        / 2, mainCharacter-&gt;getGlobalBounds()-&gt;position.y);
+    </div>
+    <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; }</div>
+    <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; <span class="keywordflow">if</span>
+        (mcPos.x + (mcDim.width / 2) &gt;= 6.f) {
+    </div>
+    <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; mainCharacter-&gt;setPosition(6.f -
+        (mcDim.width / 2), mcPos.y);
+    </div>
+    <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; }</div>
+    <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
+    <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_position.html">Position</a>
+        aiPos = simpleAi-&gt;getGlobalBounds()-&gt;position;
+    </div>
+    <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_dimentions.html">Dimentions</a>
+        aiDim = simpleAi-&gt;getGlobalBounds()-&gt;dimentions;
+    </div>
+    <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; <span class="keywordflow">if</span>
+        (aiPos.x - (aiDim.width / 2) &lt;= 0) {
+    </div>
+    <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; simpleAi-&gt;setPosition(aiDim.width
+        / 2, simpleAi-&gt;getGlobalBounds()-&gt;position.y);
+    </div>
+    <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; }</div>
+    <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; <span class="keywordflow">if</span>
+        (aiPos.x + (aiDim.width / 2) &gt;= 6.f) {
+    </div>
+    <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; simpleAi-&gt;setPosition(6.f -
+        (aiDim.width / 2), aiPos.y);
+    </div>
+    <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; }</div>
+    <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; }</div>
+    <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
+    <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; <span class="keywordtype">void</span>
+        steerRandomly(<span class="keyword">const</span> std::shared_ptr&lt;Enemy&gt;&amp; enemy)
+    </div>
+    <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; {</div>
+    <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_move.html">Move</a>
+        enemyMove = backgroundMove;
+    </div>
+    <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; std::shared_ptr&lt;singleton::Random&gt;
+        random = singleton::Random::getInstance();
+    </div>
+    <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; std::vector&lt;Input&gt;
+        direction{Input::LEFT, Input::RIGHT};
+    </div>
+    <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; <span class="keywordtype">int</span>
+        index = random-&gt;intInInterval(0, 1);
+    </div>
+    <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; <span
+            class="keywordflow">switch</span> (direction[index]) {
+    </div>
+    <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; <span class="keywordflow">case</span>
+        LEFT:
+    </div>
+    <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; enemyMove.y = 0;</div>
+    <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; <span class="keywordflow">if</span>
+        (enemyMove.x == 0) {
+    </div>
+    <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; enemyMove.x -= 0.2f;</div>
+    <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; }</div>
+    <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; <span
+            class="keywordflow">break</span>;
+    </div>
+    <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; <span class="keywordflow">case</span>
+        RIGHT:
+    </div>
+    <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; enemyMove.y = 0;</div>
+    <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; <span class="keywordflow">if</span>
+        (enemyMove.x == 0) {
+    </div>
+    <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; enemyMove.x += 0.2f;</div>
+    <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; }</div>
+    <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; <span
+            class="keywordflow">break</span>;
+    </div>
+    <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; <span
+            class="keywordflow">default</span>:
+    </div>
+    <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; <span
+            class="keywordflow">break</span>;
+    </div>
+    <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; }</div>
+    <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; enemy-&gt;move(enemyMove.x,
+        enemyMove.y);
+    </div>
+    <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; enemy-&gt;setSteerRandolmy(<span
+            class="keyword">false</span>);
+    </div>
+    <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; }</div>
+    <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
+    <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; <span class="keywordtype">bool</span>
+        finishLineCollisionControl()
+    </div>
+    <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; {</div>
+    <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; std::cout &lt;&lt; <span
+            class="stringliteral">&quot;finishlinePos: &quot;</span> &lt;&lt; finishLine-&gt;getGlobalBounds()-&gt;position.y
+        &lt;&lt; std::endl;
+    </div>
+    <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; std::cout &lt;&lt; <span
+            class="stringliteral">&quot;MCPOS: &quot;</span> &lt;&lt; mainCharacter-&gt;getGlobalBounds()-&gt;position.y
+        &lt;&lt; std::endl;
+    </div>
+    <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; <span class="keywordflow">if</span>
+        (finishLine-&gt;getGlobalBounds()-&gt;position.y &gt; mainCharacter-&gt;getGlobalBounds()-&gt;position.y) {
+    </div>
+    <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; <span
+            class="keywordflow">return</span> <span class="keyword">true</span>;
+    </div>
+    <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; }</div>
+    <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; finishLine-&gt;move(0,
+        backgroundMove.y * mainCharacter-&gt;getSlowingFactor());
+    </div>
+    <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; <span
+            class="keywordflow">return</span> <span class="keyword">false</span>;
+    </div>
+    <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; }</div>
+    <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
+    <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; <span class="keywordtype">void</span>
+        aiCollisionPrevention(<span class="keyword">const</span> std::shared_ptr&lt;Enemy&gt;&amp; enemy,
+    </div>
+    <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; <span class="keyword">const</span>
+        std::shared_ptr&lt;GlobalBounds&gt;&amp; nextPosition)
+    </div>
+    <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; {</div>
+    <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; <span class="comment">// initialize the lookahead our AI has;</span>
+    </div>
+    <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; std::vector&lt;std::shared_ptr&lt;GlobalBounds&gt;&gt;
+        simpleAILookAhead = simpleAi-&gt;getLookAhead();
+    </div>
+    <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; <span class="keywordflow">for</span>
+        (<span class="keywordtype">int</span> j = 0; j &lt;= 2; ++j) {
+    </div>
+    <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; <span class="comment">// check whether the three frontal lookahead intersects with either the spawned enemy or the MC</span>
+    </div>
+    <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; <span class="comment">// if so warn our AI</span>
+    </div>
+    <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; <span class="keywordflow">if</span>
+        (simpleAILookAhead[j]-&gt;intersects&lt;float&gt;(enemy-&gt;getGlobalBounds()) or
+    </div>
+    <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; simpleAILookAhead[j]-&gt;intersects&lt;float&gt;(nextPosition))
+        {
+    </div>
+    <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; enemyUp = <span
+            class="keyword">true</span>;
+    </div>
+    <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; <span
+            class="keywordflow">break</span>;
+    </div>
+    <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; }</div>
+    <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; }</div>
+    <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; <span class="keywordflow">if</span>
+        (simpleAILookAhead[3]-&gt;intersects&lt;float&gt;(enemy-&gt;getGlobalBounds()) or
+    </div>
+    <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; simpleAILookAhead[3]-&gt;intersects&lt;float&gt;(nextPosition))
+        {
+    </div>
+    <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; enemyLeft = <span class="keyword">true</span>;
+    </div>
+    <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; }</div>
+    <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; <span class="keywordflow">if</span>
+        (simpleAILookAhead[4]-&gt;intersects&lt;float&gt;(enemy-&gt;getGlobalBounds()) or
+    </div>
+    <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; simpleAILookAhead[4]-&gt;intersects&lt;float&gt;(nextPosition))
+        {
+    </div>
+    <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; enemyRight = <span class="keyword">true</span>;
+    </div>
+    <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; }</div>
+    <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; <span
+            class="comment">// up left</span></div>
+    <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; <span class="keywordflow">if</span>
+        (simpleAILookAhead[5]-&gt;intersects&lt;float&gt;(enemy-&gt;getGlobalBounds()) or
+    </div>
+    <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; simpleAILookAhead[5]-&gt;intersects&lt;float&gt;(nextPosition))
+        {
+    </div>
+    <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; enemyUpLeft = <span class="keyword">true</span>;
+    </div>
+    <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; }</div>
+    <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; <span
+            class="comment">// up right</span></div>
+    <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; <span class="keywordflow">if</span>
+        (simpleAILookAhead[6]-&gt;intersects&lt;float&gt;(enemy-&gt;getGlobalBounds()) or
+    </div>
+    <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; simpleAILookAhead[6]-&gt;intersects&lt;float&gt;(nextPosition))
+        {
+    </div>
+    <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; enemyUpRight = <span class="keyword">true</span>;
+    </div>
+    <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; }</div>
+    <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; }</div>
+    <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; <span class="keywordtype">void</span>
+        collisionWithEnemyControl(<span class="keyword">const</span> std::shared_ptr&lt;GlobalBounds&gt;&amp;
+        nextPosition,
+    </div>
+    <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; <span class="keyword">const</span>
+        std::shared_ptr&lt;GlobalBounds&gt;&amp; aiNextPosition)
+    </div>
+    <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160; {</div>
+    <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; <span class="keywordflow">for</span>
+        (<span class="keywordtype">int</span> i = enemies.size() - 1; i &gt;= 0; --i) {
+    </div>
+    <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
+    <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; <span class="comment">// Try to prevent AI from colliding in the future</span>
+    </div>
+    <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; aiCollisionPrevention(enemies[i],
+        nextPosition);
+    </div>
+    <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
+    <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; <span class="comment">// The MC&#39;s area of effect is the whole screen</span>
+    </div>
+    <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; <span class="comment">// we need to know if our MC is scaring off enemy players, if so we add scarePoints to the</span>
+    </div>
+    <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; <span class="comment">// player This in turn causes the enemy to panic steer this scarePoint has a threshold and once</span>
+    </div>
+    <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; <span class="comment">// exceeded it can throw off the enemy</span>
+    </div>
+    <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; <span class="keywordflow">if</span>
+        (mainCharacter-&gt;isScaringEnemy() and mainCharacter-&gt;getScareCooldown() &lt;= 0) {
+    </div>
+    <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; <span class="keywordflow">if</span>
+        (enemies[i]-&gt;exceededScareThreshold()) {
+    </div>
+    <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160; enemies.erase(enemies.begin() + i);
+    </div>
+    <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; scoringSystem-&gt;hikerThrownOff();
+    </div>
+    <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; <span
+            class="keywordflow">continue</span>;
+    </div>
+    <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; } <span
+            class="keywordflow">else</span> {
+    </div>
+    <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; <span class="comment">// if it hasn&#39;t exceeded the threshold yet, we will steer the enemy randomly</span>
+    </div>
+    <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; enemies[i]-&gt;setSteerRandolmy(<span
+            class="keyword">true</span>);
+    </div>
+    <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; scoringSystem-&gt;hikerOffended();
+    </div>
+    <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; }</div>
+    <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; }</div>
+    <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
+    <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; <span class="keywordflow">if</span>
+        (enemies[i]-&gt;getGlobalBounds()-&gt;intersects&lt;float&gt;(nextPosition)) {
+    </div>
+    <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; <span class="comment">// if we collided we want to penalize our player by slowing it down and subtracting</span>
+    </div>
+    <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; <span class="comment">// points unless our main character is invincible</span>
+    </div>
+    <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; <span class="keywordflow">if</span>
+        (!mainCharacter-&gt;isInvincible()) {
+    </div>
+    <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; scoringSystem-&gt;crashed();</div>
+    <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160; mainCharacter-&gt;slowDown();</div>
+    <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; }</div>
+    <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;</div>
+    <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; enemies.erase(enemies.begin() + i);
+    </div>
+    <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; }</div>
+    <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
+    <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; <span class="keywordflow">if</span>
+        (enemies[i]-&gt;getGlobalBounds()-&gt;intersects&lt;<span class="keywordtype">float</span>&gt;(aiNextPosition))
+        {
+    </div>
+    <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160; <span class="comment">// if we collided we want to penalize our player by slowing it down and subtracting</span>
+    </div>
+    <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; <span
+            class="comment">// points</span></div>
+    <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; simpleAi-&gt;slowDown();</div>
+    <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160; enemies.erase(enemies.begin() + i);
+    </div>
+    <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; }</div>
+    <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; }</div>
+    <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; }</div>
+    <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;</div>
+    <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; <span class="keywordtype">void</span>
+        collisionWithPowerUpControl(<span class="keyword">const</span> std::shared_ptr&lt;GlobalBounds&gt;&amp;
+        nextPosition,
+    </div>
+    <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; <span class="keyword">const</span>
+        std::shared_ptr&lt;GlobalBounds&gt;&amp; aiNextPosition)
+    </div>
+    <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160; {</div>
+    <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; <span class="keywordflow">for</span>
+        (<span class="keywordtype">int</span> i = powerUps.size() - 1; i &gt;= 0; --i) {
+    </div>
+    <div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; std::shared_ptr&lt;PowerUp&gt;
+        powerUp = powerUps[i];
+    </div>
+    <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
+    <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; <span class="keywordflow">if</span>
+        (powerUps[i]-&gt;getGlobalBounds()-&gt;intersects&lt;<span class="keywordtype">float</span>&gt;(nextPosition)) {
+    </div>
+    <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; <span class="comment">// if we collided we want to check which powerup our player collided with;</span>
+    </div>
+    <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160; <span class="keywordflow">if</span>
+        (powerUp-&gt;getType() == EntityTypes::speedUp) {
+    </div>
+    <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160; mainCharacter-&gt;speedUp();</div>
+    <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; } <span
+            class="keywordflow">else</span> <span class="keywordflow">if</span> (powerUp-&gt;getType() ==
+        EntityTypes::invincibilityStar) {
+    </div>
+    <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; mainCharacter-&gt;startInvincibility();
+    </div>
+    <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160; }</div>
+    <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; powerUps.erase(powerUps.begin() + i);
+    </div>
+    <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; <span
+            class="keywordflow">return</span>; <span
+            class="comment">// to avoid multiple players picking up power up</span></div>
+    <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160; }</div>
+    <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160; <span class="keywordflow">if</span>
+        (powerUps[i]-&gt;getGlobalBounds()-&gt;intersects&lt;<span class="keywordtype">float</span>&gt;(aiNextPosition))
+        {
+    </div>
+    <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; <span class="comment">// if we collided we want to check which powerup our player collided with;</span>
+    </div>
+    <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160; <span class="keywordflow">if</span>
+        (powerUp-&gt;getType() == EntityTypes::speedUp) {
+    </div>
+    <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; simpleAi-&gt;speedUp();</div>
+    <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; }</div>
+    <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160; powerUps.erase(powerUps.begin() + i);
+    </div>
+    <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; }</div>
+    <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160; }</div>
+    <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160; }</div>
+    <div class="line"><a name="l00400"></a><span class="lineno"><a class="line"
+                                                                   href="class_t_h_1_1_model.html#a743415324b9cc40294616194ed335995">  400</a></span>&#160;
+        <span class="keywordtype">bool</span> <a class="code"
+                                                 href="class_t_h_1_1_model.html#a743415324b9cc40294616194ed335995">collisionControl</a>(<span
+                class="keywordtype">bool</span> finishLineGenerated)
+    </div>
+    <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160; {</div>
+    <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
+    <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; <span class="keywordflow">if</span>
+        (finishLineGenerated) {
+    </div>
+    <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; <span class="keywordflow">if</span>
+        (finishLineCollisionControl()) {
+    </div>
+    <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; <span
+            class="keywordflow">return</span> <span class="keyword">true</span>;
+    </div>
+    <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160; }</div>
+    <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160; }</div>
+    <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; <span class="comment">// first initialize the next position of our player;</span>
+    </div>
+    <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160; std::shared_ptr&lt;GlobalBounds&gt;
+        nextPosition;
+    </div>
+    <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160; std::shared_ptr&lt;GlobalBounds&gt;
+        playerBounds = mainCharacter-&gt;getGlobalBounds();
+    </div>
+    <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160; nextPosition = std::make_shared&lt;GlobalBounds&gt;(*playerBounds);
+    </div>
+    <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160; nextPosition-&gt;position.x +=
+        (playerMove.x - backgroundMove.x);
+    </div>
+    <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160; nextPosition-&gt;position.y +=
+        (playerMove.y - backgroundMove.y);
+    </div>
+    <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;</div>
+    <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160; <span class="comment">// then initialize the next position of our AI;</span>
+    </div>
+    <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; std::shared_ptr&lt;GlobalBounds&gt;
+        aiNextPosition;
+    </div>
+    <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160; std::shared_ptr&lt;GlobalBounds&gt;
+        simpleAIBounds = simpleAi-&gt;getGlobalBounds();
+    </div>
+    <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160; aiNextPosition = std::make_shared&lt;GlobalBounds&gt;(*simpleAIBounds);
+    </div>
+    <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; aiNextPosition-&gt;position.x +=
+        (simpleAiMove.x - backgroundMove.x);
+    </div>
+    <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160; aiNextPosition-&gt;position.y +=
+        (simpleAiMove.y - backgroundMove.y);
+    </div>
+    <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;</div>
+    <div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;
+        collisionWithPowerUpControl(nextPosition, aiNextPosition);
+    </div>
+    <div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;
+        collisionWithEnemyControl(nextPosition, aiNextPosition);
+    </div>
+    <div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;</div>
+    <div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160; simpleAi-&gt;randomMove(enemyUp,
+        enemyLeft, enemyRight, enemyUpLeft, enemyUpRight, simpleAiMove.y,
+    </div>
+    <div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160; simpleAiMove.y);</div>
+    <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160; enemyLeft = <span class="keyword">false</span>;
+    </div>
+    <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; enemyRight = <span class="keyword">false</span>;
+    </div>
+    <div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160; enemyUp = <span
+            class="keyword">false</span>;
+    </div>
+    <div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160; enemyUpLeft = <span class="keyword">false</span>;
+    </div>
+    <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160; enemyUpRight = <span class="keyword">false</span>;
+    </div>
+    <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160; <span class="keywordflow">if</span>
+        (mainCharacter-&gt;isScaringEnemy() and mainCharacter-&gt;getScareCooldown() &lt;= 0) {
+    </div>
+    <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160; simpleAi-&gt;slowDown();</div>
+    <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160; mainCharacter-&gt;resetScareCooldown();
+    </div>
+    <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160; }</div>
+    <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160; <span class="keywordflow">if</span>
+        (mainCharacter-&gt;isInvincible()) {
+    </div>
+    <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160; mainCharacter-&gt;decreaseInvincibilityDuration(0.05);
+    </div>
+    <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160; }</div>
+    <div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160; mainCharacter-&gt;decrementScareCooldown();
+    </div>
+    <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;</div>
+    <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160; mainCharacter-&gt;setScareEnemy(<span
+            class="keyword">false</span>);
+    </div>
+    <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160; scoringSystem-&gt;advance();</div>
+    <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160; <span
+            class="keywordflow">return</span> <span class="keyword">false</span>;
+    </div>
+    <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160; }</div>
+    <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;};</div>
+    <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;} <span class="comment">// namespace TH</span>
+    </div>
+    <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;</div>
+    <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_MODEL_H</span>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_model_html">
+        <div class="ttname"><a href="class_t_h_1_1_model.html">TH::Model</a></div>
+        <div class="ttdef"><b>Definition:</b> Model.h:18</div>
+    </div>
+    <div class="ttc" id="namespace_t_h_html">
+        <div class="ttname"><a href="namespace_t_h.html">TH</a></div>
+        <div class="ttdef"><b>Definition:</b> Controller.h:16</div>
+    </div>
+    <div class="ttc" id="struct_t_h_1_1_move_html">
+        <div class="ttname"><a href="struct_t_h_1_1_move.html">TH::Move</a></div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:42</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_model_html_a28a54d5827461003374b7491c5981e2d">
+        <div class="ttname"><a href="class_t_h_1_1_model.html#a28a54d5827461003374b7491c5981e2d">TH::Model::screenCollisionControl</a>
+        </div>
+        <div class="ttdeci">void screenCollisionControl()</div>
+        <div class="ttdef"><b>Definition:</b> Model.h:227</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_model_html_a743415324b9cc40294616194ed335995">
+        <div class="ttname"><a href="class_t_h_1_1_model.html#a743415324b9cc40294616194ed335995">TH::Model::collisionControl</a>
+        </div>
+        <div class="ttdeci">bool collisionControl(bool finishLineGenerated)</div>
+        <div class="ttdef"><b>Definition:</b> Model.h:400</div>
+    </div>
+    <div class="ttc" id="struct_t_h_1_1_position_html">
+        <div class="ttname"><a href="struct_t_h_1_1_position.html">TH::Position</a></div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:15</div>
+    </div>
+    <div class="ttc" id="struct_t_h_1_1_dimentions_html">
+        <div class="ttname"><a href="struct_t_h_1_1_dimentions.html">TH::Dimentions</a></div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:34</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_model_html_ad58c659b2865c0b813df834deeff4fdc">
+        <div class="ttname"><a href="class_t_h_1_1_model.html#ad58c659b2865c0b813df834deeff4fdc">TH::Model::generateEnemies</a>
+        </div>
+        <div class="ttdeci">std::vector&lt; std::shared_ptr&lt; Enemy &gt; &gt; generateEnemies()</div>
+        <div class="ttdef"><b>Definition:</b> Model.h:93</div>
+    </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

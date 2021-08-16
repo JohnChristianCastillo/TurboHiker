@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['maincharacter',['MainCharacter',['../class_main_character.html',1,'MainCharacter'],['../class_main_character.html#aacd15121a3f8cab760aec751e348e17d',1,'MainCharacter::MainCharacter()']]],
-  ['model',['Model',['../class_model.html',1,'']]],
-  ['modeltoview',['modelToView',['../classsingleton_1_1_transformation.html#a4db8bb77746a79641a057c19b30785c6',1,'singleton::Transformation']]],
-  ['move',['Move',['../struct_move.html',1,'']]]
+    ['hikeroffended', ['hikerOffended', ['../class_t_h_1_1_o_b_s_e_r_v_e_r_1_1_live_scoring.html#a2ac5be1a4eec887debfbcbea9a59843a', 1, 'TH::OBSERVER::LiveScoring']]],
+    ['hikerthrownoff', ['hikerThrownOff', ['../class_t_h_1_1_o_b_s_e_r_v_e_r_1_1_live_scoring.html#afa83bcefda1cfa4c480fd97291cf6f4c', 1, 'TH::OBSERVER::LiveScoring']]]
 ];

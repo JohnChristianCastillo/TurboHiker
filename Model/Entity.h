@@ -76,7 +76,6 @@ public:
                 } else {
                         slowingFactor = 2;
                 }
-                // std::cout << "slowing factor: " << slowingFactor << std::endl;
         }
         virtual EntityTypes getType() const = 0;
         float getMovementSpeed() const { return movementSpeed; };

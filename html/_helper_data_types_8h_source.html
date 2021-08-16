@@ -62,10 +62,247 @@ $(function() {
 <div class="title">HelperDataTypes.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by JOHN CHRISTIAN CASTILLO on 7/18/2021.</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef TURBOHIKER_HELPERDATATYPES_H</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define TURBOHIKER_HELPERDATATYPES_H</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; <span class="comment">/*</span></div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">struct Coordinates</span></div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">{</span></div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">    //          x      y</span></div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">    std::pair&lt;float, float&gt; lowLeft;</span></div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">    std::pair&lt;float, float&gt; upRight;</span></div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"></span></div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">    Coordinates(std::pair&lt;float, float&gt; lowerLeft, std::pair&lt;float, float&gt; upperRight): lowLeft(lowerLeft), upRight(upperRight){}</span></div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">};</span></div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">*/</span></div><div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="struct_position.html">   24</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_position.html">Position</a>{</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">float</span> x;</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">float</span> y;</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="struct_position.html">Position</a>(<span class="keywordtype">float</span> xCor, <span class="keywordtype">float</span> yCor):x(xCor), y(yCor){}</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">enum</span> EntityTypes</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    mainCharacter,</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    staticHiker,</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    background</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div><div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="struct_dimentions.html">   38</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_dimentions.html">Dimentions</a>{</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">float</span> width;</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">float</span> height;</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="struct_dimentions.html">Dimentions</a>(<span class="keywordtype">float</span> _width, <span class="keywordtype">float</span> _height):width(_width), height(_height){};</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;};</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div><div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="struct_move.html">   44</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_move.html">Move</a>{</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">float</span> x;</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">float</span> y;</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;};</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">enum</span> Input{</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    UP,</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    DOWN,</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    LEFT,</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    RIGHT,</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    ZERO,</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    ONE</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div><div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="struct_global_bounds.html">   57</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_global_bounds.html">GlobalBounds</a>{</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="struct_position.html">Position</a> position;</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="struct_dimentions.html">Dimentions</a> dimentions;</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="struct_global_bounds.html">GlobalBounds</a>(<a class="code" href="struct_position.html">Position</a>&amp; pos, <a class="code" href="struct_dimentions.html">Dimentions</a>&amp; dim): position(pos), dimentions(dim) {};</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif//TURBOHIKER_HELPERDATATYPES_H</span></div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div><div class="ttc" id="struct_dimentions_html"><div class="ttname"><a href="struct_dimentions.html">Dimentions</a></div><div class="ttdef"><b>Definition:</b> HelperDataTypes.h:38</div></div>
-<div class="ttc" id="struct_move_html"><div class="ttname"><a href="struct_move.html">Move</a></div><div class="ttdef"><b>Definition:</b> HelperDataTypes.h:44</div></div>
-<div class="ttc" id="struct_position_html"><div class="ttname"><a href="struct_position.html">Position</a></div><div class="ttdef"><b>Definition:</b> HelperDataTypes.h:24</div></div>
-<div class="ttc" id="struct_global_bounds_html"><div class="ttname"><a href="struct_global_bounds.html">GlobalBounds</a></div><div class="ttdef"><b>Definition:</b> HelperDataTypes.h:57</div></div>
+<div class="fragment">
+    <div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div>
+    <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by JOHN CHRISTIAN CASTILLO on 7/18/2021.</span>
+    </div>
+    <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
+    <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+    <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef TURBOHIKER_HELPERDATATYPES_H</span>
+    </div>
+    <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define TURBOHIKER_HELPERDATATYPES_H</span>
+    </div>
+    <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+    <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span>
+    </div>
+    <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span>
+    </div>
+    <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+    <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span
+            class="keyword">namespace </span><a class="code" href="namespace_t_h.html">TH</a> {
+    </div>
+    <div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="struct_t_h_1_1_position.html">   15</a></span>&#160;<span
+            class="keyword">struct </span><a class="code" href="struct_t_h_1_1_position.html">Position</a></div>
+    <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
+    <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; <span
+            class="keywordtype">float</span> x;
+    </div>
+    <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; <span
+            class="keywordtype">float</span> y;
+    </div>
+    <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_position.html">Position</a>(<span
+            class="keywordtype">float</span> xCor, <span class="keywordtype">float</span> yCor) : x(xCor), y(yCor) {}
+    </div>
+    <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_position.html">Position</a>(<span
+            class="keyword">const</span> <a class="code" href="struct_t_h_1_1_position.html">Position</a>&amp; pos) =
+        <span class="keywordflow">default</span>;
+    </div>
+    <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;};</div>
+    <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+    <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">enum</span>
+        EntityTypes
+    </div>
+    <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
+    <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; mainCharacter,</div>
+    <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; staticHiker,</div>
+    <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; leftToRightHiker,</div>
+    <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; background,</div>
+    <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; finishLine,</div>
+    <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; speedUp,</div>
+    <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; invincibilityStar</div>
+    <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;};</div>
+    <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+    <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="struct_t_h_1_1_dimentions.html">   34</a></span>&#160;<span
+            class="keyword">struct </span><a class="code" href="struct_t_h_1_1_dimentions.html">Dimentions</a></div>
+    <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
+    <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span
+            class="keywordtype">float</span> width;
+    </div>
+    <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; <span
+            class="keywordtype">float</span> height;
+    </div>
+    <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_dimentions.html">Dimentions</a>(<span
+            class="keywordtype">float</span> _width, <span class="keywordtype">float</span> _height) : width(_width),
+        height(_height){};
+    </div>
+    <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_dimentions.html">Dimentions</a>(<span
+            class="keyword">const</span> <a class="code" href="struct_t_h_1_1_dimentions.html">Dimentions</a>&amp; dim)
+        = <span class="keywordflow">default</span>;
+    </div>
+    <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
+    <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+    <div class="line"><a name="l00042"></a><span class="lineno"><a class="line"
+                                                                   href="struct_t_h_1_1_move.html">   42</a></span>&#160;<span
+            class="keyword">struct </span><a class="code" href="struct_t_h_1_1_move.html">Move</a></div>
+    <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+    <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; <span
+            class="keywordtype">float</span> x;
+    </div>
+    <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; <span
+            class="keywordtype">float</span> y;
+    </div>
+    <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_move.html">Move</a>(<span
+            class="keyword">const</span> <span class="keywordtype">float</span>&amp; _x, <span
+            class="keyword">const</span> <span class="keywordtype">float</span>&amp; _y) : x(_x), y(_y){};
+    </div>
+    <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_move.html">Move</a>()
+        = <span class="keywordflow">default</span>;
+    </div>
+    <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_move.html">Move</a>
+        operator*(<span class="keyword">const</span> <span class="keywordtype">float</span>&amp; movementSpeed)
+    </div>
+    <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; {</div>
+    <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; x *= movementSpeed;</div>
+    <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; y *= movementSpeed;</div>
+    <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; }</div>
+    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
+    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">enum</span>
+        Input
+    </div>
+    <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
+    <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; UP,</div>
+    <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; DOWN,</div>
+    <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; LEFT,</div>
+    <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; RIGHT,</div>
+    <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; HONKING,</div>
+    <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; SCARING,</div>
+    <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; ZERO,</div>
+    <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; ENTER</div>
+    <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
+    <div class="line"><a name="l00066"></a><span class="lineno"><a class="line"
+                                                                   href="struct_t_h_1_1_global_bounds.html">   66</a></span>&#160;<span
+            class="keyword">struct </span><a class="code" href="struct_t_h_1_1_global_bounds.html">GlobalBounds</a>
+    </div>
+    <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
+    <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_position.html">Position</a>
+        position;
+    </div>
+    <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_dimentions.html">Dimentions</a>
+        dimentions;
+    </div>
+    <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+    <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_global_bounds.html">GlobalBounds</a>(<span
+            class="keyword">const</span> <a class="code" href="struct_t_h_1_1_position.html">Position</a>&amp; pos,
+        <span class="keyword">const</span> <a class="code" href="struct_t_h_1_1_dimentions.html">Dimentions</a>&amp;
+        dim) : position(pos), dimentions(dim){};
+    </div>
+    <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; <span class="keyword">template</span>
+        &lt;<span class="keyword">typename</span> type&gt;
+    </div>
+    <div class="line"><a name="l00078"></a><span class="lineno"><a class="line"
+                                                                   href="struct_t_h_1_1_global_bounds.html#aa2314dd3321a54354448cabf605558c0">   78</a></span>&#160;
+        <span class="keywordtype">bool</span> <a class="code"
+                                                 href="struct_t_h_1_1_global_bounds.html#aa2314dd3321a54354448cabf605558c0">intersects</a>(<span
+                class="keyword">const</span> std::shared_ptr&lt;GlobalBounds&gt;&amp; nextPosition)<span
+                class="keyword"> const</span></div>
+    <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">        </span>{
+    </div>
+    <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+    <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; <span class="comment">// calculate leftX and topY of current</span>
+    </div>
+    <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; type left = position.x -
+        dimentions.width / 2;
+    </div>
+    <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; type top = position.y -
+        dimentions.height / 2;
+    </div>
+    <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+    <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; <span class="comment">// calculate leftX and topY of other object</span>
+    </div>
+    <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; type nextLeft = nextPosition-&gt;position.x
+        - nextPosition-&gt;dimentions.width / 2;
+    </div>
+    <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; type nextTop = nextPosition-&gt;position.y
+        - nextPosition-&gt;dimentions.height / 2;
+    </div>
+    <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+    <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; <span class="comment">// Compute the min and max x and y of the the entity we&#39;re in</span>
+    </div>
+    <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+    <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; type thisMinX = left;</div>
+    <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; type thisMaxX = <span
+            class="keyword">static_cast&lt;</span>type<span class="keyword">&gt;</span>(left + dimentions.width);
+    </div>
+    <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; type thisMinY = top;</div>
+    <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; type thisMaxY = <span
+            class="keyword">static_cast&lt;</span>type<span class="keyword">&gt;</span>(top + dimentions.height);
+    </div>
+    <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+    <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; <span class="comment">// Compute the min and max x and y of the the next position we&#39;re in</span>
+    </div>
+    <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; type r2MinX = nextLeft;</div>
+    <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; type r2MaxX = <span class="keyword">static_cast&lt;</span>type<span
+            class="keyword">&gt;</span>(nextLeft + dimentions.width);
+    </div>
+    <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; type r2MinY = nextTop;</div>
+    <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; type r2MaxY = <span class="keyword">static_cast&lt;</span>type<span
+            class="keyword">&gt;</span>(nextTop + dimentions.height);
+    </div>
+    <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+    <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; <span class="comment">// Compute the intersection boundaries</span>
+    </div>
+    <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; type interLeft = std::max(thisMinX,
+        r2MinX);
+    </div>
+    <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; type interTop = std::max(thisMinY,
+        r2MinY);
+    </div>
+    <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; type interRight = std::min(thisMaxX,
+        r2MaxX);
+    </div>
+    <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; type interBottom = std::min(thisMaxY,
+        r2MaxY);
+    </div>
+    <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+    <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; <span class="keywordtype">bool</span>
+        b = (interLeft &lt; interRight) &amp;&amp; (interTop &lt; interBottom);
+    </div>
+    <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; <span
+            class="keywordflow">return</span> b;
+    </div>
+    <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; }</div>
+    <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};</div>
+    <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;} <span class="comment">// namespace TH</span>
+    </div>
+    <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_HELPERDATATYPES_H</span>
+    </div>
+    <div class="ttc" id="namespace_t_h_html">
+        <div class="ttname"><a href="namespace_t_h.html">TH</a></div>
+        <div class="ttdef"><b>Definition:</b> Controller.h:16</div>
+    </div>
+    <div class="ttc" id="struct_t_h_1_1_move_html">
+        <div class="ttname"><a href="struct_t_h_1_1_move.html">TH::Move</a></div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:42</div>
+    </div>
+    <div class="ttc" id="struct_t_h_1_1_position_html">
+        <div class="ttname"><a href="struct_t_h_1_1_position.html">TH::Position</a></div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:15</div>
+    </div>
+    <div class="ttc" id="struct_t_h_1_1_global_bounds_html">
+        <div class="ttname"><a href="struct_t_h_1_1_global_bounds.html">TH::GlobalBounds</a></div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:66</div>
+    </div>
+    <div class="ttc" id="struct_t_h_1_1_dimentions_html">
+        <div class="ttname"><a href="struct_t_h_1_1_dimentions.html">TH::Dimentions</a></div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:34</div>
+    </div>
+    <div class="ttc" id="struct_t_h_1_1_global_bounds_html_aa2314dd3321a54354448cabf605558c0">
+        <div class="ttname"><a href="struct_t_h_1_1_global_bounds.html#aa2314dd3321a54354448cabf605558c0">TH::GlobalBounds::intersects</a>
+        </div>
+        <div class="ttdeci">bool intersects(const std::shared_ptr&lt; GlobalBounds &gt; &amp;nextPosition) const</div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:78</div>
+    </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

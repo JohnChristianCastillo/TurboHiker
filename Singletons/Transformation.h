@@ -18,7 +18,6 @@ class Transformation
         Dimentions screenDimentions;
 
         explicit Transformation(Dimentions dimentions);
-        Transformation() = default;
 
 public:
         static std::shared_ptr<Transformation> getInstance() { return transformation; }

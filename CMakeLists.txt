@@ -25,17 +25,17 @@ add_executable( TurboHiker
                 View/View.h
 
                 Singletons/Random.cpp
-                Singletons/Random.h
-                Singletons/Transformation.cpp
-                Singletons/Transformation.h
+        Singletons/Random.h
+        Singletons/Transformation.cpp
+        Singletons/Transformation.h
 
-                Model/Background.cpp
-                Model/Background.h
+        Model/Background.cpp
+        Model/Background.h
 
-                Controller/Controller.cpp
-                Controller/Controller.h
+        Controller/Controller.cpp
+        Controller/Controller.h
 
-                Discarded.h Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h Model/Finish.cpp Model/Finish.h Model/PowerUps/SpeedUp.cpp Model/PowerUps/SpeedUp.h Model/PowerUps/PowerUp.cpp Model/PowerUps/PowerUp.h Model/EnemyHikers/LeftToRightHiker.cpp Model/EnemyHikers/LeftToRightHiker.h Model/PowerUps/InvincibilityStar.cpp Model/PowerUps/InvincibilityStar.h)
+        Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h Model/Finish.cpp Model/Finish.h Model/PowerUps/SpeedUp.cpp Model/PowerUps/SpeedUp.h Model/PowerUps/PowerUp.cpp Model/PowerUps/PowerUp.h Model/EnemyHikers/LeftToRightHiker.cpp Model/EnemyHikers/LeftToRightHiker.h Model/PowerUps/InvincibilityStar.cpp Model/PowerUps/InvincibilityStar.h)
 
 #[[ COMMAND FOR WORKING WITH WINDOWS
 
