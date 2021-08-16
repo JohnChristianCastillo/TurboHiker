@@ -7,15 +7,17 @@
 
 #include "Enemy.h"
 
-class StaticHiker: public Enemy {
+namespace TH {
+class StaticHiker : public Enemy
+{
 public:
-    /**
-     * Initializes a static hiker given a horizontal offset
-     * @param horizontalOffset
-     */
-    explicit StaticHiker(const float& horizontalOffset);
-    EntityTypes getType() const override { return EntityTypes::staticHiker; }
+        /**
+         * Initializes a static hiker given a horizontal offset
+         * @param horizontalOffset
+         */
+        explicit StaticHiker(const float& horizontalOffset);
+        EntityTypes getType() const override { return EntityTypes::staticHiker; }
 };
+} // namespace TH
 
-
-#endif//TURBOHIKER_STATICHIKER_H
+#endif // TURBOHIKER_STATICHIKER_H

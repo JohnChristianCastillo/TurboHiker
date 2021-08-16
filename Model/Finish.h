@@ -5,13 +5,15 @@
 #ifndef TURBOHIKER_FINISH_H
 #define TURBOHIKER_FINISH_H
 
-
 #include "Entity.h"
-class Finish: public Entity {
+
+namespace TH {
+class Finish : public Entity
+{
 public:
-    explicit Finish();
-    EntityTypes getType() const override;
+        explicit Finish();
+        EntityTypes getType() const override;
 };
+} // namespace TH
 
-
-#endif//TURBOHIKER_FINISH_H
+#endif // TURBOHIKER_FINISH_H

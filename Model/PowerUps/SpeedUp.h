@@ -5,15 +5,15 @@
 #ifndef TURBOHIKER_SPEEDUP_H
 #define TURBOHIKER_SPEEDUP_H
 
-
 #include "PowerUp.h"
 
-class SpeedUp: public PowerUp {
+namespace TH {
+class SpeedUp : public PowerUp
+{
 public:
-    explicit SpeedUp(const float& horizontalOffset);
-    EntityTypes getType() const override;
-
+        explicit SpeedUp(const float& horizontalOffset);
+        EntityTypes getType() const override;
 };
+} // namespace TH
 
-
-#endif//TURBOHIKER_SPEEDUP_H
+#endif // TURBOHIKER_SPEEDUP_H

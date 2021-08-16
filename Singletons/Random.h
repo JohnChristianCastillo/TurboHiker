@@ -8,7 +8,8 @@
 #include "memory"
 #include <random>
 
-namespace singleton{
+namespace TH {
+namespace singleton {
 class Random
 {
         static std::shared_ptr<Random> random;
@@ -34,7 +35,7 @@ public:
                 std::mt19937 gen(rd()); // seed the generator
                 std::uniform_int_distribution<> distr(left, right); // define the range
                 //to use floats one can use std::uniform_real_distribution<>*/
-                //return rand() % (left - right + 1) + left;
+                // return rand() % (left - right + 1) + left;
                 return rand() % (right - left + 1) + left;
         }
         /**
@@ -50,5 +51,6 @@ public:
                 return distr(gen);
         }
 };
-}
+} // namespace singleton
+} // namespace TH
 #endif // TURBOHIKER_RANDOM_H

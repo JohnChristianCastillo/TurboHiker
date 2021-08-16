@@ -5,10 +5,12 @@
 #ifndef TURBOHIKER_POWERUP_H
 #define TURBOHIKER_POWERUP_H
 
-
 #include "../Entity.h"
-class PowerUp: public Entity {
+
+namespace TH {
+class PowerUp : public Entity
+{
 };
+} // namespace TH
 
-
-#endif//TURBOHIKER_POWERUP_H
+#endif // TURBOHIKER_POWERUP_H

@@ -3,6 +3,4 @@
 //
 
 #include "LiveScoring.h"
-float LiveScoring::getScore() const {
-    return score;
-}
+float TH::OBSERVER::LiveScoring::getScore() const { return score; }

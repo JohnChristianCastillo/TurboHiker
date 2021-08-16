@@ -5,14 +5,15 @@
 #ifndef TURBOHIKER_INVINCIBILITYSTAR_H
 #define TURBOHIKER_INVINCIBILITYSTAR_H
 
-
 #include "PowerUp.h"
-class InvincibilityStar: public PowerUp {
+namespace TH {
+class InvincibilityStar : public PowerUp
+{
 
 public:
-    EntityTypes getType() const override;
-    explicit InvincibilityStar(const float& horizontalOffset);
+        EntityTypes getType() const override;
+        explicit InvincibilityStar(const float& horizontalOffset);
 };
+} // namespace TH
 
-
-#endif//TURBOHIKER_INVINCIBILITYSTAR_H
+#endif // TURBOHIKER_INVINCIBILITYSTAR_H

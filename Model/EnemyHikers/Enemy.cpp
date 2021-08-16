@@ -3,9 +3,5 @@
 //
 
 #include "Enemy.h"
-bool Enemy::isSteerRandolmy() const {
-    return steerRandolmy;
-}
-void Enemy::setSteerRandolmy(bool steerRandolmy) {
-    Enemy::steerRandolmy = steerRandolmy;
-}
+bool TH::Enemy::isSteerRandolmy() const { return steerRandolmy; }
+void TH::Enemy::setSteerRandolmy(bool _steerRandomly) { Enemy::steerRandolmy = _steerRandomly; }

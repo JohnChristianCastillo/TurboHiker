@@ -3,6 +3,4 @@
 //
 
 #include "View.h"
-const sf::RenderWindow &View::getWindow() const {
-    return window;
-}
+const sf::RenderWindow& TH::SFML::View::getWindow() const { return window; }

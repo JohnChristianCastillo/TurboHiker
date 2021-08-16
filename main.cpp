@@ -1,9 +1,9 @@
-#include <iostream>
 #include "Controller/Controller.h"
+#include <iostream>
 
 int main() {
-    Controller controller(120);
-    controller.run();
+        TH::Controller controller(120);
+        controller.run();
     return 0;
 }
 
