@@ -19,162 +19,54 @@ class Controller
         std::shared_ptr<Model> model;
         std::shared_ptr<SFML::View> view;
         std::shared_ptr<OBSERVER::LiveScoring> scoringSystem;
-        float fps;
-
+        float fps;                   // framerate of the user
+        std::vector<Input> inputs{}; // holds the keyboard input of the user
 public:
-        explicit Controller(float fps) : fps(fps)
-        {
-                // Initialize transformation instance
-                float screenHeight = float(sf::VideoMode::getDesktopMode().height) * 0.75f;
-                float screenWidth = screenHeight / 8.f * 6.f;
-                std::shared_ptr<singleton::Transformation> transformation =
-                    singleton::Transformation::init(Dimentions{screenWidth, screenHeight});
+        /**
+         * Constructs the Controller object together with the:
+         *      1: Scoring system
+         *      2: Model object
+         *      3: View object
+         * @param fps : Framerate of the user's monotor
+         */
+        explicit Controller(float fps);
 
-                scoringSystem = std::make_shared<OBSERVER::LiveScoring>();
-                model = std::make_shared<Model>(fps, scoringSystem);
-                view = std::make_shared<SFML::View>(fps, model);
-        }
+        /**
+         * Performs necessary reset of objects that needs to be on a fresh state to start a fresh game
+         */
+        void resetObjects();
 
-        void resetObjects()
-        {
-                scoringSystem = std::make_shared<OBSERVER::LiveScoring>();
-                model = std::make_shared<Model>(fps, scoringSystem);
-                view = std::make_shared<SFML::View>(fps, model);
-        }
+        /**
+         * Traps the user in the end screen after finishing the game
+         * Being only able to escape if the Enter key is pressed
+         * @param stillOnEndScreen: boolean variable telling us if we're still on the end screen
+         * @param stillOnStartScreen: boolean variable that we need to change to true if the user wants to play another
+         *                            game
+         * @param finishLineGenerated: boolean variable that we need to change to false if the user plays another game
+         * @param timer: singleton timer object that oversees the game time
+         */
+        void pollForEndScreen(bool& stillOnEndScreen, bool& stillOnStartScreen, bool& finishLineGenerated,
+                              std::shared_ptr<singleton::Timer>& timer);
 
-        void run()
-        {
-                /// CLOCK
-                std::shared_ptr<singleton::Timer> timer = singleton::Timer::getInstance();
-                view->startScreen();
-                bool stillOnStartScreen{true};
-                bool stillOnEndScreen{false};
-                bool finishLineGenerated = false;
-                std::vector<Input> inputs{};
+        /**
+         * Traps the user in the start screen after finishing the game
+         * Being only able to escape if the Enter key is pressed
+         * @param stillOnStartScreen: boolean variable telling us if we are still within the start screen
+         * @param timer: singleton timer object that oversees the game time
+         */
+        void pollForStartScreen(bool& stillOnStartScreen, std::shared_ptr<singleton::Timer>& timer);
 
-                while (view->getWindow().isOpen()) {
-                        // poll for when on endScreen
-                        while (stillOnEndScreen) {
-                                if (view->pollEvent() == ZERO) {
-                                        return;
-                                }
-                                inputs = view->getKeyboardInput();
-                                for (const auto& in : inputs) {
-                                        if (view->pollEvent() == ZERO)
-                                                return;
-                                        if (in == ENTER) {
-                                                resetObjects();
-                                                timer->restart();
-                                                timer->resetGameTime();
-                                                view->draw(model, timer->getGameTime());
-                                                stillOnEndScreen = false;
-                                                finishLineGenerated = false;
-                                                stillOnStartScreen = true;
-                                        }
-                                }
-                                timer->restart();
-                                timer->resetGameTime();
-                        }
-                        // poll for Enter on start screen
-                        while (stillOnStartScreen) {
-                                if (view->pollEvent() == ZERO) {
-                                        return;
-                                }
-                                inputs = view->getKeyboardInput();
-                                for (const auto& in : inputs) {
-                                        if (in == ENTER) {
-                                                timer->restart();
-                                                timer->resetGameTime();
-                                                while (timer->getGameTime() <= 3) {
-                                                        timer->tick();
-                                                        timer->restart();
-                                                        // we start the countDown
-                                                        view->draw(model, 3 - timer->getGameTime(), false, true);
-                                                        timer->incrementGameTime(timer->getElapsedtime());
-                                                }
-                                                timer->restart();
-                                                timer->resetGameTime();
-                                                stillOnStartScreen = false;
-                                        }
-                                }
-                        }
+        /**
+         * Polls for keyboard input
+         * @param elapsedTime: float variable telling us how much time has elapsed
+         * @return true if a movement has been polled, false otherwise
+         */
+        bool getKeyboardInput(const float& elapsedTime);
 
-                        timer->tick();
-                        float elapsedTime = timer->getElapsedtime();
-                        if (timer->getElapsedtime() >= 1 / model->getFps()) {
-                                timer->restart();
-
-                                /// poll event
-                                if (view->pollEvent() == ZERO)
-                                        return;
-                                /// get keyboard input
-                                inputs = view->getKeyboardInput();
-                                bool moved = false;
-                                std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
-
-                                // We always move the AI up
-                                model->setSimpleAIMove(
-                                    Move(0, -model->getSimpleAI()->getMovementSpeed() * elapsedTime));
-                                for (const auto& in : inputs) {
-                                        switch (in) {
-                                        case UP:
-                                                model->setBackgroundMove(Move(0, mc->getMovementSpeed() * elapsedTime));
-                                                moved = true;
-                                                break;
-                                        case DOWN:
-                                                model->setBackgroundMove(
-                                                    Move(0, -mc->getMovementSpeed() * elapsedTime));
-                                                moved = true;
-                                                break;
-                                        case LEFT:
-                                                model->setPlayerMove(Move(-mc->getMovementSpeed() * elapsedTime, 0));
-                                                moved = true;
-                                                break;
-                                        case RIGHT:
-                                                model->setPlayerMove(Move(mc->getMovementSpeed() * elapsedTime, 0));
-                                                moved = true;
-                                                break;
-                                        case HONKING:
-                                                model->getMainCharacter()->setYelling(true);
-                                                std::cout << "MC is Yelling at the enemy \n";
-                                        case SCARING:
-                                                model->getMainCharacter()->setScareEnemy(true);
-                                                std::cout << "MC is scaring the enemy \n";
-                                        default:
-                                                break;
-                                        }
-                                }
-
-                                // if the player is moved then we want to first check for collisions
-                                if (moved) {
-                                        if (timer->getGameTime() > 30 and !finishLineGenerated) {
-                                                finishLineGenerated = true;
-                                                model->generateFinishLine();
-                                        }
-                                        // model->collision, model->getBackgrounds(), model->getEnemies(),
-                                        // model->getSimpleAI(), model->getScoringSystem(),nControl();
-                                        model->moveMC();
-                                        model->moveBackground();
-                                        model->moveEnemies();
-                                        model->movePowerUps();
-                                }
-                        }
-                        model->moveSimpleAI();
-                        model->screenCollisionControl();
-                        if (model->collisionControl(finishLineGenerated)) {
-                                view->endScreen(model->getScoringSystem());
-                                stillOnEndScreen = true;
-                                continue;
-                        }
-                        model->resetMoves();
-                        view->draw(model, timer->getGameTime(), finishLineGenerated);
-                        timer->incrementGameTime(elapsedTime);
-                }
-        }
-
-        //////////////////////////////////////////////////////
-        /// This section contains VIEW REQUEST FUNCTIONS ////
-        ////////////////////////////////////////////////////
+        /**
+         * Runs the Turbo Hiker game
+         */
+        void run();
 };
 } // namespace TH
 

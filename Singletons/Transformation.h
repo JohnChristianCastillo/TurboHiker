@@ -14,75 +14,41 @@ namespace singleton {
 class Transformation
 {
         static std::shared_ptr<Transformation> transformation;
-
-        Dimentions screenDimentions;
-
-        explicit Transformation(Dimentions dimentions);
+        Dimensions screenDimensions;
+        explicit Transformation(Dimensions dimensions);
 
 public:
-        static std::shared_ptr<Transformation> getInstance() { return transformation; }
+        /**
+         * @return The unique instance of transformation object
+         */
+        static std::shared_ptr<Transformation> getInstance();
 
-        static std::shared_ptr<Transformation> init(Dimentions dimentions)
-        {
-                if (!transformation) {
-                        transformation = std::make_shared<Transformation>(Transformation{dimentions});
-                }
-                return transformation;
-        }
+        /**
+         * Initialized the Transformation object
+         * @param dimensions: the screen dimensions
+         * @return The instance of Transformation
+         */
+        static std::shared_ptr<Transformation> init(Dimensions dimensions);
 
-        const Dimentions& getScreenDimentions() { return screenDimentions; }
+        /**
+         * @return The dimensions of the screen
+         */
+        const Dimensions& getScreenDimensions();
+
         /**
          * converts the model's (0,6) (0,8) coordinate system into the
          * View's (0, screenWidth) (0, screenHeight) coordinate system
-         * @param coords
-         * @param screenWidth
-         * @param screenHeight
-         * @return
-         */
-
-        /**
-         *
          * @param globalBounds
          * @return the center of the global bounds converted to the view coordinates
          */
-        std::tuple<float, float> modelToView(const std::shared_ptr<GlobalBounds>& globalBounds) const
-        {
-                // formula: newCoord = (x-csOrigMin)/(csOrigMax-csOrigMin) * (csDestMax-csDestMin) + csDestMin
-                //  calculating translated X
-                //
-                float newX = (globalBounds->position.x / 6) * screenDimentions.width;
-                float newY = (globalBounds->position.y / 8) * screenDimentions.height;
-                return std::make_tuple(newX, newY);
-        }
+        std::tuple<float, float> modelToView(const std::shared_ptr<GlobalBounds>& globalBounds) const;
 
-        Dimentions modelDimToViewDim(const Dimentions& modelDim) const
-        {
-                float width = (modelDim.width / 6) * screenDimentions.width;
-                float height = (modelDim.height / 8) * screenDimentions.height;
-                return {width, height};
-        }
-        std::tuple<float, float> viewToModel(float x, float y) const
-        {
-                // formula: newCoord = (x-csOrigMin)/(csOrigMax-csOrigMin) * (csDestMax-csDestMin) + csDestMin
-                //  calculating translated X
-                //
-                float newX = (x / screenDimentions.width) * 6;
-                float newY = (y / screenDimentions.height) * 8;
-
-                return std::make_tuple(newX, newY);
-        }
-
-        /*std::shared_ptr<Coordinates> viewToModel(const std::shared_ptr<Coordinates>& coords, const float& screenWidth,
-                                             const float& screenHeight)
-    {
-            float ratioX = screenWidth / 6;
-            float ratioY = screenHeight / 6;
-            std::shared_ptr<Coordinates> retVal{std::make_shared<Coordinates>()};
-            retVal->upRight = std::make_pair(coords->upRight.first / ratioX, coords->upRight.second / ratioY);
-            retVal->lowLeft = std::make_pair(coords->lowLeft.first / ratioX, coords->lowLeft.second / ratioY);
-
-            return retVal;
-    }*/
+        /**
+         * Converts a dimension from model coordinate system to view coordinate system
+         * @param modelDim
+         * @return
+         */
+        Dimensions modelDimToViewDim(const Dimensions& modelDim) const;
 };
 } // namespace singleton
 } // namespace TH

@@ -6,7 +6,7 @@
 TH::Finish::Finish()
 {
         Position pos = Position(0.f, 0.f);
-        Dimentions dim = Dimentions(12.f, 0.444444f);
+        Dimensions dim = Dimensions(12.f, 0.444444f);
         globalBounds = std::make_shared<GlobalBounds>(pos, dim);
         movementSpeed = 1;
 }

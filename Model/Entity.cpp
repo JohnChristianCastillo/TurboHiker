@@ -14,8 +14,65 @@ int TH::Entity::getSkin()
         }
 }
 float TH::Entity::getSlowingFactor() const { return slowingFactor; }
-
-void TH::Entity::setGlobalBounds(const std::shared_ptr<GlobalBounds>& globalBounds)
+void TH::Entity::move(const float& xOffset, const float& yOffset)
 {
-        Entity::globalBounds = globalBounds;
+        if (!(globalBounds->position.x + xOffset > 6 or globalBounds->position.x + xOffset < 0)) {
+                globalBounds->position.x += xOffset;
+                globalBounds->position.y += yOffset;
+        }
+}
+void TH::Entity::setPosition(float x, float y)
+{
+        globalBounds->position.x = x;
+        globalBounds->position.y = y;
+}
+std::shared_ptr<TH::GlobalBounds> TH::Entity::getGlobalBounds() const { return globalBounds; }
+float TH::Entity::getMovementSpeed() const { return movementSpeed; }
+bool TH::Entity::isSped()
+{
+        if (slowingFactor == 1) {
+                sped = false;
+        }
+        return sped;
+}
+bool TH::Entity::isSlowed()
+{
+        if (slowingFactor == 1) {
+                slowed = false;
+        }
+        return slowed;
+}
+void TH::Entity::slowDown()
+{
+        slowed = true;
+        if (slowingFactor > 2) {
+                slowingFactor -= 0.9;
+        } else {
+                slowingFactor = 0.01;
+        }
+}
+void TH::Entity::speedUp()
+{
+        sped = true;
+        if (slowingFactor <= 1) {
+                slowingFactor += 1;
+        } else {
+                slowingFactor = 2;
+        }
+}
+void TH::Entity::reduceSpeedBoostEffect(float sf)
+{
+        if (slowingFactor <= 1) {
+                slowingFactor = 1;
+        } else {
+                slowingFactor = sf;
+        }
+}
+void TH::Entity::reduceSlowingEffect(float sf)
+{
+        if (slowingFactor >= 1) {
+                slowingFactor = 1;
+        } else {
+                slowingFactor = sf;
+        }
 }

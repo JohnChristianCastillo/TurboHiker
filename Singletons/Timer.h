@@ -13,34 +13,50 @@ namespace TH {
 namespace singleton {
 class Timer
 {
-        static std::shared_ptr<Timer> timer;
         Timer();
+        static std::shared_ptr<Timer> timer;
         std::chrono::high_resolution_clock::time_point initialTime;
-        std::chrono::duration<float> elapsedtime;
-        float timeScale;
+        std::chrono::duration<float> elapsedTime{};
         float gameTime = 0.f;
 
 public:
-        void restart() { initialTime = std::chrono::system_clock::now(); }
-        void tick()
-        {
-                auto x = std::chrono::high_resolution_clock::now();
+        /**
+         * Instantiates a Timer instance if it hasn't been instantiated yet and returns this
+         * Otherwise just return the already instantiated Timer object
+         * @return The unique instance of Timer
+         */
+        static std::shared_ptr<Timer> getInstance();
 
-                elapsedtime = std::chrono::system_clock::now() - initialTime;
-        }
+        /**
+         * Restarts the clock, setting the initial time to the current time
+         */
+        void restart();
 
-        static std::shared_ptr<Timer> getInstance()
-        {
-                if (!timer) {
-                        timer = std::move(std::make_shared<Timer>(Timer()));
-                }
-                return timer;
-        }
-        void resetGameTime() { gameTime = 0; }
-        float getElapsedtime() { return elapsedtime.count(); }
+        /**
+         * increases the time elapsed time
+         */
+        void tick();
 
-        float getGameTime() { return gameTime; }
-        void incrementGameTime(float incr) { gameTime += incr; }
+        /**
+         * Resets the game time to 0
+         */
+        void resetGameTime();
+
+        /**
+         * @return The time that elapsed since the initial time
+         */
+        float getElapsedtime();
+
+        /**
+         * @return The game time
+         */
+        float getGameTime() const;
+
+        /**
+         * Increments the game time by incr
+         * @param incr: The factor by which we increment the game time
+         */
+        void incrementGameTime(float incr);
 };
 } // namespace singleton
 } // namespace TH

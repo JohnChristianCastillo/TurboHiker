@@ -13,86 +13,87 @@ namespace TH {
 class Entity
 {
 protected:
-        int skin{-1}; // texture used
-        std::shared_ptr<GlobalBounds> globalBounds;
-        float movementSpeed; // used to determine the entities velocity
-        float slowingFactor{1};
-        bool slowed{false};
-        bool sped{false};
+        int skin{-1};                               // texture used
+        std::shared_ptr<GlobalBounds> globalBounds; // global bounds of this entity
+        float movementSpeed;                        // used to determine the entities' velocity
+        float slowingFactor{1};                     // factor by which the entity is slowed
+        bool slowed{false};                         // variable indicating if the entity is slowed
+        bool sped{false};                           // variable indicating if the entity is sped
 
 public:
-        void setGlobalBounds(const std::shared_ptr<GlobalBounds>& globalBounds);
+        /**
+         * A pure virtual function returning the correct type of the entity that has inherited from this class
+         * @return The type of the entity
+         */
+        virtual EntityTypes getType() const = 0;
+
+        /**
+         * @return The factor by which this entity is slowed by
+         */
         float getSlowingFactor() const;
-        void reduceSlowingEffect(float sf)
-        {
-                if (slowingFactor >= 1) {
-                        slowingFactor = 1;
-                } else {
-                        slowingFactor = sf;
-                }
-        }
-        void reduceSpeedBoostEffect(float sf)
-        {
-                if (slowingFactor <= 1) {
-                        slowingFactor = 1;
-                } else {
-                        slowingFactor = sf;
-                }
-        }
-        int getSkin();
+
+        /**
+         * Reduce the slowing effect received by this entity
+         * @param sf: slowing factor
+         */
+        void reduceSlowingEffect(float sf);
+
+        /**
+         * Reduce the speed effect received by this entity
+         * @param sf: slowing factor
+         */
+        void reduceSpeedBoostEffect(float sf);
+
+        /**
+         * Sets the boolean variable "sped" to true and increases the speed of this entity
+         */
+        void speedUp();
 
         /**
          * slow player down by a factor of 60%
          * this gradually returns to its original speed
          */
-        void slowDown()
-        {
-                slowed = true;
-                if (slowingFactor > 2) {
-                        slowingFactor -= 0.9;
-                } else {
-                        slowingFactor = 0.01;
-                }
-        }
-        bool isSlowed()
-        {
-                if (slowingFactor == 1) {
-                        slowed = false;
-                }
-                return slowed;
-        }
-        bool isSped()
-        {
-                if (slowingFactor == 1) {
-                        sped = false;
-                }
-                return sped;
-        }
-        void speedUp()
-        {
-                sped = true;
-                if (slowingFactor <= 1) {
-                        slowingFactor += 1;
-                } else {
-                        slowingFactor = 2;
-                }
-        }
-        virtual EntityTypes getType() const = 0;
-        float getMovementSpeed() const { return movementSpeed; };
-        std::shared_ptr<GlobalBounds> getGlobalBounds() const { return globalBounds; }
-        void setPosition(float x, float y)
-        {
-                globalBounds->position.x = x;
-                globalBounds->position.y = y;
-        }
+        void slowDown();
 
-        virtual void move(const float& xOffset, const float& yOffset)
-        {
-                if (!(globalBounds->position.x + xOffset > 6 or globalBounds->position.x + xOffset < 0)) {
-                        globalBounds->position.x += xOffset;
-                        globalBounds->position.y += yOffset;
-                }
-        }
+        /**
+         * @return True if this entity is slowed, false otherwise
+         */
+        bool isSlowed();
+
+        /**
+         * @return True if this entity is sped, false otherwise
+         */
+        bool isSped();
+
+        /**
+         * If the variable "skin" is not yet initialized, a random index will be assigned to it, hence a random skin
+         * @return An index for the skin this entity is using
+         */
+        int getSkin();
+
+        /**
+         * @return The movement speed of the entity
+         */
+        float getMovementSpeed() const;
+
+        /**
+         * @return The global bounds of the entity
+         */
+        std::shared_ptr<GlobalBounds> getGlobalBounds() const;
+
+        /**
+         * Sets the center position of the entity to (x, y)
+         * @param x: new x coordinate of the entity
+         * @param y: new y cooridnate of the entity
+         */
+        void setPosition(float x, float y);
+
+        /**
+         * Moves the entity by adding an offset to its center position
+         * @param xOffset: x coordinate offset
+         * @param yOffset: y coordinate offset
+         */
+        virtual void move(const float& xOffset, const float& yOffset);
 };
 } // namespace TH
 

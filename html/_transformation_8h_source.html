@@ -98,134 +98,68 @@ $(function() {
     <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; <span class="keyword">static</span>
         std::shared_ptr&lt;Transformation&gt; transformation;
     </div>
-    <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-    <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; <a class="code"
-                                                                                      href="struct_t_h_1_1_dimentions.html">Dimentions</a>
-        screenDimentions;
+    <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_dimensions.html">Dimensions</a>
+        screenDimensions;
+    </div>
+    <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; <span class="keyword">explicit</span>
+        <a class="code" href="class_t_h_1_1singleton_1_1_transformation.html">Transformation</a>(<a class="code"
+                                                                                                    href="struct_t_h_1_1_dimensions.html">Dimensions</a>
+        dimensions);
     </div>
     <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-    <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; <span class="keyword">explicit</span>
-        <a class="code" href="class_t_h_1_1singleton_1_1_transformation.html">Transformation</a>(<a class="code"
-                                                                                                    href="struct_t_h_1_1_dimentions.html">Dimentions</a>
-        dimentions);
+    <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">public</span>:
     </div>
-    <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-    <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">public</span>:
+    <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; <span class="keyword">static</span>
+        std::shared_ptr&lt;Transformation&gt; <a class="code"
+                                                 href="class_t_h_1_1singleton_1_1_transformation.html#a79d6492c941992d0cada9d583651a6c1">getInstance</a>();
     </div>
-    <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; <span class="keyword">static</span>
-        std::shared_ptr&lt;Transformation&gt; getInstance() { <span class="keywordflow">return</span> transformation; }
+    <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+    <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; <span class="keyword">static</span>
+        std::shared_ptr&lt;Transformation&gt; <a class="code"
+                                                 href="class_t_h_1_1singleton_1_1_transformation.html#ae6a2f8cf20564b194562b046219bcc9a">init</a>(<a
+                class="code" href="struct_t_h_1_1_dimensions.html">Dimensions</a> dimensions);
     </div>
-    <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-    <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; <span class="keyword">static</span>
-        std::shared_ptr&lt;Transformation&gt; init(<a class="code" href="struct_t_h_1_1_dimentions.html">Dimentions</a>
-        dimentions)
-    </div>
-    <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; {</div>
-    <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; <span class="keywordflow">if</span>
-        (!transformation) {
-    </div>
-    <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; transformation = std::make_shared&lt;Transformation&gt;(<a
-            class="code" href="class_t_h_1_1singleton_1_1_transformation.html">Transformation</a>{dimentions});
-    </div>
-    <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; }</div>
-    <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; <span
-            class="keywordflow">return</span> transformation;
-    </div>
-    <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; }</div>
     <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-    <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; <span class="keyword">const</span> <a
-            class="code" href="struct_t_h_1_1_dimentions.html">Dimentions</a>&amp; getScreenDimentions() { <span
-            class="keywordflow">return</span> screenDimentions; }
+    <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span class="keyword">const</span> <a
+            class="code" href="struct_t_h_1_1_dimensions.html">Dimensions</a>&amp; <a class="code"
+                                                                                      href="class_t_h_1_1singleton_1_1_transformation.html#ad40a3de0ac3906aa64728464d5fb21a6">getScreenDimensions</a>();
     </div>
-    <div class="line"><a name="l00048"></a><span class="lineno"><a class="line"
-                                                                   href="class_t_h_1_1singleton_1_1_transformation.html#ae228ef6b3aebfb0fb20ec1cfbb9c1e31">   48</a></span>&#160;
-        std::tuple&lt;float, float&gt; <a class="code"
-                                          href="class_t_h_1_1singleton_1_1_transformation.html#ae228ef6b3aebfb0fb20ec1cfbb9c1e31">modelToView</a>(<span
-                class="keyword">const</span> std::shared_ptr&lt;GlobalBounds&gt;&amp; globalBounds)<span
-                class="keyword"> const</span></div>
-    <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">        </span>{
+    <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+    <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; std::tuple&lt;float, float&gt; <a
+            class="code" href="class_t_h_1_1singleton_1_1_transformation.html#a4dea893fc5bc35cbfb9974ea4d51e9cf">modelToView</a>(<span
+            class="keyword">const</span> std::shared_ptr&lt;GlobalBounds&gt;&amp; globalBounds) <span class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; <span class="comment">// formula: newCoord = (x-csOrigMin)/(csOrigMax-csOrigMin) * (csDestMax-csDestMin) + csDestMin</span>
+    <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+    <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; <a class="code"
+                                                                                      href="struct_t_h_1_1_dimensions.html">Dimensions</a>
+        <a class="code" href="class_t_h_1_1singleton_1_1_transformation.html#af066dbfa8e0023219af4a19c393c4c99">modelDimToViewDim</a>(<span
+                class="keyword">const</span> <a class="code" href="struct_t_h_1_1_dimensions.html">Dimensions</a>&amp;
+        modelDim) <span class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; <span class="comment">//  calculating translated X</span>
+    <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
+    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;} <span class="comment">// namespace singleton</span>
     </div>
-    <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; <span class="comment">//</span></div>
-    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; <span
-            class="keywordtype">float</span> newX = (globalBounds-&gt;position.x / 6) * screenDimentions.width;
+    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;} <span class="comment">// namespace TH</span>
     </div>
-    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; <span
-            class="keywordtype">float</span> newY = (globalBounds-&gt;position.y / 8) * screenDimentions.height;
+    <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_TRANSFORMATION_H</span>
     </div>
-    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; <span
-            class="keywordflow">return</span> std::make_tuple(newX, newY);
+    <div class="ttc" id="struct_t_h_1_1_dimensions_html">
+        <div class="ttname"><a href="struct_t_h_1_1_dimensions.html">TH::Dimensions</a></div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:63</div>
     </div>
-    <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; }</div>
-    <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-    <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; <a class="code"
-                                                                                      href="struct_t_h_1_1_dimentions.html">Dimentions</a>
-        modelDimToViewDim(<span class="keyword">const</span> <a class="code" href="struct_t_h_1_1_dimentions.html">Dimentions</a>&amp;
-        modelDim)<span class="keyword"> const</span></div>
-    <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">        </span>{
+    <div class="ttc" id="class_t_h_1_1singleton_1_1_transformation_html_ae6a2f8cf20564b194562b046219bcc9a">
+        <div class="ttname"><a href="class_t_h_1_1singleton_1_1_transformation.html#ae6a2f8cf20564b194562b046219bcc9a">TH::singleton::Transformation::init</a>
+        </div>
+        <div class="ttdeci">static std::shared_ptr&lt; Transformation &gt; init(Dimensions dimensions)</div>
+        <div class="ttdef"><b>Definition:</b> Transformation.cpp:12</div>
     </div>
-    <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; <span
-            class="keywordtype">float</span> width = (modelDim.width / 6) * screenDimentions.width;
-    </div>
-    <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; <span
-            class="keywordtype">float</span> height = (modelDim.height / 8) * screenDimentions.height;
-    </div>
-    <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; <span
-            class="keywordflow">return</span> {width, height};
-    </div>
-    <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; }</div>
-    <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; std::tuple&lt;float, float&gt;
-        viewToModel(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y)<span
-                class="keyword"> const</span></div>
-    <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">        </span>{
-    </div>
-    <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; <span class="comment">// formula: newCoord = (x-csOrigMin)/(csOrigMax-csOrigMin) * (csDestMax-csDestMin) + csDestMin</span>
-    </div>
-    <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; <span class="comment">//  calculating translated X</span>
-    </div>
-    <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; <span class="comment">//</span></div>
-    <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; <span
-            class="keywordtype">float</span> newX = (x / screenDimentions.width) * 6;
-    </div>
-    <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; <span
-            class="keywordtype">float</span> newY = (y / screenDimentions.height) * 8;
-    </div>
-    <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-    <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; <span
-            class="keywordflow">return</span> std::make_tuple(newX, newY);
-    </div>
-    <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; }</div>
-    <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-    <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; <span class="comment">/*std::shared_ptr&lt;Coordinates&gt; viewToModel(const std::shared_ptr&lt;Coordinates&gt;&amp; coords, const float&amp; screenWidth,</span>
-    </div>
-    <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">                                             const float&amp; screenHeight)</span>
-    </div>
-    <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">    {</span>
-    </div>
-    <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">            float ratioX = screenWidth / 6;</span>
-    </div>
-    <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">            float ratioY = screenHeight / 6;</span>
-    </div>
-    <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">            std::shared_ptr&lt;Coordinates&gt; retVal{std::make_shared&lt;Coordinates&gt;()};</span>
-    </div>
-    <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">            retVal-&gt;upRight = std::make_pair(coords-&gt;upRight.first / ratioX, coords-&gt;upRight.second / ratioY);</span>
-    </div>
-    <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">            retVal-&gt;lowLeft = std::make_pair(coords-&gt;lowLeft.first / ratioX, coords-&gt;lowLeft.second / ratioY);</span>
-    </div>
-    <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment"></span></div>
-    <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">            return retVal;</span>
-    </div>
-    <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">    }*/</span>
-    </div>
-    <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;};</div>
-    <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace singleton</span>
-    </div>
-    <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;} <span class="comment">// namespace TH</span>
-    </div>
-    <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_TRANSFORMATION_H</span>
+    <div class="ttc" id="class_t_h_1_1singleton_1_1_transformation_html_ad40a3de0ac3906aa64728464d5fb21a6">
+        <div class="ttname"><a href="class_t_h_1_1singleton_1_1_transformation.html#ad40a3de0ac3906aa64728464d5fb21a6">TH::singleton::Transformation::getScreenDimensions</a>
+        </div>
+        <div class="ttdeci">const Dimensions &amp; getScreenDimensions()</div>
+        <div class="ttdef"><b>Definition:</b> Transformation.cpp:19</div>
     </div>
     <div class="ttc" id="class_t_h_1_1singleton_1_1_transformation_html">
         <div class="ttname"><a href="class_t_h_1_1singleton_1_1_transformation.html">TH::singleton::Transformation</a>
@@ -236,17 +170,25 @@ $(function() {
         <div class="ttname"><a href="namespace_t_h.html">TH</a></div>
         <div class="ttdef"><b>Definition:</b> Controller.h:16</div>
     </div>
-    <div class="ttc" id="class_t_h_1_1singleton_1_1_transformation_html_ae228ef6b3aebfb0fb20ec1cfbb9c1e31">
-        <div class="ttname"><a href="class_t_h_1_1singleton_1_1_transformation.html#ae228ef6b3aebfb0fb20ec1cfbb9c1e31">TH::singleton::Transformation::modelToView</a>
+    <div class="ttc" id="class_t_h_1_1singleton_1_1_transformation_html_a79d6492c941992d0cada9d583651a6c1">
+        <div class="ttname"><a href="class_t_h_1_1singleton_1_1_transformation.html#a79d6492c941992d0cada9d583651a6c1">TH::singleton::Transformation::getInstance</a>
+        </div>
+        <div class="ttdeci">static std::shared_ptr&lt; Transformation &gt; getInstance()</div>
+        <div class="ttdef"><b>Definition:</b> Transformation.cpp:8</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1singleton_1_1_transformation_html_af066dbfa8e0023219af4a19c393c4c99">
+        <div class="ttname"><a href="class_t_h_1_1singleton_1_1_transformation.html#af066dbfa8e0023219af4a19c393c4c99">TH::singleton::Transformation::modelDimToViewDim</a>
+        </div>
+        <div class="ttdeci">Dimensions modelDimToViewDim(const Dimensions &amp;modelDim) const</div>
+        <div class="ttdef"><b>Definition:</b> Transformation.cpp:33</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1singleton_1_1_transformation_html_a4dea893fc5bc35cbfb9974ea4d51e9cf">
+        <div class="ttname"><a href="class_t_h_1_1singleton_1_1_transformation.html#a4dea893fc5bc35cbfb9974ea4d51e9cf">TH::singleton::Transformation::modelToView</a>
         </div>
         <div class="ttdeci">std::tuple&lt; float, float &gt; modelToView(const std::shared_ptr&lt; GlobalBounds &gt;
             &amp;globalBounds) const
         </div>
-        <div class="ttdef"><b>Definition:</b> Transformation.h:48</div>
-    </div>
-    <div class="ttc" id="struct_t_h_1_1_dimentions_html">
-        <div class="ttname"><a href="struct_t_h_1_1_dimentions.html">TH::Dimentions</a></div>
-        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:34</div>
+        <div class="ttdef"><b>Definition:</b> Transformation.cpp:23</div>
     </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

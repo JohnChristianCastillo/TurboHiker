@@ -14,58 +14,12 @@ class MainCharacter : public Entity
         bool yelling{false};
         bool scareEnemy{false};
 
-public:
-        void resetScareCooldown();
-        void decrementScareCooldown()
-        {
-                if (scareCooldown > 0) {
-                        // std::cout << "decremented to:" << scareCooldown;
-                        scareCooldown -= 0.1;
-                }
-        }
-
-private:
         float scareCooldown{0};
         bool invincible{false};
 
-public:
-        void setInvincible(bool invincible);
-
-private:
         float invincibleDuration{0};
 
 public:
-        float getScareCooldown() const;
-
-        bool isInvincible()
-        {
-                if (invincibleDuration <= 0) {
-                        invincible = false;
-                        invincibleDuration = 0;
-                }
-                return invincible;
-        }
-        void startInvincibility()
-        {
-                invincible = true;
-                invincibleDuration = 15.f;
-        }
-        void decreaseInvincibilityDuration(const float& decr)
-        {
-                invincibleDuration -= decr;
-                if (invincibleDuration < 0) {
-                        invincibleDuration = 0;
-                }
-        }
-
-        const float& getInvincibilityDuration() const { return invincibleDuration; }
-        bool isScaringEnemy();
-        void setScareEnemy(bool scareEnemy);
-
-public:
-        bool isYelling() const;
-        void setYelling(bool yelling);
-
         /**
          * in a (-4,4) (-3,3) coordinate system. Our character needs to be placed at the lowest-middle
          * part of the screen
@@ -80,52 +34,69 @@ public:
          *      |              |
          *      |_____char_____|
          */
-
-public:
-        MainCharacter(int lanes);
-        EntityTypes getType() const override { return EntityTypes::mainCharacter; }
+        /**
+         * Instantiates a MainCharacter object at the center of the screen, taking into account how many lanes there are
+         * @param lanes: lanes of the game
+         */
+        explicit MainCharacter(int lanes);
 
         /**
-         *
-         * @return the area around the main character affected by it's yell/honk
+         * @return True if the player is scaring players, False otherwise
          */
-        std::vector<std::shared_ptr<GlobalBounds>> getAura()
-        {
-                Position mcPos = globalBounds->position;
-                Dimentions mcDim = globalBounds->dimentions;
-                std::shared_ptr<GlobalBounds> frontalAura1 =
-                    std::make_shared<GlobalBounds>(Position(mcPos.x, mcPos.y - mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalAura2 =
-                    std::make_shared<GlobalBounds>(Position(mcPos.x, mcPos.y - 2 * mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalAura3 =
-                    std::make_shared<GlobalBounds>(Position(mcPos.x, mcPos.y - 3 * mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalAura4 =
-                    std::make_shared<GlobalBounds>(Position(mcPos.x, mcPos.y - 4 * mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalLeftAura1 = std::make_shared<GlobalBounds>(
-                    Position(mcPos.x - mcDim.width, mcPos.y - mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalLeftAura2 = std::make_shared<GlobalBounds>(
-                    Position(mcPos.x - mcDim.width, mcPos.y - 2 * mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalLeftAura3 = std::make_shared<GlobalBounds>(
-                    Position(mcPos.x - mcDim.width, mcPos.y - 3 * mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalLeftAura4 = std::make_shared<GlobalBounds>(
-                    Position(mcPos.x - mcDim.width, mcPos.y - 4 * mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalRightAura1 = std::make_shared<GlobalBounds>(
-                    Position(mcPos.x + mcDim.width, mcPos.y - mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalRightAura2 = std::make_shared<GlobalBounds>(
-                    Position(mcPos.x + mcDim.width, mcPos.y - 2 * mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalRightAura3 = std::make_shared<GlobalBounds>(
-                    Position(mcPos.x + mcDim.width, mcPos.y - 3 * mcDim.height), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> frontalRightAura4 = std::make_shared<GlobalBounds>(
-                    Position(mcPos.x + mcDim.width, mcPos.y - 4 * mcDim.height), Dimentions(mcDim));
+        bool isScaringEnemy() const;
 
-                std::shared_ptr<GlobalBounds> leftAura =
-                    std::make_shared<GlobalBounds>(Position(mcPos.x - mcDim.width, mcPos.y), Dimentions(mcDim));
-                std::shared_ptr<GlobalBounds> rightAura =
-                    std::make_shared<GlobalBounds>(Position(mcPos.x + mcDim.width, mcPos.y), Dimentions(mcDim));
-                return {frontalAura1,      frontalAura2,      frontalAura3,      frontalAura4,     leftAura,
-                        rightAura,         frontalLeftAura1,  frontalLeftAura2,  frontalLeftAura3, frontalLeftAura4,
-                        frontalRightAura1, frontalRightAura2, frontalRightAura3, frontalRightAura4};
-        }
+        /**
+         * sets scareEnemy value to _scareEnemy
+         * @param scareEnemy
+         */
+        void setScareEnemy(bool _scareEnemy);
+
+        /**
+         * sets yelling value to _yelling
+         * @param _yelling
+         */
+        void setYelling(bool _yelling);
+
+        /**
+         * Applies a cool down time to the scaring ability of the player
+         */
+        void resetScareCoolDown();
+
+        /**
+         * Reduces the cool down of the ability of the player to scare enemy hikers
+         */
+        void decrementScareCoolDown();
+
+        /**
+         * @return The remaining cool down left before the player can scare hikers again
+         */
+        float getScareCoolDown() const;
+
+        /**
+         * @return True if the player is invincible, False otherwise
+         */
+        bool isInvincible();
+
+        /**
+         * Turns the player invincible for a short duration
+         */
+        void startInvincibility();
+
+        /**
+         * Reduces the duration of the invincibility
+         * @param decr: amount by which the invincibility will be reduced
+         */
+        void decreaseInvincibilityDuration(const float& decr);
+
+        /**
+         * @return The duration of the players invincibility status
+         */
+        const float& getInvincibilityDuration() const;
+
+        /**
+         * @return The type of this entity, in this case "MainCharacter"
+         */
+        EntityTypes getType() const override;
 };
 } // namespace TH
 

@@ -8,23 +8,23 @@ add_executable( TurboHiker
 
         HelperDataTypes.h
 
-                Model/Model.cpp
-                Model/Model.h
-                Model/EntityMaker.cpp
-                Model/EntityMaker.h
-                Model/Entity.cpp
-                Model/Entity.h
-                Model/MainCharacter.cpp
-                Model/MainCharacter.h
+        Model/Model.cpp
+        Model/Model.h
+        Model/EntityMaker.cpp
+        Model/EntityMaker.h
+        Model/Entity.cpp
+        Model/Entity.h
+        Model/MainCharacter.cpp
+        Model/MainCharacter.h
         Model/EnemyHikers/Enemy.cpp
         Model/EnemyHikers/Enemy.h
         Model/EnemyHikers/StaticHiker.cpp
         Model/EnemyHikers/StaticHiker.h
 
-                View/View.cpp
-                View/View.h
+        View/View.cpp
+        View/View.h
 
-                Singletons/Random.cpp
+        Singletons/Random.cpp
         Singletons/Random.h
         Singletons/Transformation.cpp
         Singletons/Transformation.h

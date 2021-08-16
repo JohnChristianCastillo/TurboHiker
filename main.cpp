@@ -1,5 +1,4 @@
 #include "Controller/Controller.h"
-#include <iostream>
 
 int main() {
         TH::Controller controller(120);

@@ -11,25 +11,26 @@ namespace TH {
 class Enemy : public Entity
 {
 protected:
-        // counts how many times it has been yelled at
-        int yellPoints{};
-        bool collided{false};
-        bool steerRandolmy{false};
+        int yellPoints{}; // counts how many times it has been yelled at
+        bool steerRandomly{false};
 
 public:
+        /**
+         * @return True if Enemy needs to steer randomly, false otherwise
+         */
         bool isSteerRandolmy() const;
+
+        /**
+         * sets the variable steerRandomly to _steerRandomly
+         * @param _steerRandomly
+         */
         void setSteerRandolmy(bool _steerRandomly);
 
-        bool exceededScareThreshold()
-        {
-                std::shared_ptr<singleton::Random> rand = singleton::Random::getInstance();
-                int randomOffset = rand->intInInterval(0, 10);
-                if (randomOffset + yellPoints >= 700) {
-                        return true;
-                }
-                yellPoints += randomOffset;
-                return false;
-        }
+        /**
+         * @return True if the Enemy has exceeded it's scareThreshold. Meaning it has been frightened enough to be
+         *         thrown off the stage. False otherwise
+         */
+        bool exceededScareThreshold();
 };
 } // namespace TH
 

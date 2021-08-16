@@ -58,6 +58,8 @@ public:
                 readFile.close();
                 return highScore;
         }
+
+        void playerFinishedFirst() { score += 100; }
 };
 } // namespace OBSERVER
 } // namespace TH

@@ -88,32 +88,22 @@ $(function() {
     <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
     <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">public</span>:
     </div>
-    <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; <span class="keyword">explicit</span>
-        <a class="code" href="class_t_h_1_1_background.html">Background</a>(<span class="keywordtype">float</span>
-        centerOffset)
+    <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; <span class="keyword">explicit</span>
+        <a class="code" href="class_t_h_1_1_background.html#a96807a23f01b7c2556d11f5c07a9760a">Background</a>(<span
+                class="keywordtype">float</span> centerOffset);
     </div>
-    <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; {</div>
-    <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; <a class="code"
-                                                                                      href="struct_t_h_1_1_position.html">Position</a>
-        pos = <a class="code" href="struct_t_h_1_1_position.html">Position</a>(0.f, 1.f + centerOffset * 8.f);
+    <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+    <div class="line"><a name="l00023"></a><span class="lineno"><a class="line"
+                                                                   href="class_t_h_1_1_background.html#aa2c3c349a20926104a59076439c3596f">   23</a></span>&#160;
+        EntityTypes <a class="code" href="class_t_h_1_1_background.html#aa2c3c349a20926104a59076439c3596f">getType</a>()<span
+                class="keyword"> const override </span>{ <span class="keywordflow">return</span>
+        EntityTypes::background; }
     </div>
-    <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; <a class="code"
-                                                                                      href="struct_t_h_1_1_dimentions.html">Dimentions</a>
-        dim = <a class="code" href="struct_t_h_1_1_dimentions.html">Dimentions</a>(6.f, 8.f);
+    <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;};</div>
+    <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;} <span class="comment">// namespace TH</span>
     </div>
-    <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; globalBounds = std::make_shared&lt;GlobalBounds&gt;(pos,
-        dim);
-    </div>
-    <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; movementSpeed = 1;</div>
-    <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; }</div>
-    <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; EntityTypes getType()<span
-            class="keyword"> const override </span>{ <span class="keywordflow">return</span> EntityTypes::background; }
-    </div>
-    <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;};</div>
-    <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;} <span class="comment">// namespace TH</span>
-    </div>
-    <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-    <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_BACKGROUND_H</span>
+    <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+    <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_BACKGROUND_H</span>
     </div>
     <div class="ttc" id="namespace_t_h_html">
         <div class="ttname"><a href="namespace_t_h.html">TH</a></div>
@@ -123,13 +113,17 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_background.html">TH::Background</a></div>
         <div class="ttdef"><b>Definition:</b> Background.h:10</div>
     </div>
-    <div class="ttc" id="struct_t_h_1_1_position_html">
-        <div class="ttname"><a href="struct_t_h_1_1_position.html">TH::Position</a></div>
-        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:15</div>
+    <div class="ttc" id="class_t_h_1_1_background_html_aa2c3c349a20926104a59076439c3596f">
+        <div class="ttname"><a href="class_t_h_1_1_background.html#aa2c3c349a20926104a59076439c3596f">TH::Background::getType</a>
+        </div>
+        <div class="ttdeci">EntityTypes getType() const override</div>
+        <div class="ttdef"><b>Definition:</b> Background.h:23</div>
     </div>
-    <div class="ttc" id="struct_t_h_1_1_dimentions_html">
-        <div class="ttname"><a href="struct_t_h_1_1_dimentions.html">TH::Dimentions</a></div>
-        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:34</div>
+    <div class="ttc" id="class_t_h_1_1_background_html_a96807a23f01b7c2556d11f5c07a9760a">
+        <div class="ttname"><a href="class_t_h_1_1_background.html#a96807a23f01b7c2556d11f5c07a9760a">TH::Background::Background</a>
+        </div>
+        <div class="ttdeci">Background(float centerOffset)</div>
+        <div class="ttdef"><b>Definition:</b> Background.cpp:6</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_entity_html">
         <div class="ttname"><a href="class_t_h_1_1_entity.html">TH::Entity</a></div>

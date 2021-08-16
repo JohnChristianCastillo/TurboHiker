@@ -7,7 +7,8 @@
 TH::StaticHiker::StaticHiker(const float& horizontalOffset)
 {
         Position pos = Position((horizontalOffset), 0);
-        Dimentions dim = Dimentions(0.222222f, 0.444444f);
+        Dimensions dim = Dimensions(0.222222f, 0.444444f);
         globalBounds = std::make_shared<GlobalBounds>(pos, dim);
         movementSpeed = 0.75;
 }
+TH::EntityTypes TH::StaticHiker::getType() const { return EntityTypes::staticHiker; }

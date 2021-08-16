@@ -50,13 +50,11 @@ class View
         sf::Texture invincibilityStarTexture;
         sf::Texture speedBoostTexture;
 
-        float speed = 1000.0f;
-
         // Set up viewport
         sf::View view;
         // make the player the focus point of view
-        sf::Vector2f position{singleton::Transformation::getInstance()->getScreenDimentions().width / 2,
-                              singleton::Transformation::getInstance()->getScreenDimentions().height / 2.3f};
+        sf::Vector2f position{singleton::Transformation::getInstance()->getScreenDimensions().width / 2,
+                              singleton::Transformation::getInstance()->getScreenDimensions().height / 2.3f};
 
         // scoring system entities
         sf::Text scoreText;
@@ -71,391 +69,150 @@ class View
         bool playerIsScaring{false};
 
 public:
+        /**
+         * @return the instance of Window
+         */
         const sf::RenderWindow& getWindow() const;
 
-        void initScoringSystem()
-        {
-                retro.loadFromFile("../assets/fonts/Retro Gaming.ttf");
-                scoreText.setCharacterSize(20);
-                scoreText.setFont(retro);
-                scoreText.setString("0");
-                scoreText.setFillColor(sf::Color::Black);
-                scoreText.setOrigin(scoreText.getGlobalBounds().width / 2, scoreText.getGlobalBounds().height / 2);
-                scoreText.setPosition(screenWidth - 200, 10);
-        }
+        /**
+         * Initializes the scoring system
+         */
+        void initScoringSystem();
+
+        /**
+         * Draws the score based off of the scoring system
+         * @param scoringSystem: The instance of the LiveScoring observer
+         * @param gameTime: The current game time
+         * @param scareCoolDown: The cool down left of scareCoolDown
+         */
         void drawScore(const std::shared_ptr<OBSERVER::LiveScoring>& scoringSystem, const float& gameTime,
-                       const float& scareCooldown)
-        {
-                scoreText.setString(std::to_string(scoringSystem->getScore()) + "\n" + std::to_string(gameTime) +
-                                    "\nScare\nCooldown: " + std::to_string(scareCooldown));
-                window.draw(scoreText);
-        }
+                       const float& scareCoolDown);
 
         /**
          * Initialize the window our user will interact with
          * @param fps: Frame limit set by user
          */
-        View(const float fps, const std::shared_ptr<TH::Model>& model)
-        {
+        View(float fps, const std::shared_ptr<TH::Model>& model);
 
-                window.setFramerateLimit(static_cast<unsigned int>(fps));
+        /**
+         * Loads the correct textures that will be used by the game instance
+         */
+        void loadTextures();
 
-                // initialize the player
-                std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::getInstance();
-                Dimentions playerDim =
-                    transformation->modelDimToViewDim(model->getMainCharacter()->getGlobalBounds()->dimentions);
+        /**
+         * Assigns the loaded textures to the correct sprite
+         */
+        void assignBGandMCTextures();
 
-                sf::RectangleShape carObject(sf::Vector2f(playerDim.width, playerDim.height));
-                carSprite = std::move(carObject);
+        /**
+         * Polls for an event that our system handles
+         * @return an object of type Input
+         */
+        Input pollEvent();
 
-                loadTextures();
-                assignBGandMCTextures();
-                // initialize to cover the whole screen
-                view.reset(sf::FloatRect(0, 0, screenWidth, screenHeight));
-                // how much of the view we want to see
-                view.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
-                initScoringSystem();
-        }
+        /**
+         * Polls for a keyboard input
+         * @return a vector of Input objects
+         */
+        std::vector<Input> getKeyboardInput();
 
-        void loadTextures()
-        {
-                if (!carTexture.loadFromFile("../assets/cars/1.png")) {
-                        std::cout << "bg img not found" << std::endl;
-                }
-                // if (!backgroundTexture.loadFromFile("../assets/highway.png")) {
-                if (!backgroundTexture.loadFromFile("../assets/Roads/road_asphalt01.png")) {
-                        std::cout << "bg img not found" << std::endl;
-                }
+        /**
+         * Produces te correct vector of input objects for the function "getKeyboardInput()"
+         * @return a vector of input objects
+         */
+        std::vector<Input> produceKeyboardOutput();
 
-                if (!finishLineTexture.loadFromFile("../assets/finishLine.png")) {
-                        std::cout << "finish line image not found" << std::endl;
-                }
+        /**
+         * Displays the end screen after finishing the game
+         * @param pointingSystem: The instance of the LiveScoring observer
+         */
+        void endScreen(const std::shared_ptr<OBSERVER::LiveScoring>& pointingSystem);
 
-                if (!invincibilityStarTexture.loadFromFile("../assets/invincibilityStar.png")) {
-                        std::cout << "invincibility star image not found" << std::endl;
-                }
-                if (!speedBoostTexture.loadFromFile("../assets/arrow_yellow.png")) {
-                        std::cout << "speedboost image not found" << std::endl;
-                }
+        /**
+         * Starts the count down of the start of the race
+         * @param startCountDown: boolean value indicating if the count down should be started
+         * @param time: the game time
+         */
+        void countDown(bool startCountDown, float time);
 
-                sf::Texture tempTure{};
-                for (int i = 1; i <= 12; ++i) {
-                        std::string fileLocation = "../assets/cars/" + std::to_string(i) + ".png";
-                        if (!tempTure.loadFromFile(fileLocation)) {
-                                std::cout << "bg img not found" << std::endl;
-                        }
-                        enemyTextures.push_back(tempTure);
-                }
-        }
-
-        void assignBGandMCTextures()
-        {
-                backgroundImage1.setScale(
-                    static_cast<float>(screenWidth) / static_cast<float>(backgroundTexture.getSize().x),
-                    static_cast<float>(screenHeight) / static_cast<float>(backgroundTexture.getSize().y));
-                backgroundImage2.setScale(
-                    static_cast<float>(screenWidth) / static_cast<float>(backgroundTexture.getSize().x),
-                    static_cast<float>(screenHeight) / static_cast<float>(backgroundTexture.getSize().y));
-                backgroundImage3.setScale(
-                    static_cast<float>(screenWidth) / static_cast<float>(backgroundTexture.getSize().x),
-                    static_cast<float>(screenHeight) / static_cast<float>(backgroundTexture.getSize().y));
-                backgroundImage1.setTexture(backgroundTexture);
-                backgroundImage2.setTexture(backgroundTexture);
-                backgroundImage3.setTexture(backgroundTexture);
-
-                carSprite.setTexture(&carTexture);
-
-                sf::RectangleShape finishObject(sf::Vector2f(screenWidth, 60));
-                finishSprite = std::move(finishObject);
-                finishSprite.setTexture(&finishLineTexture);
-                finishSprite.setScale(
-                    static_cast<float>(screenWidth) * 2 / static_cast<float>(finishLineTexture.getSize().x),
-                    static_cast<float>(screenHeight) / (15 * static_cast<float>(finishLineTexture.getSize().y)));
-        }
-        Input pollEvent()
-        {
-                sf::Event event{};
-                while (window.pollEvent(event)) {
-                        switch (event.type) {
-                        case sf::Event::Closed:
-                                window.close();
-                                return Input::ZERO;
-                        case sf::Event::KeyPressed:
-                                if (event.key.code == sf::Keyboard::Escape) {
-                                        window.close();
-                                        return Input::ZERO;
-                                }
-                        case sf::Event::KeyReleased: {
-                                if (event.key.code == sf::Keyboard::Up) {
-                                        upIsPressed = false;
-                                } else if (event.key.code == sf::Keyboard::Down) {
-                                        downIsPressed = false;
-                                } else if (event.key.code == sf::Keyboard::Left) {
-                                        leftIsPressed = false;
-                                } else if (event.key.code == sf::Keyboard::Right) {
-                                        rightIsPressed = false;
-                                }
-                        }
-                        }
-                }
-        }
-
-        std::vector<Input> getKeyboardInput()
-        {
-                /*if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-            sf::Vector2i p = sf::Mouse::getPosition();
-            std:: cout << p.x << ", " << p.y << std::endl;
-        }*/
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
-                        return {Input::ENTER};
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-                        leftIsPressed = false;
-                        rightIsPressed = true;
-                        // retVect.push_back(Input::RIGHT);
-
-                } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-                        rightIsPressed = false;
-                        leftIsPressed = true;
-
-                } /*else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                        backgroundMove.y += -speed * elapsedTime.count(); //clock.getElapsedTime().asSeconds();
-                }*/
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-                        downIsPressed = false;
-                        upIsPressed = true;
-                } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                        upIsPressed = false;
-                        downIsPressed = true;
-                }
-
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-                        playerIsScaring = true;
-                        playerIsHonking = false;
-                } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-                        playerIsScaring = false;
-                        playerIsHonking = true;
-                }
-
-                return produceKeyboardOutput();
-        }
-
-        std::vector<Input> produceKeyboardOutput()
-        {
-                std::vector<Input> retVect{};
-                if (upIsPressed) {
-                        retVect.push_back(Input::UP);
-                } else if (downIsPressed) {
-                        retVect.push_back(Input::DOWN);
-                }
-                if (leftIsPressed) {
-                        retVect.push_back(Input::LEFT);
-                } else if (rightIsPressed) {
-                        retVect.push_back(Input::RIGHT);
-                }
-                if (playerIsHonking) {
-                        retVect.push_back(Input::HONKING);
-                        playerIsHonking = false;
-                } else if (playerIsScaring) {
-                        retVect.push_back(Input::SCARING);
-                        playerIsScaring = false;
-                }
-                return retVect;
-        }
-        void endScreen(const std::shared_ptr<OBSERVER::LiveScoring>& pointingSystem)
-        {
-                float score = pointingSystem->getScore();
-                float highScore = pointingSystem->getHighScore();
-                sf::Text endText;
-                endText.setCharacterSize(20);
-                endText.setFont(retro);
-                endText.setString("HIGH SCORE: " + std::to_string(highScore) +
-                                  "\nYOUR SCORE: " + std::to_string(score));
-                endText.setFillColor(sf::Color::White);
-                endText.setPosition(screenWidth / 2, screenHeight / 2);
-                // endText.setOrigin(scoreText.getGlobalBounds().width/2, scoreText.getGlobalBounds().height/2);
-
-                endText.setOrigin(endText.getLocalBounds().left + endText.getLocalBounds().width / 2.0f,
-                                  endText.getLocalBounds().top + endText.getLocalBounds().height / 2.0f);
-
-                window.draw(endText);
-                window.display();
-                window.clear();
-        }
-        void countDown(bool startCountdown, float time)
-        {
-                if (startCountdown) {
-                        sf::Text countDownText;
-                        countDownText.setCharacterSize(20);
-                        countDownText.setFont(retro);
-                        countDownText.setString("STARTING IN: " + std::to_string(static_cast<int>(std::ceil(time))));
-                        countDownText.setFillColor(sf::Color::Black);
-                        countDownText.setPosition(screenWidth / 2, screenHeight / 2);
-                        // endText.setOrigin(scoreText.getGlobalBounds().width/2, scoreText.getGlobalBounds().height/2);
-
-                        countDownText.setOrigin(
-                            countDownText.getLocalBounds().left + countDownText.getLocalBounds().width / 2.0f,
-                            countDownText.getLocalBounds().top + countDownText.getLocalBounds().height / 2.0f);
-
-                        window.draw(countDownText);
-                }
-        }
-        void startScreen()
-        {
-                sf::Text startText;
-                startText.setCharacterSize(20);
-                startText.setFont(retro);
-                startText.setString("PRESS ENTER KEY TO START");
-                startText.setFillColor(sf::Color::White);
-                startText.setOrigin(startText.getLocalBounds().left + startText.getLocalBounds().width / 2.0f,
-                                    startText.getLocalBounds().top + startText.getLocalBounds().height / 2.0f);
-                startText.setPosition(screenWidth / 2, screenHeight / 2);
-
-                window.draw(startText);
-                window.display();
-                window.clear();
-        }
-
+        /**
+         * Displays the starting screen of the game
+         */
+        void startScreen();
+        /**
+         * Draws the lookAhead of the AI
+         * @param lookAhead: boolean value indicating if the lookahead should be drawn or not
+         * @param model: The instance of Model
+         * @param transformation: The instance of Transformation
+         */
         void drawLookAhead(const bool& lookAhead, const std::shared_ptr<TH::Model>& model,
-                           const std::shared_ptr<singleton::Transformation>& transformation)
-        {
-                if (lookAhead) {
-                        for (const auto& i : model->getSimpleAI()->getLookAhead()) {
-                                std::tuple<float, float> auraPos = transformation->modelToView(i);
-                                /// Collision object
-                                /// Next box visualization todo: remove for final
-                                sf::RectangleShape nextBox{sf::Vector2f(carSprite.getSize())};
-                                nextBox.setFillColor(sf::Color::Transparent);
-                                nextBox.setOutlineColor(sf::Color::White);
-                                nextBox.setOutlineThickness(3.f);
-                                nextBox.setPosition(std::get<0>(auraPos), std::get<1>(auraPos));
-                                window.draw(nextBox);
-                        }
-                }
-        }
+                           const std::shared_ptr<singleton::Transformation>& transformation);
 
+        /**
+         * Draws the enemies
+         * @param model: The instance of Model
+         * @param transformation: The instance of Transformation
+         */
         void drawEnemies(const std::shared_ptr<TH::Model>& model,
-                         const std::shared_ptr<singleton::Transformation>& transformation)
-        {
-                for (auto& wall : model->getEnemies()) {
-                        std::tuple<float, float> wallCoords = transformation->modelToView(wall->getGlobalBounds());
-                        sf::RectangleShape wallSprite(sf::Vector2f(30, 60));
-                        wallSprite.setTexture(&enemyTextures[wall->getSkin()]);
-                        wallSprite.setPosition(std::get<0>(wallCoords), std::get<1>(wallCoords));
-                        window.draw(wallSprite);
-                }
-        }
+                         const std::shared_ptr<singleton::Transformation>& transformation);
 
+        /**
+         * Draws the power ups
+         * @param model: The instance of Model
+         * @param transformation: The instance of Transformation
+         */
         void drawPowerUps(const std::shared_ptr<TH::Model>& model,
-                          const std::shared_ptr<singleton::Transformation>& transformation)
-        {
-                for (auto& powerUp : model->getPowerUps()) {
-                        std::tuple<float, float> wallCoords = transformation->modelToView(powerUp->getGlobalBounds());
+                          const std::shared_ptr<singleton::Transformation>& transformation);
 
-                        sf::RectangleShape wallSprite(sf::Vector2f(30, 60));
-                        if (powerUp->getType() == EntityTypes::speedUp) {
-                                wallSprite.setTexture(&speedBoostTexture);
-                        } else if (powerUp->getType() == EntityTypes::invincibilityStar) {
-                                wallSprite.setTexture(&invincibilityStarTexture);
-                        }
-                        wallSprite.setPosition(std::get<0>(wallCoords), std::get<1>(wallCoords));
-                        window.draw(wallSprite);
-                }
-        }
-
+        /**
+         * Draws the finish line
+         * @param finishLineGenerated: boolean value indicating if the finish line is generated
+         * @param model: The instance of Model
+         * @param transformation: The instance of Transformation
+         */
         void drawFinishLine(bool finishLineGenerated, const std::shared_ptr<TH::Model>& model,
-                            const std::shared_ptr<singleton::Transformation>& transformation)
-        {
-                if (finishLineGenerated) {
-                        std::tuple<float, float> finishLineCoords =
-                            transformation->modelToView(model->getFinishLine()->getGlobalBounds());
-                        finishSprite.setPosition(std::get<0>(finishLineCoords), std::get<1>(finishLineCoords));
-                        window.draw(finishSprite);
-                }
-        }
+                            const std::shared_ptr<singleton::Transformation>& transformation);
 
-        void drawInvincibilityPrompt(const std::shared_ptr<TH::Model>& model)
-        {
-                if (model->getMainCharacter()->isInvincible()) {
-                        sf::Text startText;
-                        startText.setCharacterSize(20);
-                        startText.setFont(retro);
-                        startText.setString(
-                            "INVINCIBLE!! " +
-                            std::to_string(static_cast<int>(model->getMainCharacter()->getInvincibilityDuration())));
-                        startText.setFillColor(sf::Color::Yellow);
-                        startText.setOrigin(startText.getLocalBounds().left + startText.getLocalBounds().width / 2.0f,
-                                            startText.getLocalBounds().top + startText.getLocalBounds().height / 2.0f);
-                        startText.setPosition(screenWidth / 2, screenHeight / 2);
+        /**
+         * Draws the invincibility prompt
+         * @param model: The instance of Model
+         */
+        void drawInvincibilityPrompt(const std::shared_ptr<TH::Model>& model);
 
-                        window.draw(startText);
-                }
-        }
-
+        /**
+         * Draws the main character
+         * @param model: The instance of Model
+         * @param transformation: The instance of Transformation
+         */
         void drawMC(const std::shared_ptr<TH::Model>& model,
-                    const std::shared_ptr<singleton::Transformation>& transformation)
-        {
-                std::tuple<float, float> carCoords =
-                    transformation->modelToView(model->getMainCharacter()->getGlobalBounds());
-                view.setCenter(position); // center camera on position
-                carSprite.setPosition(std::get<0>(carCoords), std::get<1>(carCoords));
-                window.draw(carSprite);
-        }
+                    const std::shared_ptr<singleton::Transformation>& transformation);
+
+        /**
+         * Draws the AI
+         * @param model: The instance of Model
+         * @param transformation: The instance of Transformation
+         */
         void drawAI(const std::shared_ptr<TH::Model>& model,
-                    const std::shared_ptr<singleton::Transformation>& transformation)
-        {
-                sf::RectangleShape simpleAISprite(sf::Vector2f(30, 60));
-                simpleAISprite.setTexture(&enemyTextures[model->getSimpleAI()->getSkin()]);
-                std::tuple<float, float> simpleAiCoords =
-                    transformation->modelToView(model->getSimpleAI()->getGlobalBounds());
-                simpleAISprite.setPosition(std::get<0>(simpleAiCoords), std::get<1>(simpleAiCoords));
-                window.draw(simpleAISprite);
-        }
+                    const std::shared_ptr<singleton::Transformation>& transformation);
+
+        /**
+         * Draws the backgrounds
+         * @param model: The instance of Model
+         * @param transformation: The instance of Transformation
+         */
         void drawBackgrounds(const std::shared_ptr<TH::Model>& model,
-                             const std::shared_ptr<singleton::Transformation>& transformation)
-        {
-                std::tuple<float, float> bg1 =
-                    transformation->modelToView(model->getBackgrounds()[0]->getGlobalBounds());
-                std::tuple<float, float> bg2 =
-                    transformation->modelToView(model->getBackgrounds()[1]->getGlobalBounds());
-                std::tuple<float, float> bg3 =
-                    transformation->modelToView(model->getBackgrounds()[2]->getGlobalBounds());
-                backgroundImage1.setPosition(std::get<0>(bg1), std::get<1>(bg1));
-                backgroundImage2.setPosition(std::get<0>(bg2), std::get<1>(bg2));
-                backgroundImage3.setPosition(std::get<0>(bg3), std::get<1>(bg3));
-                window.draw(backgroundImage1);
-                window.draw(backgroundImage2);
-                window.draw(backgroundImage3);
-        }
+                             const std::shared_ptr<singleton::Transformation>& transformation);
 
+        /**
+         * Draws every entity that the model requires to be drawn
+         * @param model: The instance of Model
+         * @param gameTime: The current game time
+         * @param finishLineGenerated: boolean value indicating if the finish line has been generated
+         * @param startCountdown: boolean value indicating if the start count down should be initiated
+         * @param lookAhead: boolean value indicating if the look ahead of the AI should be drawn
+         */
         void draw(const std::shared_ptr<TH::Model>& model, float gameTime, bool finishLineGenerated = false,
-                  bool startCountdown = false, bool lookAhead = false)
-        {
-                std::shared_ptr<singleton::Transformation> transformation = singleton::Transformation::getInstance();
-                window.setView(view);
-
-                drawBackgrounds(model, transformation);
-                drawMC(model, transformation);
-                drawAI(model, transformation);
-
-                drawLookAhead(lookAhead, model, transformation);
-
-                drawEnemies(model, transformation);
-
-                drawPowerUps(model, transformation);
-
-                drawFinishLine(finishLineGenerated, model, transformation);
-
-                drawScore(model->getScoringSystem(), gameTime, model->getMainCharacter()->getScareCooldown());
-
-                drawInvincibilityPrompt(model);
-
-                countDown(startCountdown, gameTime);
-
-                window.display();
-                window.clear();
-        }
+                  bool startCountdown = false, bool lookAhead = false);
 };
 } // namespace SFML
 } // namespace TH

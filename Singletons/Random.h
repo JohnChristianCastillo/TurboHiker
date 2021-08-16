@@ -15,41 +15,26 @@ class Random
         static std::shared_ptr<Random> random;
 
 public:
-        static std::shared_ptr<Random> getInstance()
-        {
-                if (!random) {
-                        random = std::make_shared<Random>();
-                        return random;
-                }
-                return random;
-        }
+        /**
+         * Instantiates a Random instance if it hasn't been instantiated yet and returns this
+         * Otherwise just return the already instantiated Random object
+         * @return The unique instance of Random
+         */
+        static std::shared_ptr<Random> getInstance();
 
         /**
          * @param left : The leftmost limit within our range
          * @param right : The rightmost limit within our range
          * @return A random number generated from a uniform distribution
          */
-        int intInInterval(const int& left, const int& right) const
-        {
-                /*std::random_device rd; // obtain a random number from hardware
-                std::mt19937 gen(rd()); // seed the generator
-                std::uniform_int_distribution<> distr(left, right); // define the range
-                //to use floats one can use std::uniform_real_distribution<>*/
-                // return rand() % (left - right + 1) + left;
-                return rand() % (right - left + 1) + left;
-        }
+        static int intInInterval(const int& left, const int& right);
+
         /**
          * @param left : The leftmost limit within our range
          * @param right : The rightmost limit within our range
          * @return A random float generated from a uniform distribution
          */
-        float floatInInterval(const float& left, const float& right) const
-        {
-                std::random_device rd;                               // obtain a random number from hardware
-                std::mt19937 gen(rd());                              // seed the generator
-                std::uniform_real_distribution<> distr(left, right); // define the range
-                return distr(gen);
-        }
+        static float floatInInterval(const float& left, const float& right);
 };
 } // namespace singleton
 } // namespace TH

@@ -23,108 +23,49 @@ namespace TH {
 class EntityMaker
 {
 public:
-        std::shared_ptr<MainCharacter> generateMainCharacter(int lanes)
-        {
+        /**
+         * Generates the main character
+         * @param lanes: used to calculate the initial position of the main character
+         * @return a pointer to the main character
+         */
+        std::shared_ptr<MainCharacter> generateMainCharacter(int lanes);
 
-                return std::make_shared<MainCharacter>(MainCharacter{lanes});
-        }
-        std::shared_ptr<Finish> generateFinishLine() { return std::make_shared<Finish>(); }
+        /**
+         * Generates the finish line
+         * @return a pointer to the finish line
+         */
+        std::shared_ptr<Finish> generateFinishLine();
 
-        std::shared_ptr<SimpleAI> generateAI() { return std::make_shared<SimpleAI>(); }
-        std::vector<std::shared_ptr<Enemy>> generateEnemies()
-        {
-                // assigns to which lane the enemy will go to:
-                std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
-                std::vector<std::shared_ptr<Enemy>> returnEnemies{};
+        /**
+         * Generates a simple AI
+         * @return
+         */
+        static std::shared_ptr<SimpleAI> generateAI();
 
-                // generate left to right hikers
-                int leftToRightHikersToGenerate = random->intInInterval(0, 2);
-                for (int i = 0; i < leftToRightHikersToGenerate; ++i) {
-                        std::shared_ptr<Enemy> tempEnemy =
-                            std::make_shared<TH::LeftToRightHiker>(static_cast<float>(i));
-                        returnEnemies.push_back(tempEnemy);
-                }
-                // generate static hikers
-                int staticHikersToGenerate = random->intInInterval(0, 2);
-                std::set<int> set;
-                while (set.size() != staticHikersToGenerate) {
-                        int randomOffset = random->intInInterval(0, 6);
-                        set.insert(randomOffset);
-                }
-                for (auto randomOffset : set) {
-                        float randomOffsetOffset = random->floatInInterval(-0.2, 0.2);
-                        std::shared_ptr<Enemy> tempEnemy =
-                            std::make_shared<StaticHiker>(static_cast<float>(randomOffset) + randomOffsetOffset);
-                        float tempPosX = tempEnemy->getGlobalBounds()->position.x;
-                        float tempWidth = tempEnemy->getGlobalBounds()->dimentions.width;
-                        if (tempPosX + tempWidth / 2 >= 6 or tempPosX - tempWidth / 2 <= 0) {
-                                tempEnemy = std::make_shared<StaticHiker>(static_cast<float>(randomOffset));
-                        }
-                        returnEnemies.push_back(tempEnemy);
-                        // std::cout << "Generated enemy#" <<  i++ << ": " << tempEnemy->getGlobalBounds()->position.x
-                        // << std::endl;
-                }
-                return returnEnemies;
-        }
+        /**
+         * Generates a vector of pointer of enemies at random lanes with random offsets within the lane
+         * @return A vector of enemies
+         */
+        static std::vector<std::shared_ptr<Enemy>> generateEnemies();
 
-        std::vector<std::shared_ptr<PowerUp>> generatePowerUp()
-        {
-                // assigns to which lane the enemy will go to:
-                std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
-                int powerUpsToGenerate = random->intInInterval(0, 1);
-                std::vector<std::shared_ptr<PowerUp>> returnPowerUp{};
-                std::set<int> set;
-                while (set.size() != powerUpsToGenerate) {
-                        int randomOffset = random->intInInterval(0, 6);
-                        set.insert(randomOffset);
-                }
-                returnPowerUp.reserve(set.size());
-                for (auto randomOffset : set) {
-                        returnPowerUp.push_back(generateRandomPowerUp(static_cast<float>(randomOffset)));
-                        // std::cout << "Generated enemy#" <<  i++ << ": " << tempEnemy->getGlobalBounds()->position.x
-                        // << std::endl;
-                }
-                return returnPowerUp;
-        }
+        /**
+         * Generates a vector of pointer of power ups at random lanes with random offsets within the lane
+         * @return A vector of power ups
+         */
+        std::vector<std::shared_ptr<PowerUp>> generatePowerUp();
 
-        std::shared_ptr<PowerUp> generateRandomPowerUp(const float& randomOffset)
-        {
-                std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
-                int powerUpIndex = random->intInInterval(0, 1);
-                std::cout << "Powerup: " << powerUpIndex << std::endl;
-                float randomOffsetOffset = random->floatInInterval(-0.2, 0.2);
+        /**
+         * Generate a random power up at a random offset
+         * @param randomOffset: lane in which the power up will spawn
+         * @return a random power up at a random offset
+         */
+        std::shared_ptr<PowerUp> generateRandomPowerUp(const float& randomOffset);
 
-                std::shared_ptr<PowerUp> powerUp{};
-                float tempPosX{};
-                float tempWidth{};
-                switch (powerUpIndex) {
-                case 0:
-                        powerUp = std::make_shared<SpeedUp>(static_cast<float>(randomOffset) + randomOffsetOffset);
-                        tempPosX = powerUp->getGlobalBounds()->position.x;
-                        tempWidth = powerUp->getGlobalBounds()->dimentions.width;
-                        if (tempPosX + tempWidth / 2 >= 6 or tempPosX - tempWidth / 2 <= 0) {
-                                powerUp = std::make_shared<SpeedUp>(static_cast<float>(randomOffset));
-                        }
-                        break;
-                case 1:
-                        powerUp =
-                            std::make_shared<InvincibilityStar>(static_cast<float>(randomOffset) + randomOffsetOffset);
-                        tempPosX = powerUp->getGlobalBounds()->position.x;
-                        tempWidth = powerUp->getGlobalBounds()->dimentions.width;
-                        if (tempPosX + tempWidth / 2 >= 6 or tempPosX - tempWidth / 2 <= 0) {
-                                powerUp = std::make_shared<InvincibilityStar>(static_cast<float>(randomOffset));
-                        }
-                        break;
-                default:
-                        break;
-                }
-                return powerUp;
-        }
-        std::vector<std::shared_ptr<Background>> generateBackground()
-        {
-                return {std::make_shared<Background>(0), std::make_shared<Background>(-1),
-                        std::make_shared<Background>(-2)};
-        }
+        /**
+         * Generates three background entities
+         * @return a vector of background entities
+         */
+        static std::vector<std::shared_ptr<Background>> generateBackground();
 };
 } // namespace TH
 
