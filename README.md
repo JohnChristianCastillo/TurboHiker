@@ -24,7 +24,7 @@ Crashing into enemy entities slows your player down and deducts points.
 Screaming causes enemies to panic and make them manouver randomly(either left or right). If the enemy panics too much it throws them off the map and leads to more points being deducted from you. 
 
 ## ENTITIES:
-Entities can be classified into two categories: **ENEMY** and **POWERUP**
+Entities can be classified into two categories: **ENEMY** and **POWERUP**  
 **ENEMY** entities can then be further split into three categories:
  - `Left to right entity`: This is an entity that hinders players by moving left and right
  - `Static entity`: This is an entity that just stays still 
