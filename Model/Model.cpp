@@ -425,7 +425,17 @@ bool TH::Model::collisionControl(bool finishLineGenerated)
 void TH::Model::spawnEnemy()
 {
         if (mainCharacter->canSummonEnemy()) {
+                std::shared_ptr<Enemy> summonedEnemy =
+                    entityFactory->summonEnemy(mainCharacter->getGlobalBounds()->position);
+                bool canSummon = true;
+                for (const auto& enemy : enemies) {
+                        if (enemy->getGlobalBounds()->intersects<float>(summonedEnemy->getGlobalBounds())) {
+                                canSummon = false;
+                        }
+                }
+                if (canSummon) {
+                        enemies.push_back(summonedEnemy);
+                }
                 mainCharacter->setSummonEnemy(false);
-                enemies.push_back(entityFactory->summonEnemy(mainCharacter->getGlobalBounds()->position));
         }
 }
