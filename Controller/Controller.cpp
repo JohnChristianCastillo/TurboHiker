@@ -99,13 +99,12 @@ bool TH::Controller::getKeyboardInput(const float& elapsedTime)
                         model->setPlayerMove(Move(mc->getMovementSpeed() * elapsedTime, 0));
                         moved = true;
                         break;
-                case HONKING:
-                        model->getMainCharacter()->setYelling(true);
-                        std::cout << "MC is Yelling at the enemy \n";
-                        break;
                 case SCARING:
                         model->getMainCharacter()->setScareEnemy(true);
                         std::cout << "MC is scaring the enemy \n";
+                        break;
+                case SPAWNENEMY:
+                        model->spawnEnemy();
                         break;
                 default:
                         break;

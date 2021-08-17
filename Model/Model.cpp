@@ -108,6 +108,9 @@ void TH::Model::moveBackground()
 }
 void TH::Model::moveEnemies()
 {
+        if (enemies.empty()) {
+                generateEnemies();
+        }
         // generate new enemies if last generated enemy is past half the screen;
         if (enemies.back()->getGlobalBounds()->position.y >= 4.f) {
                 generateEnemies();
@@ -140,7 +143,7 @@ void TH::Model::moveEnemies()
                                         enemy->move(movement, movement);
                                 } else {
                                         enemy->move(0, movement);
-                                };
+                                }
                         }
                 }
         }
@@ -277,7 +280,30 @@ void TH::Model::collisionWithEnemyControl(const std::shared_ptr<GlobalBounds>& n
                                           const std::shared_ptr<GlobalBounds>& aiNextPosition)
 
 {
-        for (int i = enemies.size() - 1; i >= 0; --i) {
+
+        int originalEnemySize = static_cast<int>(enemies.size());
+        for (int i = originalEnemySize - 1; i >= 0; --i) {
+                if (enemies.empty()) {
+                        break;
+                }
+                bool enemyDeleted{false};
+
+                // check first if the main character has lase beams active, if so we check if this collides with
+                // the currently being checked enemy. if so then we just remove the enemy without penalizing
+                // the player
+                if (mainCharacter->isLaserActive()) {
+                        for (auto& laserBound : mainCharacter->getLaserBeamBounds()) {
+                                if (enemies[i]->getGlobalBounds()->intersects<float>(laserBound)) {
+                                        enemies.erase(enemies.begin() + i);
+                                        scoringSystem->laseredEnemy();
+                                        enemyDeleted = true;
+                                        break;
+                                }
+                        }
+                        if (enemyDeleted) {
+                                continue;
+                        }
+                }
 
                 // Try to prevent AI from colliding in the future
                 aiCollisionPrevention(enemies[i], nextPosition);
@@ -307,6 +333,7 @@ void TH::Model::collisionWithEnemyControl(const std::shared_ptr<GlobalBounds>& n
                         }
 
                         enemies.erase(enemies.begin() + i);
+                        continue;
                 }
 
                 if (enemies[i]->getGlobalBounds()->intersects<float>(aiNextPosition)) {
@@ -320,6 +347,7 @@ void TH::Model::collisionWithEnemyControl(const std::shared_ptr<GlobalBounds>& n
 void TH::Model::collisionWithPowerUpControl(const std::shared_ptr<GlobalBounds>& nextPosition,
                                             const std::shared_ptr<GlobalBounds>& aiNextPosition)
 {
+
         for (int i = powerUps.size() - 1; i >= 0; --i) {
                 std::shared_ptr<PowerUp> powerUp = powerUps[i];
 
@@ -329,6 +357,12 @@ void TH::Model::collisionWithPowerUpControl(const std::shared_ptr<GlobalBounds>&
                                 mainCharacter->speedUp();
                         } else if (powerUp->getType() == EntityTypes::invincibilityStar) {
                                 mainCharacter->startInvincibility();
+                        } else if (powerUp->getType() == EntityTypes::summonEnemy) {
+                                mainCharacter->setSummonEnemy(true);
+                        } else if (powerUp->getType() == EntityTypes::nukePowerUp) {
+                                enemies = {};
+                        } else if (powerUp->getType() == EntityTypes::laserBeamPowerUp) {
+                                mainCharacter->startLaserBeam();
                         }
                         powerUps.erase(powerUps.begin() + i);
                         return; // to avoid multiple players picking up power up
@@ -344,7 +378,6 @@ void TH::Model::collisionWithPowerUpControl(const std::shared_ptr<GlobalBounds>&
 }
 bool TH::Model::collisionControl(bool finishLineGenerated)
 {
-
         if (finishLineGenerated) {
                 if (finishLineCollisionControl()) {
                         return true;
@@ -380,9 +413,19 @@ bool TH::Model::collisionControl(bool finishLineGenerated)
         if (mainCharacter->isInvincible()) {
                 mainCharacter->decreaseInvincibilityDuration(0.05);
         }
+        if (mainCharacter->isLaserActive()) {
+                mainCharacter->decreaseLaserBeamDuration(0.05);
+        }
         mainCharacter->decrementScareCoolDown();
 
         mainCharacter->setScareEnemy(false);
         scoringSystem->advance();
         return false;
+}
+void TH::Model::spawnEnemy()
+{
+        if (mainCharacter->canSummonEnemy()) {
+                mainCharacter->setSummonEnemy(false);
+                enemies.push_back(entityFactory->summonEnemy(mainCharacter->getGlobalBounds()->position));
+        }
 }

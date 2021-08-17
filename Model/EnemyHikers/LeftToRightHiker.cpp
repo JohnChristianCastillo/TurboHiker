@@ -12,7 +12,7 @@ TH::LeftToRightHiker::LeftToRightHiker(const float& horizontalOffset)
         globalBounds = std::make_shared<GlobalBounds>(pos, dim);
         movementSpeed = 0.5;
 }
-TH::EntityTypes TH::LeftToRightHiker::getType() const { return leftToRightHiker; }
+TH::EntityTypes TH::LeftToRightHiker::getType() const { return EntityTypes::leftToRightHiker; }
 void TH::LeftToRightHiker::move(const float& xOffset, const float& yOffset)
 {
         globalBounds->position.y += yOffset;

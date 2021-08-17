@@ -96,183 +96,176 @@ $(function() {
     <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; <span class="keywordtype">int</span>
         skin{-1}; <span class="comment">// texture used</span></div>
     <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; std::shared_ptr&lt;GlobalBounds&gt;
-        globalBounds;
-    </div>
+        globalBounds; <span class="comment">// global bounds of this entity</span></div>
     <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; <span
-            class="keywordtype">float</span> movementSpeed; <span class="comment">// used to determine the entities velocity</span>
+            class="keywordtype">float</span> movementSpeed; <span class="comment">// used to determine the entities&#39; velocity</span>
     </div>
     <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; <span
-            class="keywordtype">float</span> slowingFactor{1};
+            class="keywordtype">float</span> slowingFactor{1}; <span class="comment">// factor by which the entity is slowed</span>
     </div>
     <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; <span class="keywordtype">bool</span>
-        slowed{<span class="keyword">false</span>};
-    </div>
+        slowed{<span class="keyword">false</span>}; <span
+                class="comment">// variable indicating if the entity is slowed</span></div>
     <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; <span class="keywordtype">bool</span>
-        sped{<span class="keyword">false</span>};
-    </div>
+        sped{<span class="keyword">false</span>}; <span
+                class="comment">// variable indicating if the entity is sped</span></div>
     <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
     <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">public</span>:
     </div>
-    <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; <span class="keywordtype">void</span>
-        setGlobalBounds(<span class="keyword">const</span> std::shared_ptr&lt;GlobalBounds&gt;&amp; globalBounds);
+    <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; <span class="keyword">virtual</span>
+        EntityTypes <a class="code" href="class_t_h_1_1_entity.html#a4083af942264f76a19be703dbc82164a">getType</a>()
+        <span class="keyword">const</span> = 0;
     </div>
-    <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; <span
-            class="keywordtype">float</span> getSlowingFactor() <span class="keyword">const</span>;
+    <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+    <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; <span
+            class="keywordtype">float</span> <a class="code"
+                                                href="class_t_h_1_1_entity.html#a478deacb54c782e52dcf5b0a26bfed77">getSlowingFactor</a>()
+        <span class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; <span class="keywordtype">void</span>
-        reduceSlowingEffect(<span class="keywordtype">float</span> sf)
+    <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+    <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; <span class="keywordtype">void</span>
+        <a class="code" href="class_t_h_1_1_entity.html#af5163c8ecefb53e64dbff3406bd8d99c">reduceSlowingEffect</a>(<span
+                class="keywordtype">float</span> sf);
     </div>
-    <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; {</div>
-    <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; <span class="keywordflow">if</span>
-        (slowingFactor &gt;= 1) {
+    <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+    <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; <span class="keywordtype">void</span>
+        <a class="code"
+           href="class_t_h_1_1_entity.html#a22e316f7af40ffdc197d195b33d80848">reduceSpeedBoostEffect</a>(<span
+                class="keywordtype">float</span> sf);
     </div>
-    <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; slowingFactor = 1;</div>
-    <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; } <span
-            class="keywordflow">else</span> {
+    <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+    <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; <span class="keywordtype">void</span>
+        <a class="code" href="class_t_h_1_1_entity.html#af3ccbfdfa530372db55958cd2944e6d1">speedUp</a>();
     </div>
-    <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; slowingFactor = sf;</div>
-    <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; }</div>
-    <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; }</div>
-    <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; <span class="keywordtype">void</span>
-        reduceSpeedBoostEffect(<span class="keywordtype">float</span> sf)
+    <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+    <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; <span class="keywordtype">void</span>
+        <a class="code" href="class_t_h_1_1_entity.html#ae19d41df6c8e0f714cea2c8b351b0cfb">slowDown</a>();
     </div>
-    <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; {</div>
-    <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span class="keywordflow">if</span>
-        (slowingFactor &lt;= 1) {
+    <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+    <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; <span class="keywordtype">bool</span>
+        <a class="code" href="class_t_h_1_1_entity.html#af024954ba79f48abeb3605ce656795c2">isSlowed</a>();
     </div>
-    <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; slowingFactor = 1;</div>
-    <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; } <span
-            class="keywordflow">else</span> {
+    <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+    <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; <span class="keywordtype">bool</span>
+        <a class="code" href="class_t_h_1_1_entity.html#a908c0d70f78624ad90bdee84ea373f26">isSped</a>();
     </div>
-    <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; slowingFactor = sf;</div>
-    <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; }</div>
-    <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; }</div>
-    <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; <span class="keywordtype">int</span>
-        getSkin();
+    <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+    <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; <span class="keywordtype">int</span>
+        <a class="code" href="class_t_h_1_1_entity.html#ac8102a77c53f36a20f8523737ad2f71a">getSkin</a>();
     </div>
-    <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-    <div class="line"><a name="l00048"></a><span class="lineno"><a class="line"
-                                                                   href="class_t_h_1_1_entity.html#ae19d41df6c8e0f714cea2c8b351b0cfb">   48</a></span>&#160;
-        <span class="keywordtype">void</span> <a class="code"
-                                                 href="class_t_h_1_1_entity.html#ae19d41df6c8e0f714cea2c8b351b0cfb">slowDown</a>()
+    <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+    <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; <span
+            class="keywordtype">float</span> <a class="code"
+                                                href="class_t_h_1_1_entity.html#abc52022f6ae4c801600ca2334df39756">getMovementSpeed</a>()
+        <span class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; {</div>
-    <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; slowed = <span
-            class="keyword">true</span>;
-    </div>
-    <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; <span class="keywordflow">if</span>
-        (slowingFactor &gt; 2) {
-    </div>
-    <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; slowingFactor -= 0.9;</div>
-    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; } <span
-            class="keywordflow">else</span> {
-    </div>
-    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; slowingFactor = 0.01;</div>
-    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; }</div>
-    <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; }</div>
-    <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; <span class="keywordtype">bool</span>
-        isSlowed()
-    </div>
-    <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; {</div>
-    <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; <span class="keywordflow">if</span>
-        (slowingFactor == 1) {
-    </div>
-    <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; slowed = <span
-            class="keyword">false</span>;
-    </div>
-    <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; }</div>
-    <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; <span
-            class="keywordflow">return</span> slowed;
-    </div>
-    <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; }</div>
-    <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; <span class="keywordtype">bool</span>
-        isSped()
-    </div>
-    <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; {</div>
-    <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; <span class="keywordflow">if</span>
-        (slowingFactor == 1) {
-    </div>
-    <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; sped = <span
-            class="keyword">false</span>;
-    </div>
-    <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; }</div>
-    <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; <span
-            class="keywordflow">return</span> sped;
-    </div>
-    <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; }</div>
-    <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; <span class="keywordtype">void</span>
-        speedUp()
-    </div>
-    <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; {</div>
-    <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; sped = <span
-            class="keyword">true</span>;
-    </div>
-    <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; <span class="keywordflow">if</span>
-        (slowingFactor &lt;= 1) {
-    </div>
-    <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; slowingFactor += 1;</div>
-    <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; } <span
-            class="keywordflow">else</span> {
-    </div>
-    <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; slowingFactor = 2;</div>
-    <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; }</div>
-    <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; }</div>
-    <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; <span class="keyword">virtual</span>
-        EntityTypes getType() <span class="keyword">const</span> = 0;
-    </div>
-    <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; <span
-            class="keywordtype">float</span> getMovementSpeed()<span class="keyword"> const </span>{ <span
-            class="keywordflow">return</span> movementSpeed; };
-    </div>
+    <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
     <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; std::shared_ptr&lt;GlobalBounds&gt;
-        getGlobalBounds()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> globalBounds; }
+        <a class="code" href="class_t_h_1_1_entity.html#a83d492f02f028e40ff6e284b08287a8e">getGlobalBounds</a>() <span
+                class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; <span class="keywordtype">void</span>
-        setPosition(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y)
+    <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+    <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; <span class="keywordtype">void</span>
+        <a class="code" href="class_t_h_1_1_entity.html#a6e85b9a7d606611c60ce29cf19eb381f">setPosition</a>(<span
+                class="keywordtype">float</span> x, <span class="keywordtype">float</span> y);
     </div>
-    <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; {</div>
-    <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; globalBounds-&gt;position.x = x;
+    <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+    <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; <span class="keyword">virtual</span>
+        <span class="keywordtype">void</span> <a class="code"
+                                                 href="class_t_h_1_1_entity.html#ae29db9cd449fd3e63a2745bdc694165e">move</a>(<span
+                class="keyword">const</span> <span class="keywordtype">float</span>&amp; xOffset, <span class="keyword">const</span>
+        <span class="keywordtype">float</span>&amp; yOffset);
     </div>
-    <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; globalBounds-&gt;position.y = y;
+    <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
+    <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;} <span class="comment">// namespace TH</span>
     </div>
-    <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; }</div>
-    <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-    <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; <span class="keyword">virtual</span>
-        <span class="keywordtype">void</span> move(<span class="keyword">const</span> <span
-                class="keywordtype">float</span>&amp; xOffset, <span class="keyword">const</span> <span
-                class="keywordtype">float</span>&amp; yOffset)
+    <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+    <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_ENTITY_H</span>
     </div>
-    <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; {</div>
-    <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; <span class="keywordflow">if</span>
-        (!(globalBounds-&gt;position.x + xOffset &gt; 6 or globalBounds-&gt;position.x + xOffset &lt; 0)) {
+    <div class="ttc" id="class_t_h_1_1_entity_html_ac8102a77c53f36a20f8523737ad2f71a">
+        <div class="ttname"><a
+                href="class_t_h_1_1_entity.html#ac8102a77c53f36a20f8523737ad2f71a">TH::Entity::getSkin</a></div>
+        <div class="ttdeci">int getSkin()</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:6</div>
     </div>
-    <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; globalBounds-&gt;position.x +=
-        xOffset;
+    <div class="ttc" id="class_t_h_1_1_entity_html_a478deacb54c782e52dcf5b0a26bfed77">
+        <div class="ttname"><a href="class_t_h_1_1_entity.html#a478deacb54c782e52dcf5b0a26bfed77">TH::Entity::getSlowingFactor</a>
+        </div>
+        <div class="ttdeci">float getSlowingFactor() const</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:16</div>
     </div>
-    <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; globalBounds-&gt;position.y +=
-        yOffset;
+    <div class="ttc" id="class_t_h_1_1_entity_html_a22e316f7af40ffdc197d195b33d80848">
+        <div class="ttname"><a href="class_t_h_1_1_entity.html#a22e316f7af40ffdc197d195b33d80848">TH::Entity::reduceSpeedBoostEffect</a>
+        </div>
+        <div class="ttdeci">void reduceSpeedBoostEffect(float sf)</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:63</div>
     </div>
-    <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; }</div>
-    <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; }</div>
-    <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
-    <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;} <span class="comment">// namespace TH</span>
-    </div>
-    <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-    <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_ENTITY_H</span>
+    <div class="ttc" id="class_t_h_1_1_entity_html_a4083af942264f76a19be703dbc82164a">
+        <div class="ttname"><a
+                href="class_t_h_1_1_entity.html#a4083af942264f76a19be703dbc82164a">TH::Entity::getType</a></div>
+        <div class="ttdeci">virtual EntityTypes getType() const =0</div>
     </div>
     <div class="ttc" id="namespace_t_h_html">
         <div class="ttname"><a href="namespace_t_h.html">TH</a></div>
         <div class="ttdef"><b>Definition:</b> Controller.h:16</div>
     </div>
+    <div class="ttc" id="class_t_h_1_1_entity_html_af024954ba79f48abeb3605ce656795c2">
+        <div class="ttname"><a
+                href="class_t_h_1_1_entity.html#af024954ba79f48abeb3605ce656795c2">TH::Entity::isSlowed</a></div>
+        <div class="ttdeci">bool isSlowed()</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:38</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_entity_html_a6e85b9a7d606611c60ce29cf19eb381f">
+        <div class="ttname"><a href="class_t_h_1_1_entity.html#a6e85b9a7d606611c60ce29cf19eb381f">TH::Entity::setPosition</a>
+        </div>
+        <div class="ttdeci">void setPosition(float x, float y)</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:24</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_entity_html_abc52022f6ae4c801600ca2334df39756">
+        <div class="ttname"><a href="class_t_h_1_1_entity.html#abc52022f6ae4c801600ca2334df39756">TH::Entity::getMovementSpeed</a>
+        </div>
+        <div class="ttdeci">float getMovementSpeed() const</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:30</div>
+    </div>
     <div class="ttc" id="class_t_h_1_1_entity_html_ae19d41df6c8e0f714cea2c8b351b0cfb">
         <div class="ttname"><a
                 href="class_t_h_1_1_entity.html#ae19d41df6c8e0f714cea2c8b351b0cfb">TH::Entity::slowDown</a></div>
         <div class="ttdeci">void slowDown()</div>
-        <div class="ttdef"><b>Definition:</b> Entity.h:48</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:45</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_entity_html_a908c0d70f78624ad90bdee84ea373f26">
+        <div class="ttname"><a href="class_t_h_1_1_entity.html#a908c0d70f78624ad90bdee84ea373f26">TH::Entity::isSped</a>
+        </div>
+        <div class="ttdeci">bool isSped()</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:31</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_entity_html_af5163c8ecefb53e64dbff3406bd8d99c">
+        <div class="ttname"><a href="class_t_h_1_1_entity.html#af5163c8ecefb53e64dbff3406bd8d99c">TH::Entity::reduceSlowingEffect</a>
+        </div>
+        <div class="ttdeci">void reduceSlowingEffect(float sf)</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:71</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_entity_html_ae29db9cd449fd3e63a2745bdc694165e">
+        <div class="ttname"><a href="class_t_h_1_1_entity.html#ae29db9cd449fd3e63a2745bdc694165e">TH::Entity::move</a>
+        </div>
+        <div class="ttdeci">virtual void move(const float &amp;xOffset, const float &amp;yOffset)</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:17</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_entity_html_a83d492f02f028e40ff6e284b08287a8e">
+        <div class="ttname"><a href="class_t_h_1_1_entity.html#a83d492f02f028e40ff6e284b08287a8e">TH::Entity::getGlobalBounds</a>
+        </div>
+        <div class="ttdeci">std::shared_ptr&lt; GlobalBounds &gt; getGlobalBounds() const</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:29</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_entity_html">
         <div class="ttname"><a href="class_t_h_1_1_entity.html">TH::Entity</a></div>
         <div class="ttdef"><b>Definition:</b> Entity.h:13</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_entity_html_af3ccbfdfa530372db55958cd2944e6d1">
+        <div class="ttname"><a
+                href="class_t_h_1_1_entity.html#af3ccbfdfa530372db55958cd2944e6d1">TH::Entity::speedUp</a></div>
+        <div class="ttdeci">void speedUp()</div>
+        <div class="ttdef"><b>Definition:</b> Entity.cpp:54</div>
     </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

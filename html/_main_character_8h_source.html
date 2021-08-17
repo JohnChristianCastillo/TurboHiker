@@ -96,7 +96,9 @@ $(function() {
     <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; <span class="keywordtype">bool</span>
         scareEnemy{<span class="keyword">false</span>};
     </div>
-    <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+    <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; <span class="keywordtype">bool</span>
+        summonEnemy{<span class="keyword">false</span>};
+    </div>
     <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; <span
             class="keywordtype">float</span> scareCooldown{0};
     </div>
@@ -117,65 +119,76 @@ $(function() {
     </div>
     <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
     <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; <span class="keywordtype">bool</span>
-        <a class="code" href="class_t_h_1_1_main_character.html#a581158f4588d4bb9228598eb43d5ba31">isScaringEnemy</a>()
+        <a class="code" href="class_t_h_1_1_main_character.html#ae1ff90d494786b2d99652c603ec83ab3">canSummonEnemy</a>()
         <span class="keyword">const</span>;
     </div>
     <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
     <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; <span class="keywordtype">void</span>
         <a class="code"
+           href="class_t_h_1_1_main_character.html#a29427373de27a85ef8230de54c81064b">setSummonEnemy</a>(<span
+                class="keyword">const</span> <span class="keywordtype">bool</span>&amp; _summonEnemy);
+    </div>
+    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+    <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; <span class="keywordtype">bool</span>
+        <a class="code" href="class_t_h_1_1_main_character.html#a581158f4588d4bb9228598eb43d5ba31">isScaringEnemy</a>()
+        <span class="keyword">const</span>;
+    </div>
+    <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+    <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; <span class="keywordtype">void</span>
+        <a class="code"
            href="class_t_h_1_1_main_character.html#a47b8d9ed07f406658191097c2e18d6e0">setScareEnemy</a>(<span
                 class="keywordtype">bool</span> _scareEnemy);
     </div>
-    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-    <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+    <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_main_character.html#ab05c894ad6790e64005ffcc96bfbf9d6">setYelling</a>(<span
                 class="keywordtype">bool</span> _yelling);
     </div>
-    <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-    <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+    <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; <span class="keywordtype">void</span>
         <a class="code"
            href="class_t_h_1_1_main_character.html#a556bf4128085073379dcb58f1d6b789b">resetScareCoolDown</a>();
     </div>
-    <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-    <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+    <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_main_character.html#ae1c2346422cbdff55e4abec72a10d751">decrementScareCoolDown</a>();
     </div>
-    <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-    <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; <span
+    <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+    <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; <span
             class="keywordtype">float</span> <a class="code"
                                                 href="class_t_h_1_1_main_character.html#a857328c995947b4ec751176feb8120ef">getScareCoolDown</a>()
         <span class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-    <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; <span class="keywordtype">bool</span>
+    <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+    <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; <span class="keywordtype">bool</span>
         <a class="code" href="class_t_h_1_1_main_character.html#a1120207a50887b3df14518110ca737db">isInvincible</a>();
     </div>
-    <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-    <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+    <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; <span class="keywordtype">void</span>
         <a class="code"
            href="class_t_h_1_1_main_character.html#aa2be89a0b3cfdf19b739948ef31e6d0a">startInvincibility</a>();
     </div>
-    <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-    <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+    <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_main_character.html#a5799c0e1873d7634e8c142bd6b8936d8">decreaseInvincibilityDuration</a>(<span
                 class="keyword">const</span> <span class="keywordtype">float</span>&amp; decr);
     </div>
-    <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-    <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+    <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; <span class="keyword">const</span>
         <span class="keywordtype">float</span>&amp; <a class="code"
                                                        href="class_t_h_1_1_main_character.html#ae6186be76b9ba73d076e057122917361">getInvincibilityDuration</a>()
         <span class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-    <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; EntityTypes <a class="code"
+    <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+    <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; EntityTypes <a class="code"
                                                                                                   href="class_t_h_1_1_main_character.html#a8b5ffedc091f0212c617ba2e22186021">getType</a>()
         <span class="keyword">const override</span>;
     </div>
-    <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
-    <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;} <span class="comment">// namespace TH</span>
+    <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};</div>
+    <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;} <span class="comment">// namespace TH</span>
     </div>
-    <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-    <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_MAINCHARACTER_H</span>
+    <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+    <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_MAINCHARACTER_H</span>
     </div>
     <div class="ttc" id="class_t_h_1_1_main_character_html">
         <div class="ttname"><a href="class_t_h_1_1_main_character.html">TH::MainCharacter</a></div>
@@ -239,11 +252,23 @@ $(function() {
         <div class="ttdeci">float getScareCoolDown() const</div>
         <div class="ttdef"><b>Definition:</b> MainCharacter.cpp:18</div>
     </div>
+    <div class="ttc" id="class_t_h_1_1_main_character_html_a29427373de27a85ef8230de54c81064b">
+        <div class="ttname"><a href="class_t_h_1_1_main_character.html#a29427373de27a85ef8230de54c81064b">TH::MainCharacter::setSummonEnemy</a>
+        </div>
+        <div class="ttdeci">void setSummonEnemy(const bool &amp;_summonEnemy)</div>
+        <div class="ttdef"><b>Definition:</b> MainCharacter.cpp:57</div>
+    </div>
     <div class="ttc" id="class_t_h_1_1_main_character_html_a5799c0e1873d7634e8c142bd6b8936d8">
         <div class="ttname"><a href="class_t_h_1_1_main_character.html#a5799c0e1873d7634e8c142bd6b8936d8">TH::MainCharacter::decreaseInvincibilityDuration</a>
         </div>
         <div class="ttdeci">void decreaseInvincibilityDuration(const float &amp;decr)</div>
         <div class="ttdef"><b>Definition:</b> MainCharacter.cpp:45</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_main_character_html_ae1ff90d494786b2d99652c603ec83ab3">
+        <div class="ttname"><a href="class_t_h_1_1_main_character.html#ae1ff90d494786b2d99652c603ec83ab3">TH::MainCharacter::canSummonEnemy</a>
+        </div>
+        <div class="ttdeci">bool canSummonEnemy() const</div>
+        <div class="ttdef"><b>Definition:</b> MainCharacter.cpp:54</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_entity_html">
         <div class="ttname"><a href="class_t_h_1_1_entity.html">TH::Entity</a></div>

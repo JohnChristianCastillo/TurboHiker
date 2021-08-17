@@ -12,9 +12,8 @@ TH::MainCharacter::MainCharacter(int lanes)
         globalBounds = std::make_shared<GlobalBounds>(pos, dim);
         movementSpeed = 5;
 }
-void TH::MainCharacter::setYelling(bool yell) { MainCharacter::yelling = yell; }
 bool TH::MainCharacter::isScaringEnemy() const { return scareEnemy; }
-void TH::MainCharacter::setScareEnemy(bool scareEnemy) { MainCharacter::scareEnemy = scareEnemy; }
+void TH::MainCharacter::setScareEnemy(bool _scareEnemy) { MainCharacter::scareEnemy = _scareEnemy; }
 float TH::MainCharacter::getScareCoolDown() const
 {
         if (scareCooldown < 0) {
@@ -51,3 +50,48 @@ void TH::MainCharacter::decreaseInvincibilityDuration(const float& decr)
 }
 const float& TH::MainCharacter::getInvincibilityDuration() const { return invincibleDuration; }
 TH::EntityTypes TH::MainCharacter::getType() const { return EntityTypes::mainCharacter; }
+bool TH::MainCharacter::canSummonEnemy() const { return summonEnemy; }
+
+bool TH::MainCharacter::isLaserActive()
+{
+        if (laserBeamDuration <= 0) {
+                laserBeamActive = false;
+                laserBeamDuration = 0;
+        }
+        return laserBeamActive;
+}
+void TH::MainCharacter::startLaserBeam()
+{
+        laserBeamActive = true;
+        laserBeamDuration = 8.f;
+}
+void TH::MainCharacter::decreaseLaserBeamDuration(const float& decr)
+{
+        laserBeamDuration -= decr;
+        if (laserBeamDuration < 0) {
+                laserBeamDuration = 0;
+        }
+}
+const float& TH::MainCharacter::getLaserBeamDuration() const { return laserBeamDuration; }
+
+void TH::MainCharacter::setSummonEnemy(const bool& _summonEnemy) { summonEnemy = _summonEnemy; }
+std::vector<std::shared_ptr<TH::GlobalBounds>> TH::MainCharacter::getLaserBeamBounds() const
+{
+        Position aiPos = globalBounds->position;
+        Dimensions aiDim = globalBounds->dimensions;
+        std::shared_ptr<GlobalBounds> frontalAura1 =
+            std::make_shared<GlobalBounds>(Position(aiPos.x, aiPos.y - aiDim.height), Dimensions(aiDim));
+        std::shared_ptr<GlobalBounds> frontalAura2 =
+            std::make_shared<GlobalBounds>(Position(aiPos.x, aiPos.y - 2 * aiDim.height), Dimensions(aiDim));
+        std::shared_ptr<GlobalBounds> frontalAura3 =
+            std::make_shared<GlobalBounds>(Position(aiPos.x, aiPos.y - 3 * aiDim.height), Dimensions(aiDim));
+        std::shared_ptr<GlobalBounds> frontalAura4 =
+            std::make_shared<GlobalBounds>(Position(aiPos.x, aiPos.y - 4 * aiDim.height), Dimensions(aiDim));
+        std::shared_ptr<GlobalBounds> frontalAura5 =
+            std::make_shared<GlobalBounds>(Position(aiPos.x, aiPos.y - 5 * aiDim.height), Dimensions(aiDim));
+        std::shared_ptr<GlobalBounds> frontalAura6 =
+            std::make_shared<GlobalBounds>(Position(aiPos.x, aiPos.y - 6 * aiDim.height), Dimensions(aiDim));
+        std::shared_ptr<GlobalBounds> frontalAura7 =
+            std::make_shared<GlobalBounds>(Position(aiPos.x, aiPos.y - 7 * aiDim.height), Dimensions(aiDim));
+        return {frontalAura1, frontalAura2, frontalAura3, frontalAura4, frontalAura5, frontalAura6, frontalAura7};
+}

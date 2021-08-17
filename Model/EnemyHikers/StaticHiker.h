@@ -18,6 +18,12 @@ public:
         explicit StaticHiker(const float& horizontalOffset);
 
         /**
+         * Spawns a static hiker at given position
+         * @param pos: position on which the hiker will be spawned
+         */
+        explicit StaticHiker(const Position& pos);
+
+        /**
          * @return The type of this hiker, here "staticHiker"
          */
         EntityTypes getType() const override;

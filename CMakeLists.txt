@@ -35,7 +35,7 @@ add_executable( TurboHiker
         Controller/Controller.cpp
         Controller/Controller.h
 
-        Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h Model/Finish.cpp Model/Finish.h Model/PowerUps/SpeedUp.cpp Model/PowerUps/SpeedUp.h Model/PowerUps/PowerUp.cpp Model/PowerUps/PowerUp.h Model/EnemyHikers/LeftToRightHiker.cpp Model/EnemyHikers/LeftToRightHiker.h Model/PowerUps/InvincibilityStar.cpp Model/PowerUps/InvincibilityStar.h)
+        Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h Model/Finish.cpp Model/Finish.h Model/PowerUps/SpeedUp.cpp Model/PowerUps/SpeedUp.h Model/PowerUps/PowerUp.cpp Model/PowerUps/PowerUp.h Model/EnemyHikers/LeftToRightHiker.cpp Model/EnemyHikers/LeftToRightHiker.h Model/PowerUps/InvincibilityStar.cpp Model/PowerUps/InvincibilityStar.h Model/PowerUps/SummonEnemy.cpp Model/PowerUps/SummonEnemy.h Model/PowerUps/Nuke.cpp Model/PowerUps/Nuke.h Model/PowerUps/LaserBeam.cpp Model/PowerUps/LaserBeam.h)
 
 #[[ COMMAND FOR WORKING WITH WINDOWS
 

@@ -63,7 +63,7 @@ std::vector<std::shared_ptr<TH::PowerUp>> TH::EntityMaker::generatePowerUp()
 std::shared_ptr<TH::PowerUp> TH::EntityMaker::generateRandomPowerUp(const float& randomOffset)
 {
         std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
-        int powerUpIndex = random->intInInterval(0, 1);
+        int powerUpIndex = random->intInInterval(0, 4);
         float randomOffsetOffset = random->floatInInterval(-0.2, 0.2);
         std::shared_ptr<PowerUp> powerUp{};
         float tempPosX{};
@@ -85,6 +85,31 @@ std::shared_ptr<TH::PowerUp> TH::EntityMaker::generateRandomPowerUp(const float&
                         powerUp = std::make_shared<InvincibilityStar>(static_cast<float>(randomOffset));
                 }
                 break;
+        case 2:
+                powerUp = std::make_shared<SummonEnemy>(static_cast<float>(randomOffset) + randomOffsetOffset);
+                tempPosX = powerUp->getGlobalBounds()->position.x;
+                tempWidth = powerUp->getGlobalBounds()->dimensions.width;
+                if (tempPosX + tempWidth / 2 >= 6 or tempPosX - tempWidth / 2 <= 0) {
+                        powerUp = std::make_shared<SummonEnemy>(static_cast<float>(randomOffset));
+                }
+                break;
+        case 3:
+                powerUp = std::make_shared<Nuke>(static_cast<float>(randomOffset) + randomOffsetOffset);
+                tempPosX = powerUp->getGlobalBounds()->position.x;
+                tempWidth = powerUp->getGlobalBounds()->dimensions.width;
+                if (tempPosX + tempWidth / 2 >= 6 or tempPosX - tempWidth / 2 <= 0) {
+                        powerUp = std::make_shared<Nuke>(static_cast<float>(randomOffset));
+                }
+                break;
+        case 4:
+                powerUp = std::make_shared<LaserBeam>(static_cast<float>(randomOffset) + randomOffsetOffset);
+                tempPosX = powerUp->getGlobalBounds()->position.x;
+                tempWidth = powerUp->getGlobalBounds()->dimensions.width;
+                if (tempPosX + tempWidth / 2 >= 6 or tempPosX - tempWidth / 2 <= 0) {
+                        powerUp = std::make_shared<LaserBeam>(static_cast<float>(randomOffset));
+                }
+                break;
+
         default:
                 break;
         }
@@ -93,4 +118,8 @@ std::shared_ptr<TH::PowerUp> TH::EntityMaker::generateRandomPowerUp(const float&
 std::vector<std::shared_ptr<TH::Background>> TH::EntityMaker::generateBackground()
 {
         return {std::make_shared<Background>(0), std::make_shared<Background>(-1), std::make_shared<Background>(-2)};
-};
+}
+std::shared_ptr<TH::Enemy> TH::EntityMaker::summonEnemy(const TH::Position& pos)
+{
+        return std::make_shared<StaticHiker>(pos);
+}

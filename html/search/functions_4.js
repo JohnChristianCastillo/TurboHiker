@@ -1,6 +1,5 @@
 var searchData=
 [
-    ['generateenemies', ['generateEnemies', ['../class_t_h_1_1_model.html#ad58c659b2865c0b813df834deeff4fdc', 1, 'TH::Model']]],
-    ['getaura', ['getAura', ['../class_t_h_1_1_main_character.html#a543ab533d5fbd496cb5fbbb51c30cd82', 1, 'TH::MainCharacter']]],
-    ['getlookahead', ['getLookAhead', ['../class_t_h_1_1_simple_a_i.html#a80ad3a3bbb799b668dfe0ed5d72ced12', 1, 'TH::SimpleAI']]]
+    ['endscreen', ['endScreen', ['../class_t_h_1_1_s_f_m_l_1_1_view.html#a0f6bc467d2102e0b82fc87b579534545', 1, 'TH::SFML::View']]],
+    ['exceededscarethreshold', ['exceededScareThreshold', ['../class_t_h_1_1_enemy.html#a5a831c3deddbd96fbd71b3b2406d170c', 1, 'TH::Enemy']]]
 ];

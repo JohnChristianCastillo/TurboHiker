@@ -13,8 +13,12 @@
 #include "Finish.h"
 #include "MainCharacter.h"
 #include "PowerUps/InvincibilityStar.h"
+#include "PowerUps/LaserBeam.h"
+#include "PowerUps/Nuke.h"
 #include "PowerUps/PowerUp.h"
 #include "PowerUps/SpeedUp.h"
+#include "PowerUps/SummonEnemy.h"
+
 #include "SimpleAI.h"
 #include <set>
 #include <vector>
@@ -66,6 +70,12 @@ public:
          * @return a vector of background entities
          */
         static std::vector<std::shared_ptr<Background>> generateBackground();
+
+        /**
+         * Summons a static hiker behind the main character
+         */
+
+        std::shared_ptr<Enemy> summonEnemy(const Position& pos);
 };
 } // namespace TH
 

@@ -22,7 +22,8 @@ enum Input
         HONKING,
         SCARING,
         ZERO,
-        ENTER
+        ENTER,
+        SPAWNENEMY
 };
 
 /**
@@ -36,7 +37,10 @@ enum EntityTypes
         background,
         finishLine,
         speedUp,
-        invincibilityStar
+        invincibilityStar,
+        summonEnemy,
+        nukePowerUp,
+        laserBeamPowerUp
 };
 
 /**

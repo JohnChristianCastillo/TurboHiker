@@ -49,6 +49,9 @@ class View
 
         sf::Texture invincibilityStarTexture;
         sf::Texture speedBoostTexture;
+        sf::Texture summonEnemyTexture;
+        sf::Texture laserBeamTexture;
+        sf::Texture nukeTexture;
 
         // Set up viewport
         sf::View view;
@@ -67,6 +70,7 @@ class View
         bool rightIsPressed{false};
         bool playerIsHonking{false};
         bool playerIsScaring{false};
+        bool wantsToSpawnEnemy{false};
 
 public:
         /**
@@ -84,9 +88,10 @@ public:
          * @param scoringSystem: The instance of the LiveScoring observer
          * @param gameTime: The current game time
          * @param scareCoolDown: The cool down left of scareCoolDown
+         * @param canSpawnEnemy: boolean value telling us if the main character can spawn an enemy
          */
         void drawScore(const std::shared_ptr<OBSERVER::LiveScoring>& scoringSystem, const float& gameTime,
-                       const float& scareCoolDown);
+                       const float& scareCoolDown, const bool& canSpawnEnemy);
 
         /**
          * Initialize the window our user will interact with
@@ -178,6 +183,14 @@ public:
          * @param model: The instance of Model
          */
         void drawInvincibilityPrompt(const std::shared_ptr<TH::Model>& model);
+
+        /**
+         * Draws the laser beam prompt together with the laser beam
+         * @param model: The instance of Model
+         * @param transformation: The instance of Transformation
+         */
+        void drawLaserBeamAndPrompt(const std::shared_ptr<TH::Model>& model,
+                                    const std::shared_ptr<singleton::Transformation>& transformation);
 
         /**
          * Draws the main character

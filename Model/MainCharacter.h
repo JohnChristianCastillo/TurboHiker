@@ -11,12 +11,13 @@
 namespace TH {
 class MainCharacter : public Entity
 {
-        bool yelling{false};
         bool scareEnemy{false};
-
+        bool summonEnemy{false};
         float scareCooldown{0};
-        bool invincible{false};
 
+        bool laserBeamActive{false};
+        float laserBeamDuration{0};
+        bool invincible{false};
         float invincibleDuration{0};
 
 public:
@@ -39,6 +40,17 @@ public:
          * @param lanes: lanes of the game
          */
         explicit MainCharacter(int lanes);
+
+        /**
+         * @return True if player can summon an enemy, False otherwise
+         */
+        bool canSummonEnemy() const;
+
+        /**
+         * Sets summonEnemy variable to _summonEnemy
+         * @param _summonEnemy: boolean value to be assigned to summonEnemy variable
+         */
+        void setSummonEnemy(const bool& _summonEnemy);
 
         /**
          * @return True if the player is scaring players, False otherwise
@@ -93,6 +105,31 @@ public:
          */
         const float& getInvincibilityDuration() const;
 
+        /**
+         * @return True if the laser beam is active, False otherwise
+         */
+        bool isLaserActive();
+
+        /**
+         * Activates the laser beam for a short duration
+         */
+        void startLaserBeam();
+
+        /**
+         * Reduces the duration of the LaserBeam
+         * @param decr: amount by which the Laser beam duration will be reduced
+         */
+        void decreaseLaserBeamDuration(const float& decr);
+
+        /**
+         * @return The duration of the players Laser beam power up
+         */
+        const float& getLaserBeamDuration() const;
+
+        /**
+         * @return the whole area above the main character up until the end screen
+         */
+        std::vector<std::shared_ptr<GlobalBounds>> getLaserBeamBounds() const;
         /**
          * @return The type of this entity, in this case "MainCharacter"
          */

@@ -224,6 +224,11 @@ public:
          * This combination is necessary to achieve only looping once through all the spawned enemy entities
          */
         bool collisionControl(bool finishLineGenerated);
+
+        /**
+         * Spawns an enemy if the main character can spawn an enemy
+         */
+        void spawnEnemy();
 };
 } // namespace TH
 

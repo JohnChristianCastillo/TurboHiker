@@ -12,19 +12,25 @@ void TH::SFML::View::initScoringSystem()
         scoreText.setString("0");
         scoreText.setFillColor(sf::Color::Black);
         scoreText.setOrigin(scoreText.getGlobalBounds().width / 2, scoreText.getGlobalBounds().height / 2);
-        scoreText.setPosition(screenWidth - 200, 10);
+        scoreText.setPosition(screenWidth - 220, 10);
 }
 void TH::SFML::View::drawScore(const std::shared_ptr<OBSERVER::LiveScoring>& scoringSystem, const float& gameTime,
-                               const float& scareCoolDown)
-
+                               const float& scareCoolDown, const bool& canSpawnEnemy)
 {
-        scoreText.setString(std::to_string(scoringSystem->getScore()) + "\n" + std::to_string(gameTime) +
-                            "\nScare\nCooldown: " + std::to_string(scareCoolDown));
+        if (canSpawnEnemy) {
+                scoreText.setString(
+                    std::to_string(static_cast<int>(scoringSystem->getScore())) + "\n" + std::to_string(gameTime) +
+                    "\nScare\nCooldown: " + std::to_string(static_cast<int>(scareCoolDown)) + "\nSpawn Enemy: Yes");
+        } else {
+                scoreText.setString(
+                    std::to_string(static_cast<int>(scoringSystem->getScore())) + "\n" + std::to_string(gameTime) +
+                    "\nScare\nCooldown: " + std::to_string(static_cast<int>(scareCoolDown)) + "\nSpawn Enemy: No");
+        }
+
         window.draw(scoreText);
 }
 TH::SFML::View::View(const float fps, const std::shared_ptr<TH::Model>& model)
 {
-
         window.setFramerateLimit(static_cast<unsigned int>(fps));
 
         // initialize the player
@@ -46,22 +52,31 @@ TH::SFML::View::View(const float fps, const std::shared_ptr<TH::Model>& model)
 void TH::SFML::View::loadTextures()
 {
         if (!carTexture.loadFromFile("../assets/cars/1.png")) {
-                std::cout << "bg img not found" << std::endl;
+                std::cerr << "bg img not found" << std::endl;
         }
         // if (!backgroundTexture.loadFromFile("../assets/highway.png")) {
         if (!backgroundTexture.loadFromFile("../assets/Roads/road_asphalt01.png")) {
-                std::cout << "bg img not found" << std::endl;
+                std::cerr << "bg img not found" << std::endl;
         }
 
         if (!finishLineTexture.loadFromFile("../assets/finishLine.png")) {
-                std::cout << "finish line image not found" << std::endl;
+                std::cerr << "finish line image not found" << std::endl;
         }
 
         if (!invincibilityStarTexture.loadFromFile("../assets/invincibilityStar.png")) {
-                std::cout << "invincibility star image not found" << std::endl;
+                std::cerr << "invincibility star image not found" << std::endl;
         }
         if (!speedBoostTexture.loadFromFile("../assets/arrow_yellow.png")) {
-                std::cout << "speedboost image not found" << std::endl;
+                std::cerr << "speedboost image not found" << std::endl;
+        }
+        if (!summonEnemyTexture.loadFromFile("../assets/spawnPowerUp.png")) {
+                std::cerr << "spawnPowerUp image not found" << std::endl;
+        }
+        if (!nukeTexture.loadFromFile("../assets/nuke.png")) {
+                std::cerr << "nuke image not found" << std::endl;
+        }
+        if (!laserBeamTexture.loadFromFile("../assets/laserBeam.png")) {
+                std::cerr << "spawnPowerUp image not found" << std::endl;
         }
 
         sf::Texture tempTure{};
@@ -109,13 +124,17 @@ TH::Input TH::SFML::View::pollEvent()
                         }
                 case sf::Event::KeyReleased:
                         if (event.key.code == sf::Keyboard::Up) {
+                                return Input::UP;
                                 upIsPressed = false;
                         } else if (event.key.code == sf::Keyboard::Down) {
                                 downIsPressed = false;
+                                return Input::DOWN;
                         } else if (event.key.code == sf::Keyboard::Left) {
                                 leftIsPressed = false;
+                                return Input::LEFT;
                         } else if (event.key.code == sf::Keyboard::Right) {
                                 rightIsPressed = false;
+                                return Input::RIGHT;
                         }
                 default:
                         return {};
@@ -152,6 +171,8 @@ std::vector<TH::Input> TH::SFML::View::getKeyboardInput()
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
                 playerIsScaring = false;
                 playerIsHonking = true;
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+                wantsToSpawnEnemy = true;
         }
 
         return produceKeyboardOutput();
@@ -176,6 +197,10 @@ std::vector<TH::Input> TH::SFML::View::produceKeyboardOutput()
                 retVect.push_back(Input::SCARING);
                 playerIsScaring = false;
         }
+        if (wantsToSpawnEnemy) {
+                retVect.push_back(Input::SPAWNENEMY);
+                wantsToSpawnEnemy = false;
+        }
         return retVect;
 }
 void TH::SFML::View::endScreen(const std::shared_ptr<OBSERVER::LiveScoring>& pointingSystem)
@@ -185,7 +210,8 @@ void TH::SFML::View::endScreen(const std::shared_ptr<OBSERVER::LiveScoring>& poi
         sf::Text endText;
         endText.setCharacterSize(20);
         endText.setFont(retro);
-        endText.setString("HIGH SCORE: " + std::to_string(highScore) + "\nYOUR SCORE: " + std::to_string(score));
+        endText.setString("HIGH SCORE: " + std::to_string(static_cast<int>(highScore)) +
+                          "\nYOUR SCORE: " + std::to_string(static_cast<int>(score)));
         endText.setFillColor(sf::Color::White);
         endText.setPosition(screenWidth / 2, screenHeight / 2);
         endText.setOrigin(endText.getLocalBounds().left + endText.getLocalBounds().width / 2.0f,
@@ -267,6 +293,12 @@ void TH::SFML::View::drawPowerUps(const std::shared_ptr<TH::Model>& model,
                         wallSprite.setTexture(&speedBoostTexture);
                 } else if (powerUp->getType() == EntityTypes::invincibilityStar) {
                         wallSprite.setTexture(&invincibilityStarTexture);
+                } else if (powerUp->getType() == EntityTypes::summonEnemy) {
+                        wallSprite.setTexture(&summonEnemyTexture);
+                } else if (powerUp->getType() == EntityTypes::nukePowerUp) {
+                        wallSprite.setTexture(&nukeTexture);
+                } else if (powerUp->getType() == EntityTypes::laserBeamPowerUp) {
+                        wallSprite.setTexture(&laserBeamTexture);
                 }
                 wallSprite.setPosition(std::get<0>(wallCoords), std::get<1>(wallCoords));
                 window.draw(wallSprite);
@@ -298,6 +330,40 @@ void TH::SFML::View::drawInvincibilityPrompt(const std::shared_ptr<TH::Model>& m
                 window.draw(startText);
         }
 }
+
+void TH::SFML::View::drawLaserBeamAndPrompt(const std::shared_ptr<TH::Model>& model,
+                                            const std::shared_ptr<singleton::Transformation>& transformation)
+{
+        if (model->getMainCharacter()->isLaserActive()) {
+                sf::Text startText;
+                startText.setCharacterSize(20);
+                startText.setFont(retro);
+                startText.setString("LASER!! " + std::to_string(static_cast<int>(
+                                                     model->getMainCharacter()->getInvincibilityDuration())));
+                startText.setFillColor(sf::Color::Yellow);
+                startText.setOrigin(startText.getLocalBounds().left + startText.getLocalBounds().width / 2.0f,
+                                    startText.getLocalBounds().top + startText.getLocalBounds().height / 2.0f);
+                startText.setPosition(screenWidth / 2, (screenHeight / 2) + 20);
+
+                window.draw(startText);
+
+                Dimensions dim =
+                    transformation->modelDimToViewDim(model->getMainCharacter()->getLaserBeamBounds()[0]->dimensions);
+                for (const auto& i : model->getMainCharacter()->getLaserBeamBounds()) {
+                        std::tuple<float, float> auraPos = transformation->modelToView(i);
+                        /// Collision object
+                        /// Next box visualization todo: remove for final
+                        sf::RectangleShape nextBox{sf::Vector2f(dim.width, dim.height)};
+                        sf::Color color = sf::Color::Red;
+                        color.a = 128;
+                        nextBox.setFillColor(color);
+                        nextBox.setPosition(std::get<0>(auraPos), std::get<1>(auraPos));
+                        window.draw(nextBox);
+                        window.draw(nextBox);
+                }
+        }
+}
+
 void TH::SFML::View::drawMC(const std::shared_ptr<TH::Model>& model,
                             const std::shared_ptr<singleton::Transformation>& transformation)
 {
@@ -346,9 +412,12 @@ void TH::SFML::View::draw(const std::shared_ptr<TH::Model>& model, float gameTim
 
         drawFinishLine(finishLineGenerated, model, transformation);
 
-        drawScore(model->getScoringSystem(), gameTime, model->getMainCharacter()->getScareCoolDown());
+        drawScore(model->getScoringSystem(), gameTime, model->getMainCharacter()->getScareCoolDown(),
+                  model->getMainCharacter()->canSummonEnemy());
 
         drawInvincibilityPrompt(model);
+
+        drawLaserBeamAndPrompt(model, transformation);
 
         countDown(startCountdown, gameTime);
 

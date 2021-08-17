@@ -12,54 +12,47 @@ namespace OBSERVER {
 class LiveScoring
 {
         float score;
-        void saveHighScore() const
-        {
-                std::ofstream writeFile("../assets/Highscore.txt");
-                if (writeFile.is_open()) {
-                        writeFile << score;
-                }
-        }
+        void saveHighScore() const;
 
 public:
         float getScore() const;
 
-        void crashed() { score -= 5; }
+        /**
+         * adds score after deleting an enemy via laser beam
+         */
+        void laseredEnemy();
+
+        /**
+         * deducts points for crashing into an enemy
+         */
+        void crashed();
+
         /**
          * By scaring a hiker too much, we can cause them to fall off
          */
-        void hikerThrownOff() { score -= 3; }
+        void hikerThrownOff();
+
         /**
          * Yelling can cause an enemy hiker to slow down
          */
-        void hikerOffended() { score -= 1; }
-
-        void addPoints() { score += 10; }
+        void hikerOffended();
 
         /**
          * Adds default score for advancing the race
          */
-        void advance() { score += 0.06; }
+        void advance();
 
-        float getHighScore()
-        {
-                float highScore = 0;
-                std::ifstream readFile;
-                readFile.open("../assets/Highscore.txt");
-                if (readFile.is_open()) {
-                        while (!readFile.eof()) {
-                                readFile >> highScore;
-                        }
-                        if (score > highScore) {
-                                highScore = score;
-                                readFile.close();
-                                saveHighScore();
-                        }
-                }
-                readFile.close();
-                return highScore;
-        }
+        /**
+         * Returns the high score
+         * Overwrites previous high score if new one is higher
+         * @return the old/new high score
+         */
+        float getHighScore();
 
-        void playerFinishedFirst() { score += 100; }
+        /**
+         * Rewards the player for finishing first
+         */
+        void playerFinishedFirst();
 };
 } // namespace OBSERVER
 } // namespace TH
