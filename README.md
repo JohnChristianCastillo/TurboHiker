@@ -2,7 +2,7 @@
 # TURBO HIKER 
 ## How to run:
 To build the game, simply run the build script `build.sh`  
-To build and run the game,simply run the run script `run.sh`
+To build and run the game, simply run the run script `run.sh`
 
 ## How to play:
 _(optional)_ 
@@ -21,7 +21,7 @@ Press **ENTER** to start the game
 ## Rules:
 The goal is to reach the finish line first without causing any trouble towards the other `ENEMY ENTITIES` in the game.  
 Crashing into enemy entities slows your player down and deducts points.   
-Screaming causes enemies to panic and make them manouver randomly(either left or right). If the enemy panics too much it throws them off the map and leads to more points being deducted from you. 
+Screaming causes enemies to panic and make them maneuver randomly(either left or right). If the enemy panics too much it throws them off the map and leads to more points being deducted from you. 
 
 ## ENTITIES:
 Entities can be classified into two categories: **ENEMY** and **POWERUP**  
