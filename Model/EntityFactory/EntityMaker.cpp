@@ -38,8 +38,6 @@ std::vector<std::shared_ptr<TH::Enemy>> TH::EntityMaker::generateEnemies()
                         tempEnemy = std::make_shared<StaticHiker>(static_cast<float>(randomOffset));
                 }
                 returnEnemies.push_back(tempEnemy);
-                // std::cout << "Generated enemy#" <<  i++ << ": " << tempEnemy->getGlobalBounds()->position.x
-                // << std::endl;
         }
         return returnEnemies;
 }
@@ -66,8 +64,8 @@ std::shared_ptr<TH::PowerUp> TH::EntityMaker::generateRandomPowerUp(const float&
         int powerUpIndex = random->intInInterval(0, 4);
         float randomOffsetOffset = random->floatInInterval(-0.2, 0.2);
         std::shared_ptr<PowerUp> powerUp{};
-        float tempPosX{};
-        float tempWidth{};
+        float tempPosX;
+        float tempWidth;
         switch (powerUpIndex) {
         case 0:
                 powerUp = std::make_shared<SpeedUp>(static_cast<float>(randomOffset) + randomOffsetOffset);

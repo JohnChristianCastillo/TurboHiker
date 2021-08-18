@@ -50,26 +50,36 @@ void TH::Controller::pollForStartScreen(bool& stillOnStartScreen, std::shared_pt
 {
         if (stillOnStartScreen) {
                 view->startScreen();
+                int mcSkin = 0;
+                int bgSkin = 0;
                 while (stillOnStartScreen) {
+                        Input in = view->getSkinInput();
                         if (view->pollEvent() == ZERO) {
                                 return;
                         }
-                        inputs = view->getKeyboardInput();
-                        for (const auto& in : inputs) {
-                                if (in == ENTER) {
+                        if (in == Input::LEFT) {
+                                bgSkin = view->changeBackground(bgSkin, true);
+                        } else if (in == Input::RIGHT) {
+                                bgSkin = view->changeBackground(bgSkin, false);
+                        } else if (in == Input::UP) {
+                                mcSkin = view->changeMcSkin(mcSkin, false);
+                        } else if (in == Input::DOWN) {
+                                mcSkin = view->changeMcSkin(mcSkin, true);
+                        }
+                        if (in == ENTER) {
+                                timer->restart();
+                                timer->resetGameTime();
+                                view->assignBGandMCTextures(bgSkin, mcSkin);
+                                while (timer->getGameTime() <= 3) {
+                                        timer->tick();
                                         timer->restart();
-                                        timer->resetGameTime();
-                                        while (timer->getGameTime() <= 3) {
-                                                timer->tick();
-                                                timer->restart();
-                                                // we start the countDown
-                                                view->draw(model, 3 - timer->getGameTime(), false, true);
-                                                timer->incrementGameTime(timer->getElapsedtime());
-                                        }
-                                        timer->restart();
-                                        timer->resetGameTime();
-                                        stillOnStartScreen = false;
+                                        // we start the countDown
+                                        view->draw(model, 3 - timer->getGameTime(), false, true);
+                                        timer->incrementGameTime(timer->getElapsedtime());
                                 }
+                                timer->restart();
+                                timer->resetGameTime();
+                                stillOnStartScreen = false;
                         }
                 }
         }
@@ -101,7 +111,6 @@ bool TH::Controller::getKeyboardInput(const float& elapsedTime)
                         break;
                 case SCARING:
                         model->getMainCharacter()->setScareEnemy(true);
-                        std::cout << "MC is scaring the enemy \n";
                         break;
                 case SPAWNENEMY:
                         model->spawnEnemy();

@@ -3,7 +3,7 @@
 //
 
 #include "LiveScoring.h"
-float TH::OBSERVER::LiveScoring::getScore() const { return 1000 * score; }
+float TH::OBSERVER::LiveScoring::getScore() const { return score; }
 void TH::OBSERVER::LiveScoring::saveHighScore() const
 {
         std::ofstream writeFile("../assets/Highscore.txt");
@@ -32,6 +32,6 @@ float TH::OBSERVER::LiveScoring::getHighScore()
                 }
         }
         readFile.close();
-        return 1000 * highScore;
+        return highScore;
 }
-void TH::OBSERVER::LiveScoring::playerFinishedFirst() { score += 1000; }
+void TH::OBSERVER::LiveScoring::playerFinishedFirst() { score += 2000; }

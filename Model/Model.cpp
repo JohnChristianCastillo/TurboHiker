@@ -365,7 +365,7 @@ void TH::Model::collisionWithPowerUpControl(const std::shared_ptr<GlobalBounds>&
                                 mainCharacter->startLaserBeam();
                         }
                         powerUps.erase(powerUps.begin() + i);
-                        return; // to avoid multiple players picking up power up
+                        continue; // to avoid multiple players picking up power up
                 }
                 if (powerUps[i]->getGlobalBounds()->intersects<float>(aiNextPosition)) {
                         // if we collided we want to check which powerup our player collided with;

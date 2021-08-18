@@ -64,12 +64,6 @@ public:
         void setScareEnemy(bool _scareEnemy);
 
         /**
-         * sets yelling value to _yelling
-         * @param _yelling
-         */
-        void setYelling(bool _yelling);
-
-        /**
          * Applies a cool down time to the scaring ability of the player
          */
         void resetScareCoolDown();
@@ -120,11 +114,6 @@ public:
          * @param decr: amount by which the Laser beam duration will be reduced
          */
         void decreaseLaserBeamDuration(const float& decr);
-
-        /**
-         * @return The duration of the players Laser beam power up
-         */
-        const float& getLaserBeamDuration() const;
 
         /**
          * @return the whole area above the main character up until the end screen

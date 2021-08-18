@@ -31,13 +31,13 @@ class View
             "TurboHiker!!!"};
 
         // Main Character entity:
-        sf::Texture carTexture;
         sf::RectangleShape carSprite;
 
         // Enemy textures;
         std::vector<sf::Texture> enemyTextures;
+
         // Background Entities:
-        sf::Texture backgroundTexture;
+        std::vector<sf::Texture> backgroundTextures;
         // the idea here is to have a treadmill like background that will give the illusion that the background is
         // continuous
         sf::Sprite backgroundImage1;
@@ -62,6 +62,9 @@ class View
         // scoring system entities
         sf::Text scoreText;
         sf::Font retro;
+
+        sf::RectangleShape demoCar{};
+        sf::Sprite demoBG{};
 
         // keyboard multiple input entities;
         bool upIsPressed{false};
@@ -106,8 +109,10 @@ public:
 
         /**
          * Assigns the loaded textures to the correct sprite
+         * @param bgIndex: index of the background skin that the background going to use
+         * @param mcIndex: index of the vehicle skin that the mc is going to use
          */
-        void assignBGandMCTextures();
+        void assignBGandMCTextures(const int& bgIndex, const int& mcIndex);
 
         /**
          * Polls for an event that our system handles
@@ -226,6 +231,28 @@ public:
          */
         void draw(const std::shared_ptr<TH::Model>& model, float gameTime, bool finishLineGenerated = false,
                   bool startCountdown = false, bool lookAhead = false);
+
+        /**
+         * Scrolls through the available background textures
+         * @param bgSkin: Index of the current background texture chosen
+         * @param scrollLeft: True if left key is pressed
+         * @return The index of the newly chosen texture
+         */
+        int changeBackground(int& bgSkin, const bool& scrollLeft);
+
+        /**
+         * Scrolls through the available character textures
+         * @param mcSkin: Index of the currently chosen texture
+         * @param scrollDown: True if down key is pressed
+         * @return Index of the newly chosen texture
+         */
+        int changeMcSkin(int& mcSkin, const bool& scrollDown);
+
+        /**
+         * Returns the correct key pressed during character loading screen
+         * @return key pressed
+         */
+        Input getSkinInput();
 };
 } // namespace SFML
 } // namespace TH

@@ -7,7 +7,7 @@ int TH::Entity::getSkin()
 {
         if (skin == -1) {
                 std::shared_ptr<singleton::Random> random = singleton::Random::getInstance();
-                skin = random->intInInterval(1, 11);
+                skin = random->intInInterval(0, 16);
                 return skin;
         } else {
                 return skin;

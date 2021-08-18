@@ -8,7 +8,7 @@
 #include "../Observers/LiveScoring.h"
 #include "../Singletons/Transformation.h"
 #include "EnemyHikers/Enemy.h"
-#include "EntityMaker.h"
+#include "EntityFactory/EntityMaker.h"
 #include "MainCharacter.h"
 #include <iostream>
 #include <utility>

@@ -42,7 +42,6 @@ TH::SFML::View::View(const float fps, const std::shared_ptr<TH::Model>& model)
         carSprite = std::move(carObject);
 
         loadTextures();
-        assignBGandMCTextures();
         // initialize to cover the whole screen
         view.reset(sf::FloatRect(0, 0, screenWidth, screenHeight));
         // how much of the view we want to see
@@ -51,12 +50,15 @@ TH::SFML::View::View(const float fps, const std::shared_ptr<TH::Model>& model)
 }
 void TH::SFML::View::loadTextures()
 {
-        if (!carTexture.loadFromFile("../assets/cars/1.png")) {
-                std::cerr << "bg img not found" << std::endl;
-        }
-        // if (!backgroundTexture.loadFromFile("../assets/highway.png")) {
-        if (!backgroundTexture.loadFromFile("../assets/Roads/road_asphalt01.png")) {
-                std::cerr << "bg img not found" << std::endl;
+        // if (!backgroundTexture.loadFromFile("../assets/1.png")) {
+
+        sf::Texture tempBgTexture{};
+        for (int i = 1; i <= 7; ++i) {
+                std::string fileLocation = "../assets/Roads/" + std::to_string(i) + ".png";
+                if (!tempBgTexture.loadFromFile(fileLocation)) {
+                        std::cerr << "bg img not found" << std::endl;
+                }
+                backgroundTextures.push_back(tempBgTexture);
         }
 
         if (!finishLineTexture.loadFromFile("../assets/finishLine.png")) {
@@ -80,27 +82,31 @@ void TH::SFML::View::loadTextures()
         }
 
         sf::Texture tempTure{};
-        for (int i = 1; i <= 12; ++i) {
+        for (int i = 1; i <= 17; ++i) {
                 std::string fileLocation = "../assets/cars/" + std::to_string(i) + ".png";
                 if (!tempTure.loadFromFile(fileLocation)) {
-                        std::cout << "bg img not found" << std::endl;
+                        std::cerr << "bg img not found" << std::endl;
                 }
                 enemyTextures.push_back(tempTure);
         }
 }
-void TH::SFML::View::assignBGandMCTextures()
+void TH::SFML::View::assignBGandMCTextures(const int& bgIndex, const int& mcIndex)
 {
-        backgroundImage1.setScale(static_cast<float>(screenWidth) / static_cast<float>(backgroundTexture.getSize().x),
-                                  static_cast<float>(screenHeight) / static_cast<float>(backgroundTexture.getSize().y));
-        backgroundImage2.setScale(static_cast<float>(screenWidth) / static_cast<float>(backgroundTexture.getSize().x),
-                                  static_cast<float>(screenHeight) / static_cast<float>(backgroundTexture.getSize().y));
-        backgroundImage3.setScale(static_cast<float>(screenWidth) / static_cast<float>(backgroundTexture.getSize().x),
-                                  static_cast<float>(screenHeight) / static_cast<float>(backgroundTexture.getSize().y));
-        backgroundImage1.setTexture(backgroundTexture);
-        backgroundImage2.setTexture(backgroundTexture);
-        backgroundImage3.setTexture(backgroundTexture);
 
-        carSprite.setTexture(&carTexture);
+        backgroundImage1.setScale(
+            static_cast<float>(screenWidth) / static_cast<float>(backgroundTextures[bgIndex].getSize().x),
+            static_cast<float>(screenHeight) / static_cast<float>(backgroundTextures[bgIndex].getSize().y));
+        backgroundImage2.setScale(
+            static_cast<float>(screenWidth) / static_cast<float>(backgroundTextures[bgIndex].getSize().x),
+            static_cast<float>(screenHeight) / static_cast<float>(backgroundTextures[bgIndex].getSize().y));
+        backgroundImage3.setScale(
+            static_cast<float>(screenWidth) / static_cast<float>(backgroundTextures[bgIndex].getSize().x),
+            static_cast<float>(screenHeight) / static_cast<float>(backgroundTextures[bgIndex].getSize().y));
+        backgroundImage1.setTexture(backgroundTextures[bgIndex]);
+        backgroundImage2.setTexture(backgroundTextures[bgIndex]);
+        backgroundImage3.setTexture(backgroundTextures[bgIndex]);
+
+        carSprite.setTexture(&enemyTextures[mcIndex]);
 
         sf::RectangleShape finishObject(sf::Vector2f(screenWidth, 60));
         finishSprite = std::move(finishObject);
@@ -124,18 +130,15 @@ TH::Input TH::SFML::View::pollEvent()
                         }
                 case sf::Event::KeyReleased:
                         if (event.key.code == sf::Keyboard::Up) {
-                                return Input::UP;
                                 upIsPressed = false;
                         } else if (event.key.code == sf::Keyboard::Down) {
                                 downIsPressed = false;
-                                return Input::DOWN;
                         } else if (event.key.code == sf::Keyboard::Left) {
                                 leftIsPressed = false;
-                                return Input::LEFT;
                         } else if (event.key.code == sf::Keyboard::Right) {
                                 rightIsPressed = false;
-                                return Input::RIGHT;
                         }
+                        break;
                 default:
                         return {};
                 }
@@ -153,10 +156,7 @@ std::vector<TH::Input> TH::SFML::View::getKeyboardInput()
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
                 rightIsPressed = false;
                 leftIsPressed = true;
-
-        } /*else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                        backgroundMove.y += -speed * elapsedTime.count(); //clock.getElapsedTime().asSeconds();
-                }*/
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
                 downIsPressed = false;
                 upIsPressed = true;
@@ -245,11 +245,25 @@ void TH::SFML::View::startScreen()
         startText.setCharacterSize(20);
         startText.setFont(retro);
         startText.setString("PRESS ENTER KEY TO START");
+
         startText.setFillColor(sf::Color::White);
         startText.setOrigin(startText.getLocalBounds().left + startText.getLocalBounds().width / 2.0f,
                             startText.getLocalBounds().top + startText.getLocalBounds().height / 2.0f);
         startText.setPosition(screenWidth / 2, screenHeight / 2);
 
+        sf::Text optionText;
+        optionText.setCharacterSize(20);
+        optionText.setFont(retro);
+        optionText.setString("\n(OPTIONAL)"
+                             "\nchoose background: LEFT or RIGHT arrow key"
+                             "\nchoose character: UP or DOWN arrow key");
+
+        optionText.setFillColor(sf::Color::White);
+        optionText.setOrigin(optionText.getLocalBounds().left + optionText.getLocalBounds().width / 2.0f,
+                             optionText.getLocalBounds().top + optionText.getLocalBounds().height);
+        optionText.setPosition(screenWidth / 2, screenHeight - 50);
+
+        window.draw(optionText);
         window.draw(startText);
         window.display();
         window.clear();
@@ -423,4 +437,73 @@ void TH::SFML::View::draw(const std::shared_ptr<TH::Model>& model, float gameTim
 
         window.display();
         window.clear();
+}
+int TH::SFML::View::changeBackground(int& bgSkin, const bool& scrollLeft)
+{
+        demoBG = sf::Sprite();
+        window.clear();
+        if (scrollLeft) {
+                --bgSkin;
+        } else if (!scrollLeft) {
+                ++bgSkin;
+        }
+
+        if (bgSkin < 0) {
+                bgSkin = 6;
+        } else if (bgSkin > 6) {
+                bgSkin = 0;
+        }
+
+        int retSkin = std::abs(bgSkin % static_cast<int>(backgroundTextures.size()));
+        demoBG.setScale(static_cast<float>(screenWidth) / static_cast<float>(backgroundTextures[retSkin].getSize().x),
+                        static_cast<float>(screenHeight) / static_cast<float>(backgroundTextures[retSkin].getSize().y));
+        demoBG.setTexture(backgroundTextures[retSkin]);
+        window.draw(demoBG);
+        window.draw(demoCar);
+        window.display();
+        return retSkin;
+}
+int TH::SFML::View::changeMcSkin(int& mcSkin, const bool& scrollDown)
+{
+        demoCar = sf::RectangleShape(sf::Vector2f(30, 60));
+        window.clear();
+
+        if (scrollDown) {
+                --mcSkin;
+        } else if (!scrollDown) {
+                ++mcSkin;
+        }
+        if (mcSkin < 0) {
+                mcSkin = 16;
+        } else if (mcSkin > 16) {
+                mcSkin = 0;
+        }
+
+        int retSkin = std::abs(mcSkin % static_cast<int>(enemyTextures.size()));
+        demoCar.setTexture(&enemyTextures[retSkin]);
+        demoCar.setPosition(screenWidth / 2, (screenHeight / 2) + 30);
+        window.draw(demoBG);
+        window.draw(demoCar);
+        window.display();
+        return retSkin;
+}
+TH::Input TH::SFML::View::getSkinInput()
+{
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) and !rightIsPressed) {
+                rightIsPressed = true;
+                return Input::RIGHT;
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) and !leftIsPressed) {
+                leftIsPressed = true;
+                return Input::LEFT;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) and !upIsPressed) {
+                upIsPressed = true;
+                return Input::UP;
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) and !downIsPressed) {
+                downIsPressed = true;
+                return Input::DOWN;
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
+                return Input::ENTER;
+        }
+        return Input::HONKING; // arbitrary return
 }

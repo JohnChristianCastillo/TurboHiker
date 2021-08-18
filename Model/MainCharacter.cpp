@@ -72,7 +72,6 @@ void TH::MainCharacter::decreaseLaserBeamDuration(const float& decr)
                 laserBeamDuration = 0;
         }
 }
-const float& TH::MainCharacter::getLaserBeamDuration() const { return laserBeamDuration; }
 
 void TH::MainCharacter::setSummonEnemy(const bool& _summonEnemy) { summonEnemy = _summonEnemy; }
 std::vector<std::shared_ptr<TH::GlobalBounds>> TH::MainCharacter::getLaserBeamBounds() const

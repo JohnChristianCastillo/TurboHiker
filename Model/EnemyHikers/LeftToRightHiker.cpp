@@ -30,15 +30,11 @@ void TH::LeftToRightHiker::move(const float& xOffset, const float& yOffset)
                                 globalBounds->position.x += xOffset;
                         }
                         return;
-                }
-                if (!moveLeft) {
-                        // and we haven't gotten past half the screen
+                } else {
                         if (globalBounds->position.x + globalBounds->dimensions.width / 2 + xOffset > 3) {
                                 globalBounds->position.x -= xOffset;
                                 moveLeft = true;
-                        }
-                        // if we're past half the screen
-                        else {
+                        } else {
                                 globalBounds->position.x += xOffset;
                         }
                 }
@@ -56,8 +52,7 @@ void TH::LeftToRightHiker::move(const float& xOffset, const float& yOffset)
                                 globalBounds->position.x -= xOffset;
                         }
                         return;
-                }
-                if (!moveLeft) {
+                } else {
                         // if next position is past the screen
                         if (globalBounds->position.x + globalBounds->dimensions.width / 2 + xOffset > 6) {
                                 globalBounds->position.x -= xOffset;

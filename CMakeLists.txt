@@ -1,17 +1,17 @@
-cmake_minimum_required(VERSION 3.16.5)
+cmake_minimum_required(VERSION 3.10.2)
 project(TurboHiker)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable( TurboHiker
-                main.cpp
+add_executable(TurboHiker
+        main.cpp
 
         HelperDataTypes.h
 
         Model/Model.cpp
         Model/Model.h
-        Model/EntityMaker.cpp
-        Model/EntityMaker.h
+        Model/EntityFactory/EntityMaker.cpp
+        Model/EntityFactory/EntityMaker.h
         Model/Entity.cpp
         Model/Entity.h
         Model/MainCharacter.cpp
@@ -35,7 +35,7 @@ add_executable( TurboHiker
         Controller/Controller.cpp
         Controller/Controller.h
 
-        Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h Model/Finish.cpp Model/Finish.h Model/PowerUps/SpeedUp.cpp Model/PowerUps/SpeedUp.h Model/PowerUps/PowerUp.cpp Model/PowerUps/PowerUp.h Model/EnemyHikers/LeftToRightHiker.cpp Model/EnemyHikers/LeftToRightHiker.h Model/PowerUps/InvincibilityStar.cpp Model/PowerUps/InvincibilityStar.h Model/PowerUps/SummonEnemy.cpp Model/PowerUps/SummonEnemy.h Model/PowerUps/Nuke.cpp Model/PowerUps/Nuke.h Model/PowerUps/LaserBeam.cpp Model/PowerUps/LaserBeam.h)
+        Observers/LiveScoring.cpp Observers/LiveScoring.h Model/SimpleAI.cpp Model/SimpleAI.h Singletons/Timer.cpp Singletons/Timer.h Model/Finish.cpp Model/Finish.h Model/PowerUps/SpeedUp.cpp Model/PowerUps/SpeedUp.h Model/PowerUps/PowerUp.h Model/EnemyHikers/LeftToRightHiker.cpp Model/EnemyHikers/LeftToRightHiker.h Model/PowerUps/InvincibilityStar.cpp Model/PowerUps/InvincibilityStar.h Model/PowerUps/SummonEnemy.cpp Model/PowerUps/SummonEnemy.h Model/PowerUps/Nuke.cpp Model/PowerUps/Nuke.h Model/PowerUps/LaserBeam.cpp Model/PowerUps/LaserBeam.h)
 
 #[[ COMMAND FOR WORKING WITH WINDOWS
 
