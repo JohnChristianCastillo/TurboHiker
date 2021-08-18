@@ -128,17 +128,19 @@ $(function() {
     <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
     <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; <span class="comment">// Main Character entity:</span>
     </div>
-    <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; sf::Texture carTexture;</div>
-    <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; sf::RectangleShape carSprite;</div>
-    <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-    <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; <span class="comment">// Enemy textures;</span>
+    <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; sf::RectangleShape carSprite;</div>
+    <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+    <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span class="comment">// Enemy textures;</span>
     </div>
-    <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; std::vector&lt;sf::Texture&gt;
+    <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; std::vector&lt;sf::Texture&gt;
         enemyTextures;
     </div>
+    <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
     <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; <span class="comment">// Background Entities:</span>
     </div>
-    <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; sf::Texture backgroundTexture;</div>
+    <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; std::vector&lt;sf::Texture&gt;
+        backgroundTextures;
+    </div>
     <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; <span class="comment">// the idea here is to have a treadmill like background that will give the illusion that the background is</span>
     </div>
     <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; <span
@@ -155,195 +157,228 @@ $(function() {
     </div>
     <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; sf::Texture speedBoostTexture;</div>
     <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; sf::Texture summonEnemyTexture;</div>
-    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; <span class="comment">// Set up viewport</span>
+    <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; sf::Texture laserBeamTexture;</div>
+    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; sf::Texture nukeTexture;</div>
+    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+    <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; <span class="comment">// Set up viewport</span>
     </div>
-    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; sf::View view;</div>
-    <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; <span class="comment">// make the player the focus point of view</span>
+    <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; sf::View view;</div>
+    <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; <span class="comment">// make the player the focus point of view</span>
     </div>
-    <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; sf::Vector2f position{<a class="code"
+    <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; sf::Vector2f position{<a class="code"
                                                                                                             href="class_t_h_1_1singleton_1_1_transformation.html#a79d6492c941992d0cada9d583651a6c1">singleton::Transformation::getInstance</a>()-&gt;getScreenDimensions().width
         / 2,
     </div>
-    <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; <a class="code"
+    <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; <a class="code"
                                                                                       href="class_t_h_1_1singleton_1_1_transformation.html#a79d6492c941992d0cada9d583651a6c1">singleton::Transformation::getInstance</a>()-&gt;getScreenDimensions().height
         / 2.3f};
     </div>
-    <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-    <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; <span class="comment">// scoring system entities</span>
+    <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+    <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; <span class="comment">// scoring system entities</span>
     </div>
-    <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; sf::Text scoreText;</div>
-    <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; sf::Font retro;</div>
-    <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-    <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; <span class="comment">// keyboard multiple input entities;</span>
-    </div>
-    <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; <span class="keywordtype">bool</span>
-        upIsPressed{<span class="keyword">false</span>};
-    </div>
-    <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; <span class="keywordtype">bool</span>
-        downIsPressed{<span class="keyword">false</span>};
-    </div>
-    <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; <span class="keywordtype">bool</span>
-        leftIsPressed{<span class="keyword">false</span>};
-    </div>
-    <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; <span class="keywordtype">bool</span>
-        rightIsPressed{<span class="keyword">false</span>};
-    </div>
-    <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; <span class="keywordtype">bool</span>
-        playerIsHonking{<span class="keyword">false</span>};
+    <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; sf::Text scoreText;</div>
+    <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; sf::Font retro;</div>
+    <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+    <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; sf::RectangleShape demoCar{};</div>
+    <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; sf::Sprite demoBG{};</div>
+    <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+    <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; <span class="comment">// keyboard multiple input entities;</span>
     </div>
     <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; <span class="keywordtype">bool</span>
-        playerIsScaring{<span class="keyword">false</span>};
+        upIsPressed{<span class="keyword">false</span>};
     </div>
     <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; <span class="keywordtype">bool</span>
+        downIsPressed{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; <span class="keywordtype">bool</span>
+        leftIsPressed{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; <span class="keywordtype">bool</span>
+        rightIsPressed{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; <span class="keywordtype">bool</span>
+        playerIsHonking{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; <span class="keywordtype">bool</span>
+        playerIsScaring{<span class="keyword">false</span>};
+    </div>
+    <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; <span class="keywordtype">bool</span>
         wantsToSpawnEnemy{<span class="keyword">false</span>};
     </div>
-    <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-    <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">public</span>:
+    <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+    <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">public</span>:
     </div>
-    <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; <span class="keyword">const</span>
         sf::RenderWindow&amp; <a class="code"
                                  href="class_t_h_1_1_s_f_m_l_1_1_view.html#a666aab5b0ad80fd67e540445726c6f1e">getWindow</a>()
         <span class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-    <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+    <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; <span class="keywordtype">void</span>
         <a class="code"
            href="class_t_h_1_1_s_f_m_l_1_1_view.html#aec1e64b25999c8e944d2c79e4f69369c">initScoringSystem</a>();
     </div>
-    <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-    <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+    <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a1a23534705ed922a06a16c045b0cdf2f">drawScore</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;OBSERVER::LiveScoring&gt;&amp; scoringSystem, <span
                 class="keyword">const</span> <span class="keywordtype">float</span>&amp; gameTime,
     </div>
-    <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; <span class="keyword">const</span>
         <span class="keywordtype">float</span>&amp; scareCoolDown, <span class="keyword">const</span> <span
                 class="keywordtype">bool</span>&amp; canSpawnEnemy);
     </div>
-    <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-    <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; <a class="code"
+    <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+    <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; <a class="code"
                                                                                       href="class_t_h_1_1_s_f_m_l_1_1_view.html#a66be33f3f9fb7fe7ae02c83e91778160">View</a>(<span
             class="keywordtype">float</span> fps, <span class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp;
         model);
     </div>
-    <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-    <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; <span class="keywordtype">void</span>
-        <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a73f279c13b7466048cdb8845e655eff7">loadTextures</a>();
-    </div>
     <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
     <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; <span class="keywordtype">void</span>
-        <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#afe4ad1c5aee903f3e84aef7f70353a04">assignBGandMCTextures</a>();
+        <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a73f279c13b7466048cdb8845e655eff7">loadTextures</a>();
     </div>
     <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-    <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; Input <a class="code"
+    <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; <span class="keywordtype">void</span>
+        <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a8ac033bf9b7fa9430111ad077d66323e">assignBGandMCTextures</a>(<span
+                class="keyword">const</span> <span class="keywordtype">int</span>&amp; bgIndex, <span class="keyword">const</span>
+        <span class="keywordtype">int</span>&amp; mcIndex);
+    </div>
+    <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+    <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; Input <a class="code"
                                                                                             href="class_t_h_1_1_s_f_m_l_1_1_view.html#a8b24d24710ccec3529cf3ff2f5a35808">pollEvent</a>();
     </div>
-    <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-    <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; std::vector&lt;Input&gt; <a
+    <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+    <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; std::vector&lt;Input&gt; <a
             class="code"
             href="class_t_h_1_1_s_f_m_l_1_1_view.html#ae23e96f58c4c54f04f99224481fc604a">getKeyboardInput</a>();
     </div>
-    <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-    <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; std::vector&lt;Input&gt; <a
+    <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+    <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; std::vector&lt;Input&gt; <a
             class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a130022fdfc0bb0230f04e9a7eea2ad18">produceKeyboardOutput</a>();
     </div>
-    <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-    <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+    <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a0f6bc467d2102e0b82fc87b579534545">endScreen</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;OBSERVER::LiveScoring&gt;&amp; pointingSystem);
     </div>
-    <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-    <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+    <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#ad26169cb457a85cf6d718a925ae165c2">countDown</a>(<span
                 class="keywordtype">bool</span> startCountDown, <span class="keywordtype">float</span> time);
     </div>
-    <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
-    <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+    <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#af2a7f4151e0b000d35139c51eb66f869">startScreen</a>();
     </div>
-    <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; <span class="keywordtype">void</span>
         <a class="code"
            href="class_t_h_1_1_s_f_m_l_1_1_view.html#ab83e85f287ab1abfa70f15999e4b6808">drawLookAhead</a>(<span
                 class="keyword">const</span> <span class="keywordtype">bool</span>&amp; lookAhead, <span
                 class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp; model,
     </div>
-    <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; <span class="keyword">const</span>
         std::shared_ptr&lt;singleton::Transformation&gt;&amp; transformation);
     </div>
-    <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-    <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+    <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; <span class="keywordtype">void</span>
         <a class="code"
            href="class_t_h_1_1_s_f_m_l_1_1_view.html#a1d3313491b6d6441e69f78d8c3e809a2">drawEnemies</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp; model,
     </div>
-    <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; <span class="keyword">const</span>
         std::shared_ptr&lt;singleton::Transformation&gt;&amp; transformation);
     </div>
-    <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
-    <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+    <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; <span class="keywordtype">void</span>
         <a class="code"
            href="class_t_h_1_1_s_f_m_l_1_1_view.html#aa3638a416c1700890d3fa2fb356592c8">drawPowerUps</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp; model,
     </div>
-    <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; <span class="keyword">const</span>
         std::shared_ptr&lt;singleton::Transformation&gt;&amp; transformation);
     </div>
-    <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
-    <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
+    <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a67f973e05af938d7271db8300aadb358">drawFinishLine</a>(<span
                 class="keywordtype">bool</span> finishLineGenerated, <span class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp;
         model,
     </div>
-    <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; <span class="keyword">const</span>
         std::shared_ptr&lt;singleton::Transformation&gt;&amp; transformation);
     </div>
-    <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
-    <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+    <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#aa4f58147b4e01b9af772398e6a0180fa">drawInvincibilityPrompt</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp; model);
     </div>
-    <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
-    <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
+    <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; <span class="keywordtype">void</span>
+        <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#ae0d6449bb475ac8c77194b2dd5a10c52">drawLaserBeamAndPrompt</a>(<span
+                class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp; model,
+    </div>
+    <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; <span class="keyword">const</span>
+        std::shared_ptr&lt;singleton::Transformation&gt;&amp; transformation);
+    </div>
+    <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
+    <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a1f5ec50621462874535e9c76b8723534">drawMC</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp; model,
     </div>
-    <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; <span class="keyword">const</span>
         std::shared_ptr&lt;singleton::Transformation&gt;&amp; transformation);
     </div>
-    <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
-    <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
+    <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a58580c8d22265ba524cd490c8730b688">drawAI</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp; model,
     </div>
-    <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; <span class="keyword">const</span>
         std::shared_ptr&lt;singleton::Transformation&gt;&amp; transformation);
     </div>
-    <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-    <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+    <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#a6f6c282ddd68beea739542d71bbdd779">drawBackgrounds</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp; model,
     </div>
-    <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; <span class="keyword">const</span>
         std::shared_ptr&lt;singleton::Transformation&gt;&amp; transformation);
     </div>
-    <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
-    <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+    <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_s_f_m_l_1_1_view.html#afd080b26baa2eb1a87541fe82704255e">draw</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;TH::Model&gt;&amp; model, <span class="keywordtype">float</span>
         gameTime, <span class="keywordtype">bool</span> finishLineGenerated = <span class="keyword">false</span>,
     </div>
-    <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; <span class="keywordtype">bool</span>
+    <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; <span class="keywordtype">bool</span>
         startCountdown = <span class="keyword">false</span>, <span class="keywordtype">bool</span> lookAhead = <span
                 class="keyword">false</span>);
     </div>
-    <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;};</div>
-    <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;} <span class="comment">// namespace SFML</span>
+    <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+    <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; <span class="keywordtype">int</span>
+        <a class="code"
+           href="class_t_h_1_1_s_f_m_l_1_1_view.html#a71bb0f570394f4d0751bc0dcd44dc16d">changeBackground</a>(<span
+                class="keywordtype">int</span>&amp; bgSkin, <span class="keyword">const</span> <span
+                class="keywordtype">bool</span>&amp; scrollLeft);
     </div>
-    <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;} <span class="comment">// namespace TH</span>
+    <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
+    <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; <span class="keywordtype">int</span>
+        <a class="code"
+           href="class_t_h_1_1_s_f_m_l_1_1_view.html#a3476ce555f88c5a1ad10791fa26e6cfb">changeMcSkin</a>(<span
+                class="keywordtype">int</span>&amp; mcSkin, <span class="keyword">const</span> <span
+                class="keywordtype">bool</span>&amp; scrollDown);
     </div>
-    <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
-    <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_VIEW_H</span>
+    <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;</div>
+    <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; Input <a class="code"
+                                                                                            href="class_t_h_1_1_s_f_m_l_1_1_view.html#af428040443da10aa0f04cb3dc4cf0dd4">getSkinInput</a>();
+    </div>
+    <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;};</div>
+    <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;} <span class="comment">// namespace SFML</span>
+    </div>
+    <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;} <span class="comment">// namespace TH</span>
+    </div>
+    <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
+    <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_VIEW_H</span>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a67f973e05af938d7271db8300aadb358">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a67f973e05af938d7271db8300aadb358">TH::SFML::View::drawFinishLine</a>
@@ -351,13 +386,21 @@ $(function() {
         <div class="ttdeci">void drawFinishLine(bool finishLineGenerated, const std::shared_ptr&lt; TH::Model &gt; &amp;model,
             const std::shared_ptr&lt; singleton::Transformation &gt; &amp;transformation)
         </div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:299</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:321</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_ad26169cb457a85cf6d718a925ae165c2">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#ad26169cb457a85cf6d718a925ae165c2">TH::SFML::View::countDown</a>
         </div>
         <div class="ttdeci">void countDown(bool startCountDown, float time)</div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:218</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:224</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_ae0d6449bb475ac8c77194b2dd5a10c52">
+        <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#ae0d6449bb475ac8c77194b2dd5a10c52">TH::SFML::View::drawLaserBeamAndPrompt</a>
+        </div>
+        <div class="ttdeci">void drawLaserBeamAndPrompt(const std::shared_ptr&lt; TH::Model &gt; &amp;model, const
+            std::shared_ptr&lt; singleton::Transformation &gt; &amp;transformation)
+        </div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:348</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_aa3638a416c1700890d3fa2fb356592c8">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#aa3638a416c1700890d3fa2fb356592c8">TH::SFML::View::drawPowerUps</a>
@@ -365,7 +408,13 @@ $(function() {
         <div class="ttdeci">void drawPowerUps(const std::shared_ptr&lt; TH::Model &gt; &amp;model, const std::shared_ptr&lt;
             singleton::Transformation &gt; &amp;transformation)
         </div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:279</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:299</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a8ac033bf9b7fa9430111ad077d66323e">
+        <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a8ac033bf9b7fa9430111ad077d66323e">TH::SFML::View::assignBGandMCTextures</a>
+        </div>
+        <div class="ttdeci">void assignBGandMCTextures(const int &amp;bgIndex, const int &amp;mcIndex)</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:93</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a666aab5b0ad80fd67e540445726c6f1e">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a666aab5b0ad80fd67e540445726c6f1e">TH::SFML::View::getWindow</a>
@@ -377,7 +426,7 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a66be33f3f9fb7fe7ae02c83e91778160">TH::SFML::View::View</a>
         </div>
         <div class="ttdeci">View(float fps, const std::shared_ptr&lt; TH::Model &gt; &amp;model)</div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:35</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:32</div>
     </div>
     <div class="ttc" id="namespace_t_h_html">
         <div class="ttname"><a href="namespace_t_h.html">TH</a></div>
@@ -389,13 +438,19 @@ $(function() {
         <div class="ttdeci">static std::shared_ptr&lt; Transformation &gt; getInstance()</div>
         <div class="ttdef"><b>Definition:</b> Transformation.cpp:8</div>
     </div>
+    <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a71bb0f570394f4d0751bc0dcd44dc16d">
+        <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a71bb0f570394f4d0751bc0dcd44dc16d">TH::SFML::View::changeBackground</a>
+        </div>
+        <div class="ttdeci">int changeBackground(int &amp;bgSkin, const bool &amp;scrollLeft)</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:441</div>
+    </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_afd080b26baa2eb1a87541fe82704255e">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#afd080b26baa2eb1a87541fe82704255e">TH::SFML::View::draw</a>
         </div>
         <div class="ttdeci">void draw(const std::shared_ptr&lt; TH::Model &gt; &amp;model, float gameTime, bool
             finishLineGenerated=false, bool startCountdown=false, bool lookAhead=false)
         </div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:355</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:411</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a1f5ec50621462874535e9c76b8723534">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a1f5ec50621462874535e9c76b8723534">TH::SFML::View::drawMC</a>
@@ -403,19 +458,13 @@ $(function() {
         <div class="ttdeci">void drawMC(const std::shared_ptr&lt; TH::Model &gt; &amp;model, const std::shared_ptr&lt;
             singleton::Transformation &gt; &amp;transformation)
         </div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:325</div>
-    </div>
-    <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_afe4ad1c5aee903f3e84aef7f70353a04">
-        <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#afe4ad1c5aee903f3e84aef7f70353a04">TH::SFML::View::assignBGandMCTextures</a>
-        </div>
-        <div class="ttdeci">void assignBGandMCTextures()</div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:89</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:381</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_ae23e96f58c4c54f04f99224481fc604a">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#ae23e96f58c4c54f04f99224481fc604a">TH::SFML::View::getKeyboardInput</a>
         </div>
         <div class="ttdeci">std::vector&lt; Input &gt; getKeyboardInput()</div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:139</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:148</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_ab83e85f287ab1abfa70f15999e4b6808">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#ab83e85f287ab1abfa70f15999e4b6808">TH::SFML::View::drawLookAhead</a>
@@ -423,7 +472,7 @@ $(function() {
         <div class="ttdeci">void drawLookAhead(const bool &amp;lookAhead, const std::shared_ptr&lt; TH::Model &gt; &amp;model,
             const std::shared_ptr&lt; singleton::Transformation &gt; &amp;transformation)
         </div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:251</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:271</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html">TH::SFML::View</a></div>
@@ -433,7 +482,7 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a73f279c13b7466048cdb8845e655eff7">TH::SFML::View::loadTextures</a>
         </div>
         <div class="ttdeci">void loadTextures()</div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:56</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:51</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a58580c8d22265ba524cd490c8730b688">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a58580c8d22265ba524cd490c8730b688">TH::SFML::View::drawAI</a>
@@ -441,13 +490,19 @@ $(function() {
         <div class="ttdeci">void drawAI(const std::shared_ptr&lt; TH::Model &gt; &amp;model, const std::shared_ptr&lt;
             singleton::Transformation &gt; &amp;transformation)
         </div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:333</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:389</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_af428040443da10aa0f04cb3dc4cf0dd4">
+        <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#af428040443da10aa0f04cb3dc4cf0dd4">TH::SFML::View::getSkinInput</a>
+        </div>
+        <div class="ttdeci">Input getSkinInput()</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:490</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a130022fdfc0bb0230f04e9a7eea2ad18">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a130022fdfc0bb0230f04e9a7eea2ad18">TH::SFML::View::produceKeyboardOutput</a>
         </div>
         <div class="ttdeci">std::vector&lt; Input &gt; produceKeyboardOutput()</div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:175</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:180</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a6f6c282ddd68beea739542d71bbdd779">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a6f6c282ddd68beea739542d71bbdd779">TH::SFML::View::drawBackgrounds</a>
@@ -455,7 +510,7 @@ $(function() {
         <div class="ttdeci">void drawBackgrounds(const std::shared_ptr&lt; TH::Model &gt; &amp;model, const
             std::shared_ptr&lt; singleton::Transformation &gt; &amp;transformation)
         </div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:342</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:398</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a1a23534705ed922a06a16c045b0cdf2f">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a1a23534705ed922a06a16c045b0cdf2f">TH::SFML::View::drawScore</a>
@@ -469,7 +524,7 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#aa4f58147b4e01b9af772398e6a0180fa">TH::SFML::View::drawInvincibilityPrompt</a>
         </div>
         <div class="ttdeci">void drawInvincibilityPrompt(const std::shared_ptr&lt; TH::Model &gt; &amp;model)</div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:309</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:331</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_aec1e64b25999c8e944d2c79e4f69369c">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#aec1e64b25999c8e944d2c79e4f69369c">TH::SFML::View::initScoringSystem</a>
@@ -481,14 +536,20 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#af2a7f4151e0b000d35139c51eb66f869">TH::SFML::View::startScreen</a>
         </div>
         <div class="ttdeci">void startScreen()</div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:236</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:242</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a3476ce555f88c5a1ad10791fa26e6cfb">
+        <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a3476ce555f88c5a1ad10791fa26e6cfb">TH::SFML::View::changeMcSkin</a>
+        </div>
+        <div class="ttdeci">int changeMcSkin(int &amp;mcSkin, const bool &amp;scrollDown)</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:466</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a0f6bc467d2102e0b82fc87b579534545">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a0f6bc467d2102e0b82fc87b579534545">TH::SFML::View::endScreen</a>
         </div>
         <div class="ttdeci">void endScreen(const std::shared_ptr&lt; OBSERVER::LiveScoring &gt; &amp;pointingSystem)
         </div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:201</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:206</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a1d3313491b6d6441e69f78d8c3e809a2">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a1d3313491b6d6441e69f78d8c3e809a2">TH::SFML::View::drawEnemies</a>
@@ -496,13 +557,13 @@ $(function() {
         <div class="ttdeci">void drawEnemies(const std::shared_ptr&lt; TH::Model &gt; &amp;model, const std::shared_ptr&lt;
             singleton::Transformation &gt; &amp;transformation)
         </div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:268</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:288</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_s_f_m_l_1_1_view_html_a8b24d24710ccec3529cf3ff2f5a35808">
         <div class="ttname"><a href="class_t_h_1_1_s_f_m_l_1_1_view.html#a8b24d24710ccec3529cf3ff2f5a35808">TH::SFML::View::pollEvent</a>
         </div>
         <div class="ttdeci">Input pollEvent()</div>
-        <div class="ttdef"><b>Definition:</b> View.cpp:110</div>
+        <div class="ttdef"><b>Definition:</b> View.cpp:118</div>
     </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

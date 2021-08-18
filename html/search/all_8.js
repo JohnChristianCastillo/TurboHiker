@@ -7,6 +7,7 @@ var searchData=
     ['intininterval', ['intInInterval', ['../class_t_h_1_1singleton_1_1_random.html#afc75a04ee71bf29ccb92af963d9063c7', 1, 'TH::singleton::Random']]],
     ['invincibilitystar', ['InvincibilityStar', ['../class_t_h_1_1_invincibility_star.html', 1, 'TH::InvincibilityStar'], ['../class_t_h_1_1_invincibility_star.html#abb549a3177e38a9651ae519096a46c92', 1, 'TH::InvincibilityStar::InvincibilityStar()']]],
     ['isinvincible', ['isInvincible', ['../class_t_h_1_1_main_character.html#a1120207a50887b3df14518110ca737db', 1, 'TH::MainCharacter']]],
+    ['islaseractive', ['isLaserActive', ['../class_t_h_1_1_main_character.html#a55189ca9df4220a3d972ef72803781e0', 1, 'TH::MainCharacter']]],
     ['isscaringenemy', ['isScaringEnemy', ['../class_t_h_1_1_main_character.html#a581158f4588d4bb9228598eb43d5ba31', 1, 'TH::MainCharacter']]],
     ['isslowed', ['isSlowed', ['../class_t_h_1_1_entity.html#af024954ba79f48abeb3605ce656795c2', 1, 'TH::Entity']]],
     ['issped', ['isSped', ['../class_t_h_1_1_entity.html#a908c0d70f78624ad90bdee84ea373f26', 1, 'TH::Entity']]],

@@ -83,7 +83,7 @@ $(function() {
     </div>
     <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;EnemyHikers/Enemy.h&quot;</span>
     </div>
-    <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;EntityMaker.h&quot;</span>
+    <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;EntityFactory/EntityMaker.h&quot;</span>
     </div>
     <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;MainCharacter.h&quot;</span>
     </div>
@@ -325,25 +325,14 @@ $(function() {
                 class="keywordtype">bool</span> finishLineGenerated);
     </div>
     <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-    <div class="line"><a name="l00231"></a><span class="lineno"><a class="line"
-                                                                   href="class_t_h_1_1_model.html#a0ef2b90413478ace92e95089ed6cc398">  231</a></span>&#160;
-        <span class="keywordtype">void</span> <a class="code"
-                                                 href="class_t_h_1_1_model.html#a0ef2b90413478ace92e95089ed6cc398">spawnEnemy</a>(){
+    <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; <span class="keywordtype">void</span>
+        <a class="code" href="class_t_h_1_1_model.html#a0ef2b90413478ace92e95089ed6cc398">spawnEnemy</a>();
     </div>
-    <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; <span class="keywordflow">if</span>(mainCharacter-&gt;canSummonEnemy()){
+    <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;};</div>
+    <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;} <span class="comment">// namespace TH</span>
     </div>
-    <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;
-        mainCharacter-&gt;setSummonEnemy(<span class="keyword">false</span>);
-    </div>
-    <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; enemies.push_back(entityFactory-&gt;summonEnemy(mainCharacter-&gt;getGlobalBounds()-&gt;position));
-    </div>
-    <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; }</div>
-    <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; }</div>
-    <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;};</div>
-    <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;} <span class="comment">// namespace TH</span>
-    </div>
-    <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
-    <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_MODEL_H</span>
+    <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+    <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_MODEL_H</span>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html">
         <div class="ttname"><a href="class_t_h_1_1_model.html">TH::Model</a></div>
@@ -373,7 +362,7 @@ $(function() {
         <div class="ttdeci">void collisionWithEnemyControl(const std::shared_ptr&lt; GlobalBounds &gt; &amp;nextPosition,
             const std::shared_ptr&lt; GlobalBounds &gt; &amp;aiNextPosition)
         </div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:276</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:279</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a44b056a696b3ec7068a5e2cc7a0fc9ac">
         <div class="ttname"><a
@@ -405,13 +394,13 @@ $(function() {
     </div>
     <div class="ttc" id="struct_t_h_1_1_move_html">
         <div class="ttname"><a href="struct_t_h_1_1_move.html">TH::Move</a></div>
-        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:84</div>
+        <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:86</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a90866a06412122694192f9a261cabffd">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a90866a06412122694192f9a261cabffd">TH::Model::steerRandomly</a>
         </div>
         <div class="ttdeci">void steerRandomly(const std::shared_ptr&lt; Enemy &gt; &amp;enemy)</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:180</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:183</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a0b454c739ee5e833c574d48f104d5776">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a0b454c739ee5e833c574d48f104d5776">TH::Model::getBackgrounds</a>
@@ -435,19 +424,19 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_model.html#a28a54d5827461003374b7491c5981e2d">TH::Model::screenCollisionControl</a>
         </div>
         <div class="ttdeci">void screenCollisionControl()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:205</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:208</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_aba6f59ab3ae5f93fad43eee9a8b07cc4">
         <div class="ttname"><a
                 href="class_t_h_1_1_model.html#aba6f59ab3ae5f93fad43eee9a8b07cc4">TH::Model::movePowerUps</a></div>
         <div class="ttdeci">void movePowerUps()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:148</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:151</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a743415324b9cc40294616194ed335995">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a743415324b9cc40294616194ed335995">TH::Model::collisionControl</a>
         </div>
         <div class="ttdeci">bool collisionControl(bool finishLineGenerated)</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:348</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:379</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a01c62f29cbfc0dc2b9cf3fb2be8d5179">
         <div class="ttname"><a
@@ -471,7 +460,7 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_model.html#ac9b128e28fa29db21177c49c9ef226b8">TH::Model::moveEntitiesExceptAI</a>
         </div>
         <div class="ttdeci">void moveEntitiesExceptAI()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:173</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:176</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_ac12fbc30390eafe4f8d384a80be1ee4e">
         <div class="ttname"><a href="class_t_h_1_1_model.html#ac12fbc30390eafe4f8d384a80be1ee4e">TH::Model::aiCollisionPrevention</a>
@@ -479,7 +468,7 @@ $(function() {
         <div class="ttdeci">void aiCollisionPrevention(const std::shared_ptr&lt; Enemy &gt; &amp;enemy, const
             std::shared_ptr&lt; GlobalBounds &gt; &amp;nextPosition)
         </div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:242</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:245</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a6f5b395949de16601ff0e731b03fa478">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a6f5b395949de16601ff0e731b03fa478">TH::Model::getMainCharacter</a>
@@ -511,7 +500,7 @@ $(function() {
         <div class="ttdeci">void collisionWithPowerUpControl(const std::shared_ptr&lt; GlobalBounds &gt; &amp;nextPosition,
             const std::shared_ptr&lt; GlobalBounds &gt; &amp;aiNextPosition)
         </div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:320</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:347</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_aab3f108240c89b4508023fc9e5225965">
         <div class="ttname"><a href="class_t_h_1_1_model.html#aab3f108240c89b4508023fc9e5225965">TH::Model::setPlayerMove</a>
@@ -541,7 +530,7 @@ $(function() {
         <div class="ttname"><a
                 href="class_t_h_1_1_model.html#a0ef2b90413478ace92e95089ed6cc398">TH::Model::spawnEnemy</a></div>
         <div class="ttdeci">void spawnEnemy()</div>
-        <div class="ttdef"><b>Definition:</b> Model.h:231</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:425</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a5e2d3377070871fa7caa5344cfb5f6c8">
         <div class="ttname"><a
@@ -559,7 +548,7 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_model.html#a1684941acf1cecd63de04a5d90187a82">TH::Model::finishLineCollisionControl</a>
         </div>
         <div class="ttdeci">bool finishLineCollisionControl()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:231</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:234</div>
     </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
