@@ -150,8 +150,7 @@ struct GlobalBounds
                 type interRight = std::min(thisMaxX, r2MaxX);
                 type interBottom = std::min(thisMaxY, r2MaxY);
 
-                bool b = (interLeft < interRight) && (interTop < interBottom);
-                return b;
+                return (interLeft < interRight) && (interTop < interBottom);
         }
 };
 } // namespace TH
