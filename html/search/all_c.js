@@ -1,6 +1,6 @@
 var searchData=
 [
-    ['playerfinishedfirst', ['playerFinishedFirst', ['../class_t_h_1_1_o_b_s_e_r_v_e_r_1_1_live_scoring.html#af14e548f4ef30c1fb8f08e18f47fffbf', 1, 'TH::OBSERVER::LiveScoring']]],
+    ['playerfinished', ['playerFinished', ['../class_t_h_1_1_o_b_s_e_r_v_e_r_1_1_live_scoring.html#a3b5dcb4b337a98d62e863a7e39f38890', 1, 'TH::OBSERVER::LiveScoring']]],
     ['pollevent', ['pollEvent', ['../class_t_h_1_1_s_f_m_l_1_1_view.html#a8b24d24710ccec3529cf3ff2f5a35808', 1, 'TH::SFML::View']]],
     ['pollforendscreen', ['pollForEndScreen', ['../class_t_h_1_1_controller.html#a9875fc13b98c09c33e924df846862a7e', 1, 'TH::Controller']]],
     ['pollforstartscreen', ['pollForStartScreen', ['../class_t_h_1_1_controller.html#a157ce5ab7cc92cbcaefac54005544ce0', 1, 'TH::Controller']]],

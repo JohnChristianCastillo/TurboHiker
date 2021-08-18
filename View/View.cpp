@@ -210,7 +210,8 @@ void TH::SFML::View::endScreen(const std::shared_ptr<OBSERVER::LiveScoring>& poi
         sf::Text endText;
         endText.setCharacterSize(20);
         endText.setFont(retro);
-        endText.setString("HIGH SCORE: " + std::to_string(static_cast<int>(highScore)) +
+        endText.setString("YOU FINISHED: " + pointingSystem->getPosition() +
+                          "\nHIGH SCORE: " + std::to_string(static_cast<int>(highScore)) +
                           "\nYOUR SCORE: " + std::to_string(static_cast<int>(score)));
         endText.setFillColor(sf::Color::White);
         endText.setPosition(screenWidth / 2, screenHeight / 2);
@@ -272,16 +273,17 @@ void TH::SFML::View::drawLookAhead(const bool& lookAhead, const std::shared_ptr<
                                    const std::shared_ptr<singleton::Transformation>& transformation)
 {
         if (lookAhead) {
-                for (const auto& i : model->getSimpleAI()->getLookAhead()) {
-                        std::tuple<float, float> auraPos = transformation->modelToView(i);
-                        /// Collision object
-                        /// Next box visualization todo: remove for final
-                        sf::RectangleShape nextBox{sf::Vector2f(carSprite.getSize())};
-                        nextBox.setFillColor(sf::Color::Transparent);
-                        nextBox.setOutlineColor(sf::Color::White);
-                        nextBox.setOutlineThickness(3.f);
-                        nextBox.setPosition(std::get<0>(auraPos), std::get<1>(auraPos));
-                        window.draw(nextBox);
+                for (const auto& ai : model->getSimpleAI()) {
+                        for (const auto& i : ai->getLookAhead()) {
+                                std::tuple<float, float> auraPos = transformation->modelToView(i);
+                                /// Collision object
+                                sf::RectangleShape nextBox{sf::Vector2f(carSprite.getSize())};
+                                nextBox.setFillColor(sf::Color::Transparent);
+                                nextBox.setOutlineColor(sf::Color::White);
+                                nextBox.setOutlineThickness(3.f);
+                                nextBox.setPosition(std::get<0>(auraPos), std::get<1>(auraPos));
+                                window.draw(nextBox);
+                        }
                 }
         }
 }
@@ -389,11 +391,13 @@ void TH::SFML::View::drawMC(const std::shared_ptr<TH::Model>& model,
 void TH::SFML::View::drawAI(const std::shared_ptr<TH::Model>& model,
                             const std::shared_ptr<singleton::Transformation>& transformation)
 {
-        sf::RectangleShape simpleAISprite(sf::Vector2f(30, 60));
-        simpleAISprite.setTexture(&enemyTextures[model->getSimpleAI()->getSkin()]);
-        std::tuple<float, float> simpleAiCoords = transformation->modelToView(model->getSimpleAI()->getGlobalBounds());
-        simpleAISprite.setPosition(std::get<0>(simpleAiCoords), std::get<1>(simpleAiCoords));
-        window.draw(simpleAISprite);
+        for (auto& ai : model->getSimpleAI()) {
+                sf::RectangleShape simpleAISprite(sf::Vector2f(30, 60));
+                simpleAISprite.setTexture(&enemyTextures[ai->getSkin()]);
+                std::tuple<float, float> simpleAiCoords = transformation->modelToView(ai->getGlobalBounds());
+                simpleAISprite.setPosition(std::get<0>(simpleAiCoords), std::get<1>(simpleAiCoords));
+                window.draw(simpleAISprite);
+        }
 }
 void TH::SFML::View::drawBackgrounds(const std::shared_ptr<TH::Model>& model,
                                      const std::shared_ptr<singleton::Transformation>& transformation)

@@ -13,6 +13,7 @@ class LiveScoring
 {
         float score;
         void saveHighScore() const;
+        int position{1};
 
 public:
         float getScore() const;
@@ -50,9 +51,15 @@ public:
         float getHighScore();
 
         /**
-         * Rewards the player for finishing first
+         * Rewards the player for finishing at a given position
+         * @param position: The position the player finished on
          */
-        void playerFinishedFirst();
+        void playerFinished(const int& position);
+
+        /**
+         * @return The position of the player
+         */
+        std::string getPosition() const;
 };
 } // namespace OBSERVER
 } // namespace TH

@@ -23,7 +23,7 @@ const std::shared_ptr<TH::OBSERVER::LiveScoring>& TH::Model::getScoringSystem() 
 void TH::Model::setSimpleAIMove(const Move& move) { Model::simpleAiMove = move; }
 std::shared_ptr<TH::MainCharacter> TH::Model::getMainCharacter() const { return mainCharacter; }
 std::shared_ptr<TH::Finish> TH::Model::getFinishLine() const { return finishLine; }
-std::shared_ptr<TH::SimpleAI> TH::Model::getSimpleAI() const { return simpleAi; }
+std::vector<std::shared_ptr<TH::SimpleAI>> TH::Model::getSimpleAI() const { return simpleAi; }
 std::vector<std::shared_ptr<TH::Background>> TH::Model::getBackgrounds() const { return backgrounds; }
 std::vector<std::shared_ptr<TH::Enemy>> TH::Model::getEnemies()
 {
@@ -41,7 +41,7 @@ std::vector<std::shared_ptr<TH::PowerUp>> TH::Model::getPowerUps()
 }
 void TH::Model::generateFinishLine() { finishLine = entityFactory->generateFinishLine(); }
 std::shared_ptr<TH::MainCharacter> TH::Model::generateMC() { return entityFactory->generateMainCharacter(lanes); }
-std::shared_ptr<TH::SimpleAI> TH::Model::generateAI() { return entityFactory->generateAI(); }
+std::vector<std::shared_ptr<TH::SimpleAI>> TH::Model::generateAI() { return entityFactory->generateAI(); }
 std::vector<std::shared_ptr<TH::Background>> TH::Model::generateBackground()
 {
         return entityFactory->generateBackground();
@@ -74,13 +74,15 @@ void TH::Model::resetMoves()
 }
 void TH::Model::moveSimpleAI()
 {
-        simpleAi->move(simpleAiMove.x, (simpleAiMove.y * simpleAi->getSlowingFactor() +
-                                        backgroundMove.y * mainCharacter->getSlowingFactor()));
-        if (simpleAi->isSlowed()) {
-                simpleAi->reduceSlowingEffect(simpleAi->getSlowingFactor() + 0.02f);
-        }
-        if (simpleAi->isSped()) {
-                simpleAi->reduceSpeedBoostEffect(simpleAi->getSlowingFactor() - 0.01f);
+        for (auto& ai : simpleAi) {
+                ai->move(simpleAiMove.x, (simpleAiMove.y * ai->getSlowingFactor() +
+                                          backgroundMove.y * mainCharacter->getSlowingFactor()));
+                if (ai->isSlowed()) {
+                        ai->reduceSlowingEffect(ai->getSlowingFactor() + 0.02f);
+                }
+                if (ai->isSped()) {
+                        ai->reduceSpeedBoostEffect(ai->getSlowingFactor() - 0.01f);
+                }
         }
 }
 void TH::Model::moveBackground()
@@ -220,23 +222,29 @@ void TH::Model::screenCollisionControl()
         }
 
         /// Window collision control
-        Position aiPos = simpleAi->getGlobalBounds()->position;
-        Dimensions aiDim = simpleAi->getGlobalBounds()->dimensions;
-        /// left collision
-        if (aiPos.x - (aiDim.width / 2) <= 0) {
-                simpleAi->setPosition(aiDim.width / 2, simpleAi->getGlobalBounds()->position.y);
-        }
-        /// right collision
-        if (aiPos.x + (aiDim.width / 2) >= 6.f) {
-                simpleAi->setPosition(6.f - (aiDim.width / 2), aiPos.y);
+        for (auto& ai : simpleAi) {
+                Position aiPos = ai->getGlobalBounds()->position;
+                Dimensions aiDim = ai->getGlobalBounds()->dimensions;
+                /// left collision
+                if (aiPos.x - (aiDim.width / 2) <= 0) {
+                        ai->setPosition(aiDim.width / 2, ai->getGlobalBounds()->position.y);
+                }
+                /// right collision
+                if (aiPos.x + (aiDim.width / 2) >= 6.f) {
+                        ai->setPosition(6.f - (aiDim.width / 2), aiPos.y);
+                }
         }
 }
 bool TH::Model::finishLineCollisionControl()
 {
         if (finishLine->getGlobalBounds()->position.y > mainCharacter->getGlobalBounds()->position.y) {
-                if (mainCharacter->getGlobalBounds()->position.y > simpleAi->getGlobalBounds()->position.y) {
-                        scoringSystem->playerFinishedFirst();
+                int position = 1;
+                for (auto& ai : simpleAi) {
+                        if (mainCharacter->getGlobalBounds()->position.y > ai->getGlobalBounds()->position.y) {
+                                position += 1;
+                        }
                 }
+                scoringSystem->playerFinished(position);
                 return true;
         }
         finishLine->move(0, backgroundMove.y * mainCharacter->getSlowingFactor());
@@ -247,37 +255,39 @@ void TH::Model::aiCollisionPrevention(const std::shared_ptr<Enemy>& enemy,
 
 {
         // initialize the lookahead our AI has;
-        std::vector<std::shared_ptr<GlobalBounds>> simpleAILookAhead = simpleAi->getLookAhead();
-        for (int j = 0; j <= 2; ++j) {
-                // check whether the three frontal lookahead intersects with either the spawned enemy or the MC
-                // if so warn our AI
-                if (simpleAILookAhead[j]->intersects<float>(enemy->getGlobalBounds()) or
-                    simpleAILookAhead[j]->intersects<float>(nextPosition)) {
-                        enemyUp = true;
-                        break;
+        for (auto& ai : simpleAi) {
+                std::vector<std::shared_ptr<GlobalBounds>> simpleAILookAhead = ai->getLookAhead();
+                for (int j = 0; j <= 2; ++j) {
+                        // check whether the three frontal lookahead intersects with either the spawned enemy or the MC
+                        // if so warn our AI
+                        if (simpleAILookAhead[j]->intersects<float>(enemy->getGlobalBounds()) or
+                            simpleAILookAhead[j]->intersects<float>(nextPosition)) {
+                                ai->setEnemyUp(true);
+                                break;
+                        }
                 }
-        }
-        if (simpleAILookAhead[3]->intersects<float>(enemy->getGlobalBounds()) or
-            simpleAILookAhead[3]->intersects<float>(nextPosition)) {
-                enemyLeft = true;
-        }
-        if (simpleAILookAhead[4]->intersects<float>(enemy->getGlobalBounds()) or
-            simpleAILookAhead[4]->intersects<float>(nextPosition)) {
-                enemyRight = true;
-        }
-        // up left
-        if (simpleAILookAhead[5]->intersects<float>(enemy->getGlobalBounds()) or
-            simpleAILookAhead[5]->intersects<float>(nextPosition)) {
-                enemyUpLeft = true;
-        }
-        // up right
-        if (simpleAILookAhead[6]->intersects<float>(enemy->getGlobalBounds()) or
-            simpleAILookAhead[6]->intersects<float>(nextPosition)) {
-                enemyUpRight = true;
+                if (simpleAILookAhead[3]->intersects<float>(enemy->getGlobalBounds()) or
+                    simpleAILookAhead[3]->intersects<float>(nextPosition)) {
+                        ai->setEnemyLeft(true);
+                }
+                if (simpleAILookAhead[4]->intersects<float>(enemy->getGlobalBounds()) or
+                    simpleAILookAhead[4]->intersects<float>(nextPosition)) {
+                        ai->setEnemyRight(true);
+                }
+                // up left
+                if (simpleAILookAhead[5]->intersects<float>(enemy->getGlobalBounds()) or
+                    simpleAILookAhead[5]->intersects<float>(nextPosition)) {
+                        ai->setEnemyUpLeft(true);
+                }
+                // up right
+                if (simpleAILookAhead[6]->intersects<float>(enemy->getGlobalBounds()) or
+                    simpleAILookAhead[6]->intersects<float>(nextPosition)) {
+                        ai->setEnemyUpRight(true);
+                }
         }
 }
 void TH::Model::collisionWithEnemyControl(const std::shared_ptr<GlobalBounds>& nextPosition,
-                                          const std::shared_ptr<GlobalBounds>& aiNextPosition)
+                                          const std::vector<std::shared_ptr<GlobalBounds>>& aiNextPositions)
 
 {
 
@@ -336,16 +346,19 @@ void TH::Model::collisionWithEnemyControl(const std::shared_ptr<GlobalBounds>& n
                         continue;
                 }
 
-                if (enemies[i]->getGlobalBounds()->intersects<float>(aiNextPosition)) {
-                        // if we collided we want to penalize our player by slowing it down and subtracting
-                        // points
-                        simpleAi->slowDown();
-                        enemies.erase(enemies.begin() + i);
+                for (int j = 0; j < simpleAi.size(); ++j) {
+                        if (enemies[i]->getGlobalBounds()->intersects<float>(aiNextPositions[j])) {
+                                // if we collided we want to penalize our player by slowing it down and subtracting
+                                // points
+                                simpleAi[j]->slowDown();
+                                enemies.erase(enemies.begin() + i);
+                                break;
+                        }
                 }
         }
 }
 void TH::Model::collisionWithPowerUpControl(const std::shared_ptr<GlobalBounds>& nextPosition,
-                                            const std::shared_ptr<GlobalBounds>& aiNextPosition)
+                                            const std::vector<std::shared_ptr<GlobalBounds>>& aiNextPositions)
 {
 
         for (int i = powerUps.size() - 1; i >= 0; --i) {
@@ -367,12 +380,16 @@ void TH::Model::collisionWithPowerUpControl(const std::shared_ptr<GlobalBounds>&
                         powerUps.erase(powerUps.begin() + i);
                         continue; // to avoid multiple players picking up power up
                 }
-                if (powerUps[i]->getGlobalBounds()->intersects<float>(aiNextPosition)) {
-                        // if we collided we want to check which powerup our player collided with;
-                        if (powerUp->getType() == EntityTypes::speedUp) {
-                                simpleAi->speedUp();
+
+                for (int j = 0; j < simpleAi.size(); ++j) {
+                        if (powerUps[i]->getGlobalBounds()->intersects<float>(aiNextPositions[j])) {
+                                // if we collided we want to check which powerup our player collided with;
+                                if (powerUp->getType() == EntityTypes::speedUp) {
+                                        simpleAi[j]->speedUp();
+                                }
+                                powerUps.erase(powerUps.begin() + i);
+                                break;
                         }
-                        powerUps.erase(powerUps.begin() + i);
                 }
         }
 }
@@ -391,23 +408,28 @@ bool TH::Model::collisionControl(bool finishLineGenerated)
         nextPosition->position.y += (playerMove.y - backgroundMove.y);
 
         // then initialize the next position of our AI;
-        std::shared_ptr<GlobalBounds> aiNextPosition;
-        std::shared_ptr<GlobalBounds> simpleAIBounds = simpleAi->getGlobalBounds();
-        aiNextPosition = std::make_shared<GlobalBounds>(*simpleAIBounds);
-        aiNextPosition->position.x += (simpleAiMove.x - backgroundMove.x);
-        aiNextPosition->position.y += (simpleAiMove.y - backgroundMove.y);
+        std::vector<std::shared_ptr<GlobalBounds>> aiNextPositions{};
+        for (auto& ai : simpleAi) {
+                std::shared_ptr<GlobalBounds> aiNextPosition;
+                std::shared_ptr<GlobalBounds> simpleAIBounds = ai->getGlobalBounds();
+                aiNextPosition = std::make_shared<GlobalBounds>(*simpleAIBounds);
+                aiNextPosition->position.x += (simpleAiMove.x - backgroundMove.x);
+                aiNextPosition->position.y += (simpleAiMove.y - backgroundMove.y);
+                aiNextPositions.push_back(aiNextPosition);
+        }
 
-        collisionWithPowerUpControl(nextPosition, aiNextPosition);
-        collisionWithEnemyControl(nextPosition, aiNextPosition);
+        collisionWithPowerUpControl(nextPosition, aiNextPositions);
+        collisionWithEnemyControl(nextPosition, aiNextPositions);
 
-        simpleAi->randomMove(enemyUp, enemyLeft, enemyRight, enemyUpLeft, enemyUpRight, simpleAiMove.y, simpleAiMove.y);
-        enemyLeft = false;
-        enemyRight = false;
-        enemyUp = false;
-        enemyUpLeft = false;
-        enemyUpRight = false;
+        for (auto& ai : simpleAi) {
+                ai->randomMove(simpleAiMove.y, simpleAiMove.y);
+                ai->resetLookAhead();
+        }
+
         if (mainCharacter->isScaringEnemy() and mainCharacter->getScareCoolDown() <= 0) {
-                simpleAi->slowDown();
+                for (auto& ai : simpleAi) {
+                        ai->slowDown();
+                }
                 mainCharacter->resetScareCoolDown();
         }
         if (mainCharacter->isInvincible()) {

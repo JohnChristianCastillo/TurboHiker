@@ -11,25 +11,62 @@ namespace TH {
 class SimpleAI : public Enemy
 {
         int notMovingTicks{150}; // counts how many ticks it has been since the AI moved left or right
+        // simpleAI variables
+        bool enemyUp{false};
+        bool enemyLeft{false};
+        bool enemyRight{false};
+        bool enemyUpLeft{false};
+        bool enemyUpRight{false};
 
 public:
         /**
          * Instantiates a simple AI
          */
-        SimpleAI();
+        explicit SimpleAI(const float& horizontalOffset);
+
+        /**
+         * Sets the value of enemyUp to _enemyUp
+         * @param _enemyUp
+         */
+        void setEnemyUp(bool _enemyUp);
+
+        /**
+         * Sets the value of enemyLeft to _enemyLeft
+         * @param _enemyLeft
+         */
+        void setEnemyLeft(bool _enemyLeft);
+
+        /**
+         * Sets the value of enemyRight to _enemyRight
+         * @param _enemyRight
+         */
+        void setEnemyRight(bool _enemyRight);
+
+        /**
+         * Sets the value of enemyUpLeft to _enemyUpLeft
+         * @param _enemyUpLeft
+         */
+        void setEnemyUpLeft(bool _enemyUpLeft);
+
+        /**
+         * Sets the value of enemyUpRight to _enemyUpRight
+         * @param _enemyUpRight
+         */
+        void setEnemyUpRight(bool _enemyUpRight);
+
+        /**
+         * Resets the value of all boolean lookahead indicators to false
+         */
+        void resetLookAhead();
 
         /**
          * This AI moves UP towards the finish line by default
          * This only changes to LEFT or RIGHT depending on whether it has an enemy
          * to its left or to its right
-         * @param enemyUp
-         * @param enemyLeft
-         * @param enemyRight
          * @param xOffset
          * @param yOffset
          */
-        void randomMove(bool enemyUp, bool enemyLeft, bool enemyRight, bool enemyUpLeft, bool enemyUpRight,
-                        const float& xOffset, const float& yOffset);
+        void randomMove(const float& xOffset, const float& yOffset);
 
         /**
          * @return The type of this entity, in this cae "staticHiker"

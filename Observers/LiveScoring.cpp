@@ -34,4 +34,21 @@ float TH::OBSERVER::LiveScoring::getHighScore()
         readFile.close();
         return highScore;
 }
-void TH::OBSERVER::LiveScoring::playerFinishedFirst() { score += 2000; }
+void TH::OBSERVER::LiveScoring::playerFinished(const int& _position)
+{
+        position = _position;
+        score += (4.f - static_cast<float>(position)) * 2000;
+}
+
+std::string TH::OBSERVER::LiveScoring::getPosition() const
+{
+        if (position == 1) {
+                return "1st";
+        } else if (position == 2) {
+                return "2nd";
+        } else if (position == 3) {
+                return "3rd";
+        } else {
+                return "4th";
+        }
+}

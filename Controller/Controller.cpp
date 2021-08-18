@@ -90,7 +90,7 @@ bool TH::Controller::getKeyboardInput(const float& elapsedTime)
         std::shared_ptr<MainCharacter> mc = model->getMainCharacter();
         bool moved{false};
         // We always move the AI up
-        model->setSimpleAIMove(Move(0, -model->getSimpleAI()->getMovementSpeed() * elapsedTime));
+        model->setSimpleAIMove(Move(0, -model->getSimpleAI()[0]->getMovementSpeed() * elapsedTime));
         for (const auto& in : inputs) {
                 switch (in) {
                 case UP:

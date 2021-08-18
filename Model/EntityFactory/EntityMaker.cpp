@@ -8,7 +8,10 @@ std::shared_ptr<TH::MainCharacter> TH::EntityMaker::generateMainCharacter(int la
         return std::make_shared<MainCharacter>(MainCharacter{lanes});
 }
 std::shared_ptr<TH::Finish> TH::EntityMaker::generateFinishLine() { return std::make_shared<Finish>(); }
-std::shared_ptr<TH::SimpleAI> TH::EntityMaker::generateAI() { return std::make_shared<SimpleAI>(); }
+std::vector<std::shared_ptr<TH::SimpleAI>> TH::EntityMaker::generateAI()
+{
+        return {std::make_shared<SimpleAI>(1), std::make_shared<SimpleAI>(2), std::make_shared<SimpleAI>(0.5)};
+}
 std::vector<std::shared_ptr<TH::Enemy>> TH::EntityMaker::generateEnemies()
 {
         // assigns to which lane the enemy will go to:

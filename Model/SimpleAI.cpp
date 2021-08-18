@@ -3,16 +3,15 @@
 //
 
 #include "SimpleAI.h"
-TH::SimpleAI::SimpleAI()
+TH::SimpleAI::SimpleAI(const float& horizontalOffset)
 {
         /// todo: 8 divided by lanes doesnt really make sense;
-        Position pos = Position(2.f, 5.5f);
+        Position pos = Position(horizontalOffset * 2.f, 5.5f);
         Dimensions dim = Dimensions(0.222222f, 0.444444f);
         globalBounds = std::make_shared<GlobalBounds>(pos, dim);
         movementSpeed = 5;
 }
-void TH::SimpleAI::randomMove(bool enemyUp, bool enemyLeft, bool enemyRight, bool enemyUpLeft, bool enemyUpRight,
-                              const float& xOffset, const float& yOffset)
+void TH::SimpleAI::randomMove(const float& xOffset, const float& yOffset)
 {
         // go right
         if (enemyUpLeft and !enemyRight) {
@@ -69,4 +68,17 @@ std::vector<std::shared_ptr<TH::GlobalBounds>> TH::SimpleAI::getLookAhead()
         std::shared_ptr<GlobalBounds> upLeftAura = std::make_shared<GlobalBounds>(
             Position(aiPos.x - aiDim.width / 2, aiPos.y - aiDim.height), Dimensions(aiDim));
         return {frontalAura1, frontalAura2, frontalAura3, leftAura, rightAura, upLeftAura, upRightAura};
+}
+void TH::SimpleAI::setEnemyUp(bool enemyUp) { SimpleAI::enemyUp = enemyUp; }
+void TH::SimpleAI::setEnemyLeft(bool enemyLeft) { SimpleAI::enemyLeft = enemyLeft; }
+void TH::SimpleAI::setEnemyRight(bool enemyRight) { SimpleAI::enemyRight = enemyRight; }
+void TH::SimpleAI::setEnemyUpLeft(bool enemyUpLeft) { SimpleAI::enemyUpLeft = enemyUpLeft; }
+void TH::SimpleAI::setEnemyUpRight(bool enemyUpRight) { SimpleAI::enemyUpRight = enemyUpRight; }
+void TH::SimpleAI::resetLookAhead()
+{
+        enemyUp = false;
+        enemyLeft = false;
+        enemyRight = false;
+        enemyUpLeft = false;
+        enemyUpRight = false;
 }

@@ -114,7 +114,7 @@ $(function() {
     <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; std::shared_ptr&lt;MainCharacter&gt;
         mainCharacter;
     </div>
-    <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; std::shared_ptr&lt;SimpleAI&gt;
+    <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; std::vector&lt;std::shared_ptr&lt;SimpleAI&gt;&gt;
         simpleAi;
     </div>
     <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; std::shared_ptr&lt;OBSERVER::LiveScoring&gt;
@@ -146,193 +146,177 @@ $(function() {
         simpleAiMove{};
     </div>
     <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-    <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span class="comment">// simpleAI variables</span>
+    <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+    <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+    <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">public</span>:
     </div>
-    <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; <span class="keywordtype">bool</span>
-        enemyUp{<span class="keyword">false</span>};
-    </div>
-    <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; <span class="keywordtype">bool</span>
-        enemyLeft{<span class="keyword">false</span>};
-    </div>
-    <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; <span class="keywordtype">bool</span>
-        enemyRight{<span class="keyword">false</span>};
-    </div>
-    <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; <span class="keywordtype">bool</span>
-        enemyUpLeft{<span class="keyword">false</span>};
-    </div>
-    <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; <span class="keywordtype">bool</span>
-        enemyUpRight{<span class="keyword">false</span>};
-    </div>
-    <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-    <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:
-    </div>
-    <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; <span class="keyword">explicit</span>
+    <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; <span class="keyword">explicit</span>
         <a class="code" href="class_t_h_1_1_model.html#a735fbcff3ca59ae5357ad1c733dcd15f">Model</a>(<span
                 class="keywordtype">float</span> frameLimit, <span class="keyword">const</span> std::weak_ptr&lt;OBSERVER::LiveScoring&gt;&amp;
         scoringObserver);
     </div>
-    <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; <span
+    <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+    <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; <span
             class="keywordtype">float</span> <a class="code"
                                                 href="class_t_h_1_1_model.html#a71d19af1360e5aee2a3260eae8b1c9f5">getFps</a>()
         <span class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-    <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+    <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_model.html#aab3f108240c89b4508023fc9e5225965">setPlayerMove</a>(<span
                 class="keyword">const</span> <a class="code" href="struct_t_h_1_1_move.html">Move</a>&amp; move);
     </div>
-    <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-    <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+    <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_model.html#a5b1852248da09f4c2cfb6b9eec41b872">setBackgroundMove</a>(<span
                 class="keyword">const</span> <a class="code" href="struct_t_h_1_1_move.html">Move</a>&amp; move);
     </div>
-    <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-    <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+    <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_model.html#a5355dc462e55ae6341c0356440d593a8">setSimpleAIMove</a>(<span
                 class="keyword">const</span> <a class="code" href="struct_t_h_1_1_move.html">Move</a>&amp; move);
     </div>
-    <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-    <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+    <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; <span class="keyword">const</span>
         std::shared_ptr&lt;OBSERVER::LiveScoring&gt;&amp; <a class="code"
                                                              href="class_t_h_1_1_model.html#ab120451349204fd27e02ff611d21b7b8">getScoringSystem</a>()
         <span class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-    <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; std::shared_ptr&lt;MainCharacter&gt;
+    <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+    <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; std::shared_ptr&lt;MainCharacter&gt;
         <a class="code" href="class_t_h_1_1_model.html#a6f5b395949de16601ff0e731b03fa478">getMainCharacter</a>() <span
                 class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-    <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; std::shared_ptr&lt;Finish&gt; <a
+    <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+    <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; std::shared_ptr&lt;Finish&gt; <a
             class="code" href="class_t_h_1_1_model.html#a65e002d31b812863d28d85043851f6ae">getFinishLine</a>() <span
             class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-    <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; std::shared_ptr&lt;SimpleAI&gt; <a
-            class="code" href="class_t_h_1_1_model.html#adb2b25409a4173ddc9fcf69f3768eceb">getSimpleAI</a>() <span
-            class="keyword">const</span>;
+    <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+    <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; std::vector&lt;std::shared_ptr&lt;SimpleAI&gt;&gt;
+        <a class="code" href="class_t_h_1_1_model.html#a80358dec5aad8453b4d12eebb0170076">getSimpleAI</a>() <span
+                class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-    <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; std::vector&lt;std::shared_ptr&lt;Background&gt;&gt;
+    <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+    <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; std::vector&lt;std::shared_ptr&lt;Background&gt;&gt;
         <a class="code" href="class_t_h_1_1_model.html#a0b454c739ee5e833c574d48f104d5776">getBackgrounds</a>() <span
                 class="keyword">const</span>;
     </div>
-    <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-    <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt;
+    <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+    <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt;
         <a class="code" href="class_t_h_1_1_model.html#a44b056a696b3ec7068a5e2cc7a0fc9ac">getEnemies</a>();
     </div>
-    <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-    <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; std::vector&lt;std::shared_ptr&lt;PowerUp&gt;&gt;
+    <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+    <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; std::vector&lt;std::shared_ptr&lt;PowerUp&gt;&gt;
         <a class="code" href="class_t_h_1_1_model.html#a5e2d3377070871fa7caa5344cfb5f6c8">getPowerUps</a>();
     </div>
-    <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-    <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+    <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_model.html#afd4cc1bcb7b6bb1abc724fae3f4ba48d">generateFinishLine</a>();
     </div>
-    <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-    <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; std::shared_ptr&lt;MainCharacter&gt;
+    <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+    <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; std::shared_ptr&lt;MainCharacter&gt;
         <a class="code" href="class_t_h_1_1_model.html#a2dd3b31c4205d803d65904d519be7e14">generateMC</a>();
     </div>
-    <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-    <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; std::shared_ptr&lt;SimpleAI&gt; <a
-            class="code" href="class_t_h_1_1_model.html#a01c62f29cbfc0dc2b9cf3fb2be8d5179">generateAI</a>();
+    <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+    <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; std::vector&lt;std::shared_ptr&lt;SimpleAI&gt;&gt;
+        <a class="code" href="class_t_h_1_1_model.html#aaa7c0276e1d0dd2f527b9a281b423fdd">generateAI</a>();
     </div>
-    <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-    <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; std::vector&lt;std::shared_ptr&lt;Background&gt;&gt;
+    <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+    <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; std::vector&lt;std::shared_ptr&lt;Background&gt;&gt;
         <a class="code" href="class_t_h_1_1_model.html#aa193619808386c101dbaf5453c728e1e">generateBackground</a>();
     </div>
-    <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt;
+    <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; std::vector&lt;std::shared_ptr&lt;Enemy&gt;&gt;
         <a class="code" href="class_t_h_1_1_model.html#a359f60cb872ff141b896cfb4a4dbf178">generateEnemies</a>();
     </div>
-    <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-    <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; std::vector&lt;std::shared_ptr&lt;PowerUp&gt;&gt;
+    <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+    <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; std::vector&lt;std::shared_ptr&lt;PowerUp&gt;&gt;
         <a class="code" href="class_t_h_1_1_model.html#aaf89fe6a348814a2c2c770315d39c7fd">generatePowerUps</a>();
     </div>
-    <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
-    <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+    <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_model.html#aa0d6f717600dd96795dcce3c881bb3f2">resetMoves</a>();
     </div>
-    <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
-    <div class="line"><a name="l00149"></a><span class="lineno"><a class="line"
-                                                                   href="class_t_h_1_1_model.html#a5fadb2adad967b08c966d71bbd41cf51">  149</a></span>&#160;
+    <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+    <div class="line"><a name="l00144"></a><span class="lineno"><a class="line"
+                                                                   href="class_t_h_1_1_model.html#a5fadb2adad967b08c966d71bbd41cf51">  144</a></span>&#160;
         <span class="keywordtype">void</span> <a class="code"
                                                  href="class_t_h_1_1_model.html#a5fadb2adad967b08c966d71bbd41cf51">moveMC</a>()
         { mainCharacter-&gt;move(playerMove.x, playerMove.y); }
     </div>
+    <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+    <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; <span class="keywordtype">void</span>
+        <a class="code" href="class_t_h_1_1_model.html#a7b4b18da7a35f58deb8a6b80c34c9aef">moveSimpleAI</a>();
+    </div>
     <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
     <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; <span class="keywordtype">void</span>
-        <a class="code" href="class_t_h_1_1_model.html#a7b4b18da7a35f58deb8a6b80c34c9aef">moveSimpleAI</a>();
+        <a class="code" href="class_t_h_1_1_model.html#a433e2665b3b017b424b99ca87dd298fb">moveBackground</a>();
     </div>
     <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
     <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; <span class="keywordtype">void</span>
-        <a class="code" href="class_t_h_1_1_model.html#a433e2665b3b017b424b99ca87dd298fb">moveBackground</a>();
+        <a class="code" href="class_t_h_1_1_model.html#a2debf6e6aa53907616125285d8542e02">moveEnemies</a>();
     </div>
     <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
     <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; <span class="keywordtype">void</span>
-        <a class="code" href="class_t_h_1_1_model.html#a2debf6e6aa53907616125285d8542e02">moveEnemies</a>();
+        <a class="code" href="class_t_h_1_1_model.html#aba6f59ab3ae5f93fad43eee9a8b07cc4">movePowerUps</a>();
     </div>
     <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
     <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; <span class="keywordtype">void</span>
-        <a class="code" href="class_t_h_1_1_model.html#aba6f59ab3ae5f93fad43eee9a8b07cc4">movePowerUps</a>();
-    </div>
-    <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
-    <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_model.html#ac9b128e28fa29db21177c49c9ef226b8">moveEntitiesExceptAI</a>();
     </div>
-    <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
-    <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+    <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_model.html#a90866a06412122694192f9a261cabffd">steerRandomly</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;Enemy&gt;&amp; enemy);
     </div>
-    <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
-    <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
+    <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_model.html#a28a54d5827461003374b7491c5981e2d">screenCollisionControl</a>();
     </div>
-    <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;</div>
-    <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; <span class="keywordtype">bool</span>
+    <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+    <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; <span class="keywordtype">bool</span>
         <a class="code" href="class_t_h_1_1_model.html#a1684941acf1cecd63de04a5d90187a82">finishLineCollisionControl</a>();
     </div>
-    <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
-    <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
+    <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; <span class="keywordtype">void</span>
         <a class="code"
            href="class_t_h_1_1_model.html#ac12fbc30390eafe4f8d384a80be1ee4e">aiCollisionPrevention</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;Enemy&gt;&amp; enemy,
     </div>
-    <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; <span class="keyword">const</span>
+    <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; <span class="keyword">const</span>
         std::shared_ptr&lt;GlobalBounds&gt;&amp; nextPosition);
     </div>
-    <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
-    <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; <span class="keywordtype">void</span>
-        <a class="code" href="class_t_h_1_1_model.html#a83f16d9c94c32d087ced6492aec5af87">collisionWithEnemyControl</a>(<span
+    <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+    <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; <span class="keywordtype">void</span>
+        <a class="code" href="class_t_h_1_1_model.html#a0acdc84331b410ef4c1597fa4c2afeb0">collisionWithEnemyControl</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;GlobalBounds&gt;&amp; nextPosition,
     </div>
-    <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; <span class="keyword">const</span>
-        std::shared_ptr&lt;GlobalBounds&gt;&amp; aiNextPosition);
+    <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; <span class="keyword">const</span>
+        std::vector&lt;std::shared_ptr&lt;GlobalBounds&gt;&gt;&amp; aiNextPositions);
     </div>
-    <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
-    <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
+    <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; <span class="keywordtype">void</span>
         <a class="code"
-           href="class_t_h_1_1_model.html#ac567005c6990fce0b211381e023c5079">collisionWithPowerUpControl</a>(<span
+           href="class_t_h_1_1_model.html#a639dd28ac77a878c79429069e7429428">collisionWithPowerUpControl</a>(<span
                 class="keyword">const</span> std::shared_ptr&lt;GlobalBounds&gt;&amp; nextPosition,
     </div>
-    <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; <span class="keyword">const</span>
-        std::shared_ptr&lt;GlobalBounds&gt;&amp; aiNextPosition);
+    <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; <span class="keyword">const</span>
+        std::vector&lt;std::shared_ptr&lt;GlobalBounds&gt;&gt;&amp; aiNextPositions);
     </div>
-    <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
-    <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; <span class="keywordtype">bool</span>
+    <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+    <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; <span class="keywordtype">bool</span>
         <a class="code" href="class_t_h_1_1_model.html#a743415324b9cc40294616194ed335995">collisionControl</a>(<span
                 class="keywordtype">bool</span> finishLineGenerated);
     </div>
-    <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-    <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; <span class="keywordtype">void</span>
+    <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
+    <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; <span class="keywordtype">void</span>
         <a class="code" href="class_t_h_1_1_model.html#a0ef2b90413478ace92e95089ed6cc398">spawnEnemy</a>();
     </div>
-    <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;};</div>
-    <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;} <span class="comment">// namespace TH</span>
+    <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;};</div>
+    <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;} <span class="comment">// namespace TH</span>
     </div>
-    <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
-    <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_MODEL_H</span>
+    <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
+    <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="preprocessor">#endif // TURBOHIKER_MODEL_H</span>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html">
         <div class="ttname"><a href="class_t_h_1_1_model.html">TH::Model</a></div>
@@ -344,25 +328,11 @@ $(function() {
         <div class="ttdeci">std::vector&lt; std::shared_ptr&lt; Background &gt; &gt; generateBackground()</div>
         <div class="ttdef"><b>Definition:</b> Model.cpp:45</div>
     </div>
-    <div class="ttc" id="class_t_h_1_1_model_html_adb2b25409a4173ddc9fcf69f3768eceb">
-        <div class="ttname"><a
-                href="class_t_h_1_1_model.html#adb2b25409a4173ddc9fcf69f3768eceb">TH::Model::getSimpleAI</a></div>
-        <div class="ttdeci">std::shared_ptr&lt; SimpleAI &gt; getSimpleAI() const</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:26</div>
-    </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a2debf6e6aa53907616125285d8542e02">
         <div class="ttname"><a
                 href="class_t_h_1_1_model.html#a2debf6e6aa53907616125285d8542e02">TH::Model::moveEnemies</a></div>
         <div class="ttdeci">void moveEnemies()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:109</div>
-    </div>
-    <div class="ttc" id="class_t_h_1_1_model_html_a83f16d9c94c32d087ced6492aec5af87">
-        <div class="ttname"><a href="class_t_h_1_1_model.html#a83f16d9c94c32d087ced6492aec5af87">TH::Model::collisionWithEnemyControl</a>
-        </div>
-        <div class="ttdeci">void collisionWithEnemyControl(const std::shared_ptr&lt; GlobalBounds &gt; &amp;nextPosition,
-            const std::shared_ptr&lt; GlobalBounds &gt; &amp;aiNextPosition)
-        </div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:279</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:112</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a44b056a696b3ec7068a5e2cc7a0fc9ac">
         <div class="ttname"><a
@@ -374,7 +344,7 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_model.html#a433e2665b3b017b424b99ca87dd298fb">TH::Model::moveBackground</a>
         </div>
         <div class="ttdeci">void moveBackground()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:86</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:89</div>
     </div>
     <div class="ttc" id="namespace_t_h_html">
         <div class="ttname"><a href="namespace_t_h.html">TH</a></div>
@@ -396,11 +366,25 @@ $(function() {
         <div class="ttname"><a href="struct_t_h_1_1_move.html">TH::Move</a></div>
         <div class="ttdef"><b>Definition:</b> HelperDataTypes.h:86</div>
     </div>
+    <div class="ttc" id="class_t_h_1_1_model_html_a639dd28ac77a878c79429069e7429428">
+        <div class="ttname"><a href="class_t_h_1_1_model.html#a639dd28ac77a878c79429069e7429428">TH::Model::collisionWithPowerUpControl</a>
+        </div>
+        <div class="ttdeci">void collisionWithPowerUpControl(const std::shared_ptr&lt; GlobalBounds &gt; &amp;nextPosition,
+            const std::vector&lt; std::shared_ptr&lt; GlobalBounds &gt;&gt; &amp;aiNextPositions)
+        </div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:363</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_model_html_aaa7c0276e1d0dd2f527b9a281b423fdd">
+        <div class="ttname"><a
+                href="class_t_h_1_1_model.html#aaa7c0276e1d0dd2f527b9a281b423fdd">TH::Model::generateAI</a></div>
+        <div class="ttdeci">std::vector&lt; std::shared_ptr&lt; SimpleAI &gt; &gt; generateAI()</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:44</div>
+    </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a90866a06412122694192f9a261cabffd">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a90866a06412122694192f9a261cabffd">TH::Model::steerRandomly</a>
         </div>
         <div class="ttdeci">void steerRandomly(const std::shared_ptr&lt; Enemy &gt; &amp;enemy)</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:183</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:186</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a0b454c739ee5e833c574d48f104d5776">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a0b454c739ee5e833c574d48f104d5776">TH::Model::getBackgrounds</a>
@@ -424,25 +408,19 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_model.html#a28a54d5827461003374b7491c5981e2d">TH::Model::screenCollisionControl</a>
         </div>
         <div class="ttdeci">void screenCollisionControl()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:208</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:211</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_aba6f59ab3ae5f93fad43eee9a8b07cc4">
         <div class="ttname"><a
                 href="class_t_h_1_1_model.html#aba6f59ab3ae5f93fad43eee9a8b07cc4">TH::Model::movePowerUps</a></div>
         <div class="ttdeci">void movePowerUps()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:151</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:154</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a743415324b9cc40294616194ed335995">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a743415324b9cc40294616194ed335995">TH::Model::collisionControl</a>
         </div>
         <div class="ttdeci">bool collisionControl(bool finishLineGenerated)</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:379</div>
-    </div>
-    <div class="ttc" id="class_t_h_1_1_model_html_a01c62f29cbfc0dc2b9cf3fb2be8d5179">
-        <div class="ttname"><a
-                href="class_t_h_1_1_model.html#a01c62f29cbfc0dc2b9cf3fb2be8d5179">TH::Model::generateAI</a></div>
-        <div class="ttdeci">std::shared_ptr&lt; SimpleAI &gt; generateAI()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:44</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:399</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a5b1852248da09f4c2cfb6b9eec41b872">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a5b1852248da09f4c2cfb6b9eec41b872">TH::Model::setBackgroundMove</a>
@@ -454,13 +432,13 @@ $(function() {
         <div class="ttname"><a href="class_t_h_1_1_model.html#a5fadb2adad967b08c966d71bbd41cf51">TH::Model::moveMC</a>
         </div>
         <div class="ttdeci">void moveMC()</div>
-        <div class="ttdef"><b>Definition:</b> Model.h:149</div>
+        <div class="ttdef"><b>Definition:</b> Model.h:144</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_ac9b128e28fa29db21177c49c9ef226b8">
         <div class="ttname"><a href="class_t_h_1_1_model.html#ac9b128e28fa29db21177c49c9ef226b8">TH::Model::moveEntitiesExceptAI</a>
         </div>
         <div class="ttdeci">void moveEntitiesExceptAI()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:176</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:179</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_ac12fbc30390eafe4f8d384a80be1ee4e">
         <div class="ttname"><a href="class_t_h_1_1_model.html#ac12fbc30390eafe4f8d384a80be1ee4e">TH::Model::aiCollisionPrevention</a>
@@ -468,7 +446,13 @@ $(function() {
         <div class="ttdeci">void aiCollisionPrevention(const std::shared_ptr&lt; Enemy &gt; &amp;enemy, const
             std::shared_ptr&lt; GlobalBounds &gt; &amp;nextPosition)
         </div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:245</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:255</div>
+    </div>
+    <div class="ttc" id="class_t_h_1_1_model_html_a80358dec5aad8453b4d12eebb0170076">
+        <div class="ttname"><a
+                href="class_t_h_1_1_model.html#a80358dec5aad8453b4d12eebb0170076">TH::Model::getSimpleAI</a></div>
+        <div class="ttdeci">std::vector&lt; std::shared_ptr&lt; SimpleAI &gt; &gt; getSimpleAI() const</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:26</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a6f5b395949de16601ff0e731b03fa478">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a6f5b395949de16601ff0e731b03fa478">TH::Model::getMainCharacter</a>
@@ -493,14 +477,6 @@ $(function() {
                 href="class_t_h_1_1_model.html#a2dd3b31c4205d803d65904d519be7e14">TH::Model::generateMC</a></div>
         <div class="ttdeci">std::shared_ptr&lt; MainCharacter &gt; generateMC()</div>
         <div class="ttdef"><b>Definition:</b> Model.cpp:43</div>
-    </div>
-    <div class="ttc" id="class_t_h_1_1_model_html_ac567005c6990fce0b211381e023c5079">
-        <div class="ttname"><a href="class_t_h_1_1_model.html#ac567005c6990fce0b211381e023c5079">TH::Model::collisionWithPowerUpControl</a>
-        </div>
-        <div class="ttdeci">void collisionWithPowerUpControl(const std::shared_ptr&lt; GlobalBounds &gt; &amp;nextPosition,
-            const std::shared_ptr&lt; GlobalBounds &gt; &amp;aiNextPosition)
-        </div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:347</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_aab3f108240c89b4508023fc9e5225965">
         <div class="ttname"><a href="class_t_h_1_1_model.html#aab3f108240c89b4508023fc9e5225965">TH::Model::setPlayerMove</a>
@@ -530,7 +506,7 @@ $(function() {
         <div class="ttname"><a
                 href="class_t_h_1_1_model.html#a0ef2b90413478ace92e95089ed6cc398">TH::Model::spawnEnemy</a></div>
         <div class="ttdeci">void spawnEnemy()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:425</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:451</div>
     </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a5e2d3377070871fa7caa5344cfb5f6c8">
         <div class="ttname"><a
@@ -544,11 +520,19 @@ $(function() {
         <div class="ttdeci">std::vector&lt; std::shared_ptr&lt; Enemy &gt; &gt; generateEnemies()</div>
         <div class="ttdef"><b>Definition:</b> Model.cpp:49</div>
     </div>
+    <div class="ttc" id="class_t_h_1_1_model_html_a0acdc84331b410ef4c1597fa4c2afeb0">
+        <div class="ttname"><a href="class_t_h_1_1_model.html#a0acdc84331b410ef4c1597fa4c2afeb0">TH::Model::collisionWithEnemyControl</a>
+        </div>
+        <div class="ttdeci">void collisionWithEnemyControl(const std::shared_ptr&lt; GlobalBounds &gt; &amp;nextPosition,
+            const std::vector&lt; std::shared_ptr&lt; GlobalBounds &gt;&gt; &amp;aiNextPositions)
+        </div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:291</div>
+    </div>
     <div class="ttc" id="class_t_h_1_1_model_html_a1684941acf1cecd63de04a5d90187a82">
         <div class="ttname"><a href="class_t_h_1_1_model.html#a1684941acf1cecd63de04a5d90187a82">TH::Model::finishLineCollisionControl</a>
         </div>
         <div class="ttdeci">bool finishLineCollisionControl()</div>
-        <div class="ttdef"><b>Definition:</b> Model.cpp:234</div>
+        <div class="ttdef"><b>Definition:</b> Model.cpp:240</div>
     </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

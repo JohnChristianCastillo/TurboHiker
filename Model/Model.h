@@ -22,7 +22,7 @@ class Model
 
         std::shared_ptr<EntityMaker> entityFactory;
         std::shared_ptr<MainCharacter> mainCharacter;
-        std::shared_ptr<SimpleAI> simpleAi;
+        std::vector<std::shared_ptr<SimpleAI>> simpleAi;
         std::shared_ptr<OBSERVER::LiveScoring> scoringSystem;
         std::vector<std::shared_ptr<Enemy>> enemies;
         std::vector<std::shared_ptr<Background>> backgrounds;
@@ -32,13 +32,6 @@ class Model
         Move playerMove{};
         Move backgroundMove{};
         Move simpleAiMove{};
-
-        // simpleAI variables
-        bool enemyUp{false};
-        bool enemyLeft{false};
-        bool enemyRight{false};
-        bool enemyUpLeft{false};
-        bool enemyUpRight{false};
 
 public:
         /**
@@ -85,9 +78,9 @@ public:
         std::shared_ptr<Finish> getFinishLine() const;
 
         /**
-         * @return The simple AI
+         * @return The simple AI vector
          */
-        std::shared_ptr<SimpleAI> getSimpleAI() const;
+        std::vector<std::shared_ptr<SimpleAI>> getSimpleAI() const;
 
         /**
          * @return The vector of backgrounds
@@ -117,9 +110,9 @@ public:
 
         /**
          * Generates a simple AI with the help of EntityMaker
-         * @return
+         * @return a vector of AI's
          */
-        std::shared_ptr<SimpleAI> generateAI();
+        std::vector<std::shared_ptr<SimpleAI>> generateAI();
 
         /**
          * Generates a vector of backgrounds with the help of EntityMaker
@@ -206,7 +199,7 @@ public:
          * @param aiNextPosition: The next position of the AI
          */
         void collisionWithEnemyControl(const std::shared_ptr<GlobalBounds>& nextPosition,
-                                       const std::shared_ptr<GlobalBounds>& aiNextPosition);
+                                       const std::vector<std::shared_ptr<GlobalBounds>>& aiNextPositions);
 
         /**
          * Checks whether the AI or the main character has collided with a power up
@@ -214,7 +207,7 @@ public:
          * @param aiNextPosition: The next position of the AI
          */
         void collisionWithPowerUpControl(const std::shared_ptr<GlobalBounds>& nextPosition,
-                                         const std::shared_ptr<GlobalBounds>& aiNextPosition);
+                                         const std::vector<std::shared_ptr<GlobalBounds>>& aiNextPositions);
 
         /**
          * This function checks collision between:

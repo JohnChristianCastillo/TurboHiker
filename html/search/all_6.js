@@ -1,6 +1,6 @@
 var searchData=
 [
-    ['generateai', ['generateAI', ['../class_t_h_1_1_entity_maker.html#ad8b07dba47bd90d52f040d503ff5b2e2', 1, 'TH::EntityMaker::generateAI()'], ['../class_t_h_1_1_model.html#a01c62f29cbfc0dc2b9cf3fb2be8d5179', 1, 'TH::Model::generateAI()']]],
+    ['generateai', ['generateAI', ['../class_t_h_1_1_entity_maker.html#a9f4fd9da81e9ee0f8de3cbedf5ba53a2', 1, 'TH::EntityMaker::generateAI()'], ['../class_t_h_1_1_model.html#aaa7c0276e1d0dd2f527b9a281b423fdd', 1, 'TH::Model::generateAI()']]],
     ['generatebackground', ['generateBackground', ['../class_t_h_1_1_entity_maker.html#a3f4f571171f85878fcd32b253cb5bbe2', 1, 'TH::EntityMaker::generateBackground()'], ['../class_t_h_1_1_model.html#aa193619808386c101dbaf5453c728e1e', 1, 'TH::Model::generateBackground()']]],
     ['generateenemies', ['generateEnemies', ['../class_t_h_1_1_entity_maker.html#afd309d4fef9389b27da150ce3b6eeaf0', 1, 'TH::EntityMaker::generateEnemies()'], ['../class_t_h_1_1_model.html#a359f60cb872ff141b896cfb4a4dbf178', 1, 'TH::Model::generateEnemies()']]],
     ['generatefinishline', ['generateFinishLine', ['../class_t_h_1_1_entity_maker.html#adc7a1b089a800856d2830f4dc653c51e', 1, 'TH::EntityMaker::generateFinishLine()'], ['../class_t_h_1_1_model.html#afd4cc1bcb7b6bb1abc724fae3f4ba48d', 1, 'TH::Model::generateFinishLine()']]],
@@ -24,11 +24,12 @@ var searchData=
     ['getlookahead', ['getLookAhead', ['../class_t_h_1_1_simple_a_i.html#a9e899c76c2ec9bcbe87ef837b58b816e', 1, 'TH::SimpleAI']]],
     ['getmaincharacter', ['getMainCharacter', ['../class_t_h_1_1_model.html#a6f5b395949de16601ff0e731b03fa478', 1, 'TH::Model']]],
     ['getmovementspeed', ['getMovementSpeed', ['../class_t_h_1_1_entity.html#abc52022f6ae4c801600ca2334df39756', 1, 'TH::Entity']]],
+    ['getposition', ['getPosition', ['../class_t_h_1_1_o_b_s_e_r_v_e_r_1_1_live_scoring.html#ae8251dcb8499dbdd14c3369365c341eb', 1, 'TH::OBSERVER::LiveScoring']]],
     ['getpowerups', ['getPowerUps', ['../class_t_h_1_1_model.html#a5e2d3377070871fa7caa5344cfb5f6c8', 1, 'TH::Model']]],
     ['getscarecooldown', ['getScareCoolDown', ['../class_t_h_1_1_main_character.html#a857328c995947b4ec751176feb8120ef', 1, 'TH::MainCharacter']]],
     ['getscoringsystem', ['getScoringSystem', ['../class_t_h_1_1_model.html#ab120451349204fd27e02ff611d21b7b8', 1, 'TH::Model']]],
     ['getscreendimensions', ['getScreenDimensions', ['../class_t_h_1_1singleton_1_1_transformation.html#ad40a3de0ac3906aa64728464d5fb21a6', 1, 'TH::singleton::Transformation']]],
-    ['getsimpleai', ['getSimpleAI', ['../class_t_h_1_1_model.html#adb2b25409a4173ddc9fcf69f3768eceb', 1, 'TH::Model']]],
+    ['getsimpleai', ['getSimpleAI', ['../class_t_h_1_1_model.html#a80358dec5aad8453b4d12eebb0170076', 1, 'TH::Model']]],
     ['getskin', ['getSkin', ['../class_t_h_1_1_entity.html#ac8102a77c53f36a20f8523737ad2f71a', 1, 'TH::Entity']]],
     ['getskininput', ['getSkinInput', ['../class_t_h_1_1_s_f_m_l_1_1_view.html#af428040443da10aa0f04cb3dc4cf0dd4', 1, 'TH::SFML::View']]],
     ['getslowingfactor', ['getSlowingFactor', ['../class_t_h_1_1_entity.html#a478deacb54c782e52dcf5b0a26bfed77', 1, 'TH::Entity']]],

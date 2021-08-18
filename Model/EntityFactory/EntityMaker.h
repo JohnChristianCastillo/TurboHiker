@@ -42,9 +42,9 @@ public:
 
         /**
          * Generates a simple AI
-         * @return
+         * @return a vector of simple AI's
          */
-        static std::shared_ptr<SimpleAI> generateAI();
+        static std::vector<std::shared_ptr<SimpleAI>> generateAI();
 
         /**
          * Generates a vector of pointer of enemies at random lanes with random offsets within the lane
@@ -74,7 +74,6 @@ public:
         /**
          * Summons a static hiker behind the main character
          */
-
         static std::shared_ptr<Enemy> summonEnemy(const Position& pos);
 };
 } // namespace TH
