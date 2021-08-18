@@ -2,7 +2,7 @@
 # TURBO HIKER 
 ## How to run:
 To build the game, simply run the build script `build.sh`  
-To build and run the game,simply run the run script `run.sh`
+To build and run the game, simply run the run script `run.sh`
 
 ## How to play:
 _(optional)_ 
